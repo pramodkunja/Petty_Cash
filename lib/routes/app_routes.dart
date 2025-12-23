@@ -10,6 +10,12 @@ abstract class AppRoutes {
   static const RESET_PASSWORD_SUCCESS = '/reset-password-success';
   static const ENTERPRISE_SETUP = '/enterprise-setup';
   
+  // Accountant
+  static const ACCOUNTANT_DASHBOARD = '/accountant-dashboard';
+  static const ACCOUNTANT_PAYMENTS = '/accountant-payments';
+  static const ACCOUNTANT_PROFILE = '/accountant-profile';
+  static const ACCOUNTANT_REPORTS = '/accountant-reports';
+
   // Admin
   static const ADMIN_DASHBOARD = '/admin/dashboard';
   static const ADMIN_APPROVALS = '/admin/approvals';

@@ -236,7 +236,7 @@ class AdminHistoryView extends GetView<AdminHistoryController> {
                 ),
               ),
               Text(
-                '\$${item['amount']}',
+                '₹${item['amount']}',
                 style: AppTextStyles.h3.copyWith(fontSize: 18),
               ),
             ],

@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import '../../../core/widgets/common_search_bar.dart';
 import '../controllers/monthly_spent_controller.dart';
 import '../../../../utils/app_text.dart';
+import '../../../../utils/app_text_styles.dart';
 
 class MonthlySpentView extends GetView<MonthlySpentController> {
   const MonthlySpentView({Key? key}) : super(key: key);
@@ -40,11 +41,7 @@ class MonthlySpentView extends GetView<MonthlySpentController> {
                   children: [
                     Text(
                       controller.currentMonth.value,
-                      style: const TextStyle(
-                        color: Color(0xFF0F172A),
-                        fontSize: 16,
-                        fontWeight: FontWeight.w700,
-                      ),
+                      style: AppTextStyles.h3.copyWith(fontSize: 16),
                     ),
                   ],
                 ),
@@ -108,11 +105,11 @@ class MonthlySpentView extends GetView<MonthlySpentController> {
                 ),
                 child: Column(
                   children: [
-                    Text(AppText.totalSpent, style: const TextStyle(color: Color(0xFF64748B), fontSize: 14)),
+                    Text(AppText.totalSpent, style: AppTextStyles.bodyMedium.copyWith(color: const Color(0xFF64748B))),
                     const SizedBox(height: 8),
                     Obx(() => Text(
                       '₹${controller.totalSpent.value.toStringAsFixed(2)}',
-                      style: const TextStyle(fontSize: 40, fontWeight: FontWeight.w800, color: Color(0xFF0F172A)),
+                      style: AppTextStyles.h1.copyWith(fontSize: 40),
                     )),
                     const SizedBox(height: 16),
                     Container(
@@ -147,9 +144,8 @@ class MonthlySpentView extends GetView<MonthlySpentController> {
                 alignment: Alignment.centerLeft,
                 child: Text(
                   AppText.monthlySpentTransactions,
-                   style: TextStyle(
+                   style: AppTextStyles.h3.copyWith(
                      fontSize: 12, 
-                     fontWeight: FontWeight.w700, 
                      color: const Color(0xFF94A3B8), 
                      letterSpacing: 1.1
                    ),
@@ -190,16 +186,16 @@ class MonthlySpentView extends GetView<MonthlySpentController> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(item['title'], style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w700, color: Color(0xFF0F172A))),
+                              Text(item['title'], style: AppTextStyles.h3.copyWith(fontSize: 16)),
                               const SizedBox(height: 4),
-                              Text(item['date'], style: const TextStyle(fontSize: 13, color: Color(0xFF64748B))),
+                              Text(item['date'], style: AppTextStyles.bodySmall.copyWith(fontSize: 13, color: const Color(0xFF64748B))),
                             ],
                           ),
                         ),
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.end,
                           children: [
-                             Text(item['amount'].toString().replaceAll('\$', '₹'), style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w700, color: Color(0xFF0F172A))),
+                             Text(item['amount'].toString().replaceAll('\$', '₹'), style: AppTextStyles.h3.copyWith(fontSize: 16)),
                              const SizedBox(height: 4),
                              _buildStatusBadge(item['status']),
                           ],
@@ -272,7 +268,7 @@ class MonthlySpentView extends GetView<MonthlySpentController> {
       decoration: BoxDecoration(color: bg, borderRadius: BorderRadius.circular(4)),
       child: Text(
         status, 
-        style: TextStyle(fontSize: 10, fontWeight: FontWeight.w600, color: text)
+        style: AppTextStyles.h3.copyWith(fontSize: 10, color: text)
       ),
     );
   }
@@ -292,10 +288,8 @@ class MonthlySpentView extends GetView<MonthlySpentController> {
           ),
           child: Text(
             label,
-            style: TextStyle(
+            style: AppTextStyles.bodyMedium.copyWith(
               color: isSelected ? Colors.white : const Color(0xFF64748B),
-              fontWeight: FontWeight.w600,
-              fontSize: 14,
             ),
           ),
         ),

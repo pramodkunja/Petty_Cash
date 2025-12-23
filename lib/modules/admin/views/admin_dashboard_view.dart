@@ -77,7 +77,7 @@ class AdminDashboardView extends GetView<AdminDashboardController> {
                         Expanded(
                           child: AdminOverviewCard(
                             title: AppText.approved,
-                            count: '\$1,250',
+                            count: '₹1,250',
                             isMoney: true,
                           ),
                         ),

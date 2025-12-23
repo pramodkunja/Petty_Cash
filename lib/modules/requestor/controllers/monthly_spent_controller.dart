@@ -14,7 +14,7 @@ class MonthlySpentController extends GetxController {
     {
       'title': 'Office Depot',
       'date': 'Oct 24, 2023',
-      'amount': '\$45.00',
+      'amount': '₹45.00',
       'status': 'Paid',
       'icon': Icons.store,
       'color': const Color(0xFFE0F2FE), // Blue 50
@@ -23,7 +23,7 @@ class MonthlySpentController extends GetxController {
     {
       'title': 'Starbucks',
       'date': 'Oct 22, 2023',
-      'amount': '\$12.50',
+      'amount': '₹12.50',
       'status': 'Pending',
       'icon': Icons.local_cafe,
       'color': const Color(0xFFFFF7ED), // Orange 50
@@ -32,7 +32,7 @@ class MonthlySpentController extends GetxController {
     {
       'title': 'Uber',
       'date': 'Oct 20, 2023',
-      'amount': '\$28.00',
+      'amount': '₹28.00',
       'status': 'Paid',
       'icon': Icons.directions_car,
       'color': const Color(0xFFF3E8FF), // Purple 50
@@ -41,7 +41,7 @@ class MonthlySpentController extends GetxController {
     {
       'title': 'Delta Airlines',
       'date': 'Oct 15, 2023',
-      'amount': '\$450.00',
+      'amount': '₹450.00',
       'status': 'Rejected',
       'icon': Icons.flight,
       'color': const Color(0xFFFEE2E2), // Red 50
@@ -50,7 +50,7 @@ class MonthlySpentController extends GetxController {
      {
       'title': 'Client Dinner',
       'date': 'Oct 12, 2023',
-      'amount': '\$120.00',
+      'amount': '₹120.00',
       'status': 'Paid',
       'icon': Icons.restaurant,
       'color': const Color(0xFFDCFCE7), // Green 50

@@ -367,4 +367,50 @@ class AppText {
   static const String bothPasswordsMatch = 'Both passwords must match';
   // static const String updatePassword = 'Update Password'; // Existing
   static const String forgotPasswordQuestion = 'Forgot Password?';
+  // Accountant Dashboard
+  static const String inHandCash = 'In-Hand Cash';
+  static const String vsYesterday = 'vs yesterday';
+  static const String openBalance = 'OPEN BALANCE';
+  static const String closingBalance = 'CLOSING BALANCE';
+  static const String amountIn = 'Amount In';
+  static const String amountOut = 'Amount Out';
+  static const String pendingPayments = 'Pending Payments';
+  static const String paymentsNeedProcessing = 'payments need processing';
+  static const String processPayments = 'Process Payments';
+  static const String todayTransactions = 'Today\'s Transactions';
+  static const String viewAll = 'View All';
+  static const String view = 'View';
+
+  // Accountant Payments
+  static const String totalOutstanding = 'TOTAL OUTSTANDING';
+  static const String acrossPendingRequests = 'Across pending requests';
+  static const String notPaid = 'Not Paid';
+  static const String navPayments = 'Payments';
+  static const String navReports = 'Reports';
+  static const String totalDisbursed = 'Total Disbursed (Oct)'; // TODO: Dynamic Month
+  
+  // Refinement Accountant Flow
+  static const String goodMorning = 'Good Morning';
+  static const String mockAccountantName = 'Sarah';
+  static const String mockAccountantFullName = 'Sarah Jenkins';
+  static const String mockAccountantEmail = 'sarah.jenkins@company.com';
+  static const String mockDate = 'Oct 24, 2023';
+  static const String searchByIdOrName = 'Search by ID or Name...';
+  static const String thisMonth = 'THIS MONTH';
+  static const String completedSC = 'COMPLETED';
+
+  // Cash Flow History
+  static const String cashFlowHistory = 'Cash Flow History';
+  static const String thisMonthFilter = 'This Month'; 
+  static const String last3Months = 'Last 3 Months';
+  static const String custom = 'Custom';
+  static const String totalIn = 'TOTAL IN';
+  static const String totalOut = 'TOTAL OUT';
+  static const String detailedTransactions = 'Detailed Transactions';
+  static const String cashIn = 'Cash In';
+  static const String cashOut = 'Cash Out';
+  static const String weeklyReplenishment = 'Weekly Replenishment';
+  static const String transportToClient = 'Transport to Client';
+  static const String refreshments = 'Refreshments';
+  static const String vendorRefund = 'Vendor Refund';
 }

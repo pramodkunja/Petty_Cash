@@ -36,20 +36,20 @@ class OrganizationSetupView extends GetView<OrganizationSetupController> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 // Stepper UI
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    _buildStep(1, AppText.stepperOrganization, isActive: true),
-                    Container(
-                      width: 40,
-                      height: 1,
-                      color: AppColors.borderLight,
-                      margin: const EdgeInsets.symmetric(horizontal: 12),
-                    ),
-                    _buildStep(2, AppText.stepperPreferences, isActive: false),
-                  ],
-                ),
-                const SizedBox(height: 32),
+                // Row(
+                //   mainAxisAlignment: MainAxisAlignment.center,
+                //   children: [
+                //     _buildStep(1, AppText.stepperOrganization, isActive: true),
+                //     Container(
+                //       width: 40,
+                //       height: 1,
+                //       color: AppColors.borderLight,
+                //       margin: const EdgeInsets.symmetric(horizontal: 12),
+                //     ),
+                //     //_buildStep(2, AppText.stepperPreferences, isActive: false),
+                //   ],
+                // ),
+                //const SizedBox(height: 32),
 
                 // Organization Details Section
                 Text(
@@ -90,7 +90,10 @@ class OrganizationSetupView extends GetView<OrganizationSetupController> {
                           fontWeight: FontWeight.w500,
                         ),
                       ),
-                      const Icon(Icons.copy_rounded, size: 20, color: AppColors.primaryBlue),
+                      GestureDetector(
+                        onTap: controller.copyToClipboard,
+                        child: const Icon(Icons.copy_rounded, size: 20, color: AppColors.primaryBlue),
+                      ),
                     ],
                   ),
                 )),

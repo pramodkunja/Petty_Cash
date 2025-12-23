@@ -33,7 +33,7 @@ class AppTextStyles {
 
   static TextStyle get bodyMedium => GoogleFonts.inter(
     fontSize: 14,
-    fontWeight: FontWeight.normal,
+    fontWeight: FontWeight.w600,
     color: Get.theme.textTheme.bodyMedium?.color?.withOpacity(0.7) ?? AppColors.textSlate, 
   );
 

@@ -103,6 +103,8 @@ class SettingsView extends GetView<SettingsController> {
                        value: controller.rxFaceIdEnabled.value, 
                        onChanged: controller.toggleFaceId,
                        activeColor: AppColors.primaryBlue,
+                       inactiveThumbColor: Colors.grey.shade400,
+                       inactiveTrackColor: Colors.grey.shade200,
                      )),
                    ),
                    const Divider(height: 1),

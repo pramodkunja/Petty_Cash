@@ -66,7 +66,7 @@ class AdminRequestDetailsView extends GetView<AdminRequestDetailsController> {
           ),
           const SizedBox(height: 16),
           Obx(() => Text(
-                '\$${controller.request['amount'] ?? '0.00'}',
+                '₹${controller.request['amount'] ?? '0.00'}',
                 style: AppTextStyles.h1.copyWith(fontSize: 40),
               )),
           const SizedBox(height: 8),
@@ -102,7 +102,7 @@ class AdminRequestDetailsView extends GetView<AdminRequestDetailsController> {
           ),
           const SizedBox(height: 16),
           Obx(() => Text(
-                '\$${controller.request['amount'] ?? '0.00'}',
+                '₹${controller.request['amount'] ?? '0.00'}',
                 style: AppTextStyles.h1.copyWith(fontSize: 40),
               )),
           const SizedBox(height: 12),
@@ -220,7 +220,7 @@ class AdminRequestDetailsView extends GetView<AdminRequestDetailsController> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Obx(() => Text(
-                      '\$${controller.request['amount'] ?? '0.00'}',
+                      '₹${controller.request['amount'] ?? '0.00'}',
                       style: AppTextStyles.h1.copyWith(fontSize: 36),
                     )),
                 const SizedBox(height: 8),

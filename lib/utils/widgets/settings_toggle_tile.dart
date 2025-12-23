@@ -46,6 +46,8 @@ class SettingsToggleTile extends StatelessWidget {
             value: value,
             onChanged: onChanged,
             activeColor: AppColors.primaryBlue,
+            inactiveThumbColor: Colors.grey.shade400,
+            inactiveTrackColor: Colors.grey.shade200,
           ),
         ],
       ),

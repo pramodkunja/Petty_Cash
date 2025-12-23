@@ -130,7 +130,7 @@ class AdminApprovalsView extends GetView<AdminApprovalsController> {
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     Text(
-                      '\$${item['amount']}', 
+                      '₹${item['amount']}', 
                       style: AppTextStyles.h3.copyWith(color: AppColors.primaryBlue, fontSize: 16),
                     ),
                     const SizedBox(height: 4),

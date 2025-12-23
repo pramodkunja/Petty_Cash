@@ -55,6 +55,12 @@ import '../modules/requestor/views/my_requests_view.dart';
 import '../modules/requestor/views/request_details_read_view.dart';
 import '../modules/requestor/controllers/my_requests_controller.dart';
 import '../core/services/auth_service.dart';
+import '../modules/accountant/views/accountant_dashboard_view.dart';
+import '../modules/accountant/controllers/accountant_dashboard_controller.dart';
+import '../modules/accountant/views/accountant_payments_view.dart';
+import '../modules/accountant/controllers/accountant_payments_controller.dart';
+import '../modules/accountant/views/accountant_profile_view.dart';
+import '../modules/accountant/controllers/accountant_profile_controller.dart';
 
 class AuthMiddleware extends GetMiddleware {
   @override
@@ -76,7 +82,7 @@ class RouteGuard extends GetMiddleware {
 
 
 class AppPages {
-  static const INITIAL = AppRoutes.ADMIN_DASHBOARD;
+  static const INITIAL = AppRoutes.ACCOUNTANT_DASHBOARD;
 
   static final routes = [
     GetPage(
@@ -278,6 +284,27 @@ class AppPages {
     GetPage(
       name: AppRoutes.ADMIN_USER_SUCCESS,
       page: () => const AdminUserSuccessView(),
+    ),
+    GetPage(
+      name: AppRoutes.ACCOUNTANT_DASHBOARD,
+      page: () => const AccountantDashboardView(),
+      binding: BindingsBuilder(() {
+        Get.put(AccountantDashboardController());
+      }),
+    ),
+    GetPage(
+      name: AppRoutes.ACCOUNTANT_PAYMENTS,
+      page: () => const AccountantPaymentsView(),
+      binding: BindingsBuilder(() {
+        Get.put(AccountantPaymentsController());
+      }),
+    ),
+    GetPage(
+      name: AppRoutes.ACCOUNTANT_PROFILE,
+      page: () => const AccountantProfileView(),
+      binding: BindingsBuilder(() {
+        Get.put(AccountantProfileController());
+      }),
     ),
   ];
 }

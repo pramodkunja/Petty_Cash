@@ -85,7 +85,7 @@ class AdminClarificationView extends GetView<AdminRequestDetailsController> {
                  borderRadius: BorderRadius.circular(20),
                ),
                child: Text(
-                 '\$${controller.request['amount'] ?? '0.00'}',
+                 '₹${controller.request['amount'] ?? '0.00'}',
                  style: AppTextStyles.h3.copyWith(fontSize: 14, color: AppColors.primaryBlue),
                ),
              )),

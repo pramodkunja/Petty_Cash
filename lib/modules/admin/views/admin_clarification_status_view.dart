@@ -327,7 +327,7 @@ class AdminClarificationStatusView extends GetView<AdminClarificationStatusContr
                                        color: const Color(0xFFE0F2FE),
                                        borderRadius: BorderRadius.circular(20),
                                    ),
-                                   child: Text("\$${controller.request['amount'] ?? '50.00'}", style: AppTextStyles.h3.copyWith(fontSize: 14, color: AppColors.primaryBlue)),
+                                   child: Text("₹${controller.request['amount'] ?? '50.00'}", style: AppTextStyles.h3.copyWith(fontSize: 14, color: AppColors.primaryBlue)),
                                ),
                           ],
                       ),

@@ -28,7 +28,7 @@ class RequestDetailsReadView extends StatelessWidget {
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
-        title: Text(AppText.requestDetails, style: TextStyle(color: AppTextStyles.h3.color, fontWeight: FontWeight.w700)),
+        title: Text(AppText.requestDetails, style: AppTextStyles.h3),
         centerTitle: true,
         backgroundColor: Colors.transparent,
         elevation: 0,
@@ -79,7 +79,7 @@ class RequestDetailsReadView extends StatelessWidget {
                const SizedBox(height: 24),
 
                // Description
-               Text(AppText.description, style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700, color: AppTextStyles.h3.color)),
+               Text(AppText.description, style: AppTextStyles.h3.copyWith(fontSize: 16)),
                const SizedBox(height: 12),
                Container(
                  width: double.infinity,
@@ -87,13 +87,13 @@ class RequestDetailsReadView extends StatelessWidget {
                  decoration: BoxDecoration(color: Theme.of(context).cardColor, borderRadius: BorderRadius.circular(20)),
                  child: Text(
                    request['description'] ?? AppText.noDescription,
-                   style: TextStyle(fontSize: 14, color: AppTextStyles.bodyMedium.color, height: 1.5),
+                   style: AppTextStyles.bodyMedium.copyWith(height: 1.5),
                  ),
                ),
                const SizedBox(height: 24),
 
                // Attachments
-               Text(AppText.attachments, style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700, color: AppTextStyles.h3.color)),
+               Text(AppText.attachments, style: AppTextStyles.h3.copyWith(fontSize: 16)),
                const SizedBox(height: 12),
                if (request['attachments'] != null && (request['attachments'] as List).isNotEmpty)
                  ListView.separated(
@@ -119,9 +119,9 @@ class RequestDetailsReadView extends StatelessWidget {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text(file['name'], style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: AppTextStyles.h3.color)),
+                                  Text(file['name'], style: AppTextStyles.h3.copyWith(fontSize: 14)),
                                   const SizedBox(height: 2),
-                                  Text(file['size'], style: const TextStyle(fontSize: 12, color: Color(0xFF64748B))),
+                                  Text(file['size'], style: AppTextStyles.bodySmall.copyWith(color: const Color(0xFF64748B))),
                                 ],
                               ),
                             ),
@@ -136,7 +136,7 @@ class RequestDetailsReadView extends StatelessWidget {
                    width: double.infinity,
                    padding: const EdgeInsets.all(20),
                    decoration: BoxDecoration(color: Theme.of(context).cardColor, borderRadius: BorderRadius.circular(20)),
-                   child: Text(AppText.noAttachments, style: const TextStyle(color: Colors.grey)),
+                   child: Text(AppText.noAttachments, style: AppTextStyles.bodyMedium.copyWith(color: Colors.grey)),
                  ),
                const SizedBox(height: 40),
              ],
@@ -151,9 +151,9 @@ class RequestDetailsReadView extends StatelessWidget {
       children: [
         Icon(icon, size: 20, color: const Color(0xFF64748B)),
         const SizedBox(width: 12),
-        Text(label, style: const TextStyle(fontSize: 14, color: Color(0xFF64748B))),
+        Text(label, style: AppTextStyles.bodyMedium),
         const Spacer(),
-        Text(value, style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: AppTextStyles.h3.color)),
+        Text(value, style: AppTextStyles.h3.copyWith(fontSize: 14)),
       ],
     );
   }

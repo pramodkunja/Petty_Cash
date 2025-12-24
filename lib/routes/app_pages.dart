@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../modules/splash/views/splash_view.dart';
+import '../modules/splash/controllers/splash_controller.dart';
+import '../modules/onboarding/views/onboarding_view.dart';
+import '../modules/onboarding/controllers/onboarding_controller.dart';
 import '../modules/admin/views/admin_dashboard_view.dart';
 import '../modules/admin/views/admin_approvals_view.dart';
 import '../modules/admin/views/admin_request_details_view.dart';
@@ -61,6 +65,17 @@ import '../modules/accountant/views/accountant_payments_view.dart';
 import '../modules/accountant/controllers/accountant_payments_controller.dart';
 import '../modules/accountant/views/accountant_profile_view.dart';
 import '../modules/accountant/controllers/accountant_profile_controller.dart';
+import '../modules/accountant/views/payment_flow/request_details_view.dart';
+import '../modules/accountant/views/payment_flow/bill_details_view.dart';
+import '../modules/accountant/views/payment_flow/verify_payment_view.dart';
+import '../modules/accountant/views/payment_flow/confirm_payment_view.dart';
+import '../modules/accountant/views/payment_flow/payment_success_view.dart';
+import '../modules/accountant/controllers/payment_flow_controller.dart';
+import '../modules/accountant/views/payment_flow/payment_failed_view.dart';
+import '../modules/accountant/views/payment_flow/completed_request_details_view.dart';
+import '../modules/accountant/views/analytics/spend_analytics_view.dart';
+import '../modules/accountant/views/analytics/financial_reports_view.dart';
+import '../modules/accountant/controllers/accountant_analytics_controller.dart';
 
 class AuthMiddleware extends GetMiddleware {
   @override
@@ -76,18 +91,32 @@ class AuthMiddleware extends GetMiddleware {
 class RouteGuard extends GetMiddleware {
   @override
   RouteSettings? redirect(String? route) {
-    return const RouteSettings(name: AppRoutes.HOME);
+    return const RouteSettings(name: AppRoutes.REQUESTOR);
   }
 }
 
 
 class AppPages {
-  static const INITIAL = AppRoutes.ACCOUNTANT_DASHBOARD;
+  static const INITIAL = AppRoutes.SPLASH;
 
   static final routes = [
     GetPage(
+      name: AppRoutes.SPLASH,
+      page: () => const SplashView(),
+      binding: BindingsBuilder(() {
+        Get.put(SplashController());
+      }),
+    ),
+    GetPage(
+      name: AppRoutes.ONBOARDING,
+      page: () => const OnboardingView(),
+      binding: BindingsBuilder(() {
+        Get.put(OnboardingController());
+      }),
+    ),
+    GetPage(
       name: AppRoutes.INITIAL, // '/'
-      page: () => const SizedBox(), // Placeholder, middleware will redirect or it redirects to Home
+      page: () => const SizedBox(), 
       middlewares: [
         RouteGuard(),
       ],
@@ -97,11 +126,7 @@ class AppPages {
       page: () => const LoginView(),
       binding: AuthBinding(),
     ),
-    GetPage(
-      name: AppRoutes.HOME,
-      page: () => const HomeView(),
-      middlewares: [AuthMiddleware()],
-    ),
+ 
     GetPage(
       name: AppRoutes.ORGANIZATION_SETUP,
       page: () => const OrganizationSetupView(),
@@ -290,6 +315,9 @@ class AppPages {
       page: () => const AccountantDashboardView(),
       binding: BindingsBuilder(() {
         Get.put(AccountantDashboardController());
+        Get.lazyPut(() => AccountantPaymentsController());
+        Get.lazyPut(() => AccountantAnalyticsController());
+        Get.lazyPut(() => AccountantProfileController());
       }),
     ),
     GetPage(
@@ -304,6 +332,62 @@ class AppPages {
       page: () => const AccountantProfileView(),
       binding: BindingsBuilder(() {
         Get.put(AccountantProfileController());
+      }),
+    ),
+    // Payment Flow Pages
+    GetPage(
+      name: AppRoutes.ACCOUNTANT_PAYMENT_REQUEST_DETAILS,
+      page: () => const PaymentRequestDetailsView(),
+      binding: BindingsBuilder(() {
+        Get.put(PaymentFlowController());
+      }),
+    ),
+    GetPage(
+      name: AppRoutes.ACCOUNTANT_PAYMENT_BILL_DETAILS,
+      page: () => const BillDetailsView(),
+      binding: BindingsBuilder(() {
+        if (!Get.isRegistered<PaymentFlowController>()) {
+          Get.put(PaymentFlowController());
+        }
+      }),
+    ),
+    GetPage(
+      name: AppRoutes.ACCOUNTANT_PAYMENT_VERIFY,
+      page: () => const VerifyPaymentView(),
+    ),
+    GetPage(
+      name: AppRoutes.ACCOUNTANT_PAYMENT_CONFIRM,
+      page: () => const ConfirmPaymentView(),
+    ),
+    GetPage(
+      name: AppRoutes.ACCOUNTANT_PAYMENT_SUCCESS,
+      page: () => const PaymentSuccessView(),
+    ),
+    GetPage(
+      name: AppRoutes.ACCOUNTANT_PAYMENT_FAILED,
+      page: () => const PaymentFailedView(),
+      binding: BindingsBuilder(() {
+        if (!Get.isRegistered<PaymentFlowController>()) {
+          Get.put(PaymentFlowController());
+        }
+      }),
+    ),
+    GetPage(
+      name: AppRoutes.ACCOUNTANT_PAYMENT_COMPLETED_DETAILS,
+      page: () => const CompletedRequestDetailsView(),
+    ),
+    GetPage(
+      name: AppRoutes.ACCOUNTANT_ANALYTICS,
+      page: () => const SpendAnalyticsView(),
+      binding: BindingsBuilder(() {
+        Get.put(AccountantAnalyticsController());
+      }),
+    ),
+    GetPage(
+      name: AppRoutes.ACCOUNTANT_FINANCIAL_REPORTS,
+      page: () => const FinancialReportsView(),
+      binding: BindingsBuilder(() {
+        Get.put(AccountantAnalyticsController()); // Reuse or put if not found
       }),
     ),
   ];

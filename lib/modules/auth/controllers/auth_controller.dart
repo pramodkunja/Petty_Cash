@@ -25,9 +25,13 @@ class AuthController extends BaseController {
       return;
     }
 
+    // Unfocus keyboard to prevent 'TextEditingController used after disposed' error
+    FocusManager.instance.primaryFocus?.unfocus();
+
     await performAsyncOperation(() async {
       await _authService.login(email, password);
-      Get.offAllNamed(AppRoutes.HOME);
+      // For now, navigate to Requestor Dashboard as per user request
+      Get.offAllNamed(AppRoutes.REQUESTOR);
     });
   }
 

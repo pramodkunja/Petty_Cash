@@ -17,10 +17,6 @@ class AccountantPaymentsView extends GetView<AccountantPaymentsController> {
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       resizeToAvoidBottomInset: false, // Prevent layout shift on keyboard
-      bottomNavigationBar: AccountantBottomBar(
-        currentIndex: 1,
-        onTap: controller.onBottomNavTap, 
-      ),
       appBar: AppBar(
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         elevation: 0,
@@ -35,7 +31,7 @@ class AccountantPaymentsView extends GetView<AccountantPaymentsController> {
         ),
         actions: [
           IconButton(
-            icon: const Icon(Icons.filter_list_rounded, color: AppColors.textDark),
+            icon: Icon(Icons.filter_list_rounded, color: Theme.of(context).iconTheme.color),
             onPressed: () {},
           )
         ],
@@ -44,7 +40,7 @@ class AccountantPaymentsView extends GetView<AccountantPaymentsController> {
           child: Container(
              margin: const EdgeInsets.fromLTRB(20, 12, 20, 10), // Added top margin for space after Accountant View
              decoration: BoxDecoration(
-               color: const Color(0xFFE2E8F0), 
+               color: Theme.of(context).brightness == Brightness.dark ? Colors.white.withOpacity(0.1) : const Color(0xFFE2E8F0), 
                borderRadius: BorderRadius.circular(30),
              ),
              clipBehavior: Clip.antiAlias, // Ensure child (indicator) clips perfectly

@@ -13,7 +13,12 @@ class AuthService extends GetxService {
   AuthService(this._authRepository, this._storageService);
 
   Future<AuthService> init() async {
-    // Check for persisted session logic can go here
+    String? token = await _storageService.read('auth_token');
+    if (token != null) {
+      // For now, we simulate a restored user session. 
+      // ideally verify token with API.
+      currentUser.value = User(id: '1', name: 'User', email: 'user@example.com', role: 'admin'); 
+    }
     return this;
   }
 

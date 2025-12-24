@@ -413,4 +413,114 @@ class AppText {
   static const String transportToClient = 'Transport to Client';
   static const String refreshments = 'Refreshments';
   static const String vendorRefund = 'Vendor Refund';
+  // Payment Flow
+  static const String billAttachments = 'Bill & Attachments';
+  static const String qrVerified = 'QR Verified';
+  static const String detectedTotal = 'Detected Total';
+  static const String viewBillDetails = 'View Bill Details';
+  static const String paymentDetailsFound = 'Payment Details Found';
+  static const String scannedFromQr = 'Scanned from QR code on bill';
+  static const String payeeName = 'Payee Name';
+  static const String upiId = 'UPI ID';
+  static const String useForPayment = 'Use for Payment';
+  static const String dismiss = 'Dismiss';
+  
+  // Verify Payment
+  static const String verifyPayment = 'Verify Payment';
+  static const String paymentDetails = 'PAYMENT DETAILS';
+  static const String requestedAmount = 'Requested Amount';
+  static const String finalPayableAmount = 'Final Payable Amount';
+  static const String adjustmentReason = 'Adjustment Reason';
+  static const String requiredIfAmountChanged = '(Required if amount changed)';
+  static const String reasonForModification = 'Enter reason for modification...';
+  static const String paymentSource = 'PAYMENT SOURCE';
+  static const String pettyCash = 'Petty Cash';
+  static const String cashInHand = 'Cash in hand';
+  static const String available = 'Available';
+  static const String bankTransferUpi = 'Bank Transfer / UPI';
+  static const String digitalPayment = 'Digital payment';
+  static const String totalPayment = 'TOTAL PAYMENT';
+  static const String makePayment = 'Make Payment';
+  
+  // Confirm Payment
+  static const String confirmPayment = 'Confirm Payment';
+  static const String totalPayable = 'TOTAL PAYABLE';
+  static const String verifiedVendor = 'Verified Vendor';
+  static const String transactionDetails = 'TRANSACTION DETAILS';
+  static const String payingTo = 'Paying to';
+  static const String payViaInstalledApp = 'Pay via installed app';
+  static const String gpay = 'GPay';
+  static const String phonePe = 'PhonePe';
+  static const String paytm = 'Paytm';
+  static const String other = 'Other';
+  static const String payViaUpiApp = 'Pay via UPI App';
+  static const String securelyRedirects = 'Securely redirects to your installed UPI application.';
+  
+  // Payment Success
+  static const String fundsTransferred = 'Funds have been successfully transferred to the employee\'s account.';
+  static const String totalPaid = 'TOTAL PAID';
+  static const String transactionId = 'Transaction ID';
+  static const String paymentDate = 'Date & Time';
+  static const String recipient = 'Recipient';
+  static const String viewRequestDetails = 'View Request Details';
+  static const String backToDashboard = 'Back to Dashboard';
+
+    // Payment Failed
+  static const String paymentFailed = 'Payment Failed';
+  static const String paymentFailedDesc = 'We couldn\'t process the payment of \$450.00 to John Doe due to a network timeout.'; // TODO: Dynamic
+  static const String retryPayment = 'Retry Payment';
+  static const String goBackToDetails = 'Go Back to Details';
+  static const String needHelpContactSupport = 'Need help? Contact Support';
+
+  // Analytics
+  static const String spendAnalytics = 'Spend Analytics';
+  static const String totalSpend = 'Total Spend';
+  static const String avgTransaction = 'Avg Transaction';
+  static const String monthlyTrend = 'Monthly Trend';
+  static const String spendByCategory = 'Spend by Category';
+  static const String departmentSpend = 'Department Spend';
+  static const String customReports = 'Custom Reports';
+  static const String generateExportInsights = 'Generate & export detailed insights';
+
+  // Financial Reports
+  static const String financialReports = 'Financial Reports';
+  static const String reportParameters = 'Report Parameters';
+  static const String startDate = 'START DATE';
+  static const String endDate = 'END DATE';
+  static const String allCategories = 'All Categories';
+  static const String generatePreview = 'Generate Preview';
+  static const String previewSummary = 'Preview Summary';
+  static const String totalExpenses = 'TOTAL EXPENSES';
+  static const String reportExportedSuccess = 'Report exported successfully';
+  static const String exportCsv = 'Export CSV';
+  static const String exportPdf = 'Export PDF';
+
+  // Completed Request Details
+  static const String completed = 'COMPLETED';
+  static const String totalPaidAmount = 'Total Paid Amount';
+  static const String requestDate = 'Request Date';
+  static const String paymentDateLabel = 'Payment Date'; // paymentDate exists but mapped to 'Date & Time'
+  static const String requestInformation = 'Request Information';
+  static const String department = 'Department';
+  static const String billAttachment = 'Bill Details';
+  static const String requestor = 'Requestor';
+  static const String referenceCode = 'Reference Code';
+  static const String auditTrail = 'Audit Trail';
+  static const String paidByAccountsTeam = 'Paid by Accounts Team';
+  static const String fundsDisbursedFrom = 'Funds disbursed from';
+  static const String approvedByManager = 'Approved by Manager';
+  static const String requestSubmittedInit = 'Initial request created by'; // Request Submitted exists
+  static const String downloadAuditReport = 'Download Audit Report';
+
+  // Onboarding
+  static const String skip = 'Skip';
+  static const String next = 'Next';
+  static const String getStarted = 'Get Started';
+  static const String onboardingTitle1 = 'Effortless Expense\nTracking';
+  static const String onboardingDesc1 = 'Capture receipts, submit reports, and track your budget instantly. Expense management made simple.';
+  static const String onboardingTitle2 = 'Quick Approvals\n& Payments';
+  static const String onboardingDesc2 = 'Streamline your workflow. Review expenses and authorize payments instantly with just one tap.';
+  static const String onboardingTitle3 = 'Manage Finances\nYour Way';
+  static const String onboardingDesc3 = 'Tailored dashboards for every role. From submitting expenses to auditing reports, experience seamless financial control.';
+  static const String onboardingTerms = 'By continuing, you agree to our Terms & Privacy Policy.';
 }

@@ -27,10 +27,6 @@ class AccountantProfileView extends GetView<AccountantProfileController> {
           )
         ],
       ),
-      bottomNavigationBar: AccountantBottomBar(
-        currentIndex: 3, 
-        onTap: controller.onBottomNavTap,
-      ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 20),
         child: Column(

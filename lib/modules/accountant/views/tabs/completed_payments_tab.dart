@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import '../../../../routes/app_routes.dart';
 import '../../../../utils/app_colors.dart';
 import '../../../../utils/app_text.dart';
 import '../../../../utils/app_text_styles.dart';
@@ -157,80 +159,85 @@ class CompletedPaymentsTab extends StatelessWidget {
     required String details,
     required String amount,
   }) {
-    return Container(
-      padding: const EdgeInsets.all(20),
-      decoration: BoxDecoration(
-        color: Theme.of(context).cardColor,
-        borderRadius: BorderRadius.circular(24),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-               Flexible( // Allow ID to shrink/truncate
-                 child: Container(
+    return GestureDetector(
+      onTap: () {
+        Get.toNamed(AppRoutes.ACCOUNTANT_PAYMENT_COMPLETED_DETAILS);
+      },
+      child: Container(
+        padding: const EdgeInsets.all(20),
+        decoration: BoxDecoration(
+          color: Theme.of(context).cardColor,
+          borderRadius: BorderRadius.circular(24),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                 Flexible( // Allow ID to shrink/truncate
+                   child: Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                    decoration: BoxDecoration(
+                      color: const Color(0xFFF1F5F9),
+                      borderRadius: BorderRadius.circular(6),
+                    ),
+                    child: Text(
+                      id, 
+                      style: AppTextStyles.bodySmall.copyWith(color: AppColors.textSlate, fontWeight: FontWeight.w600),
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                 ),
+                 const SizedBox(width: 8),
+                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                   decoration: BoxDecoration(
-                    color: const Color(0xFFF1F5F9),
+                    color: const Color(0xFFE0F2FE),
                     borderRadius: BorderRadius.circular(6),
                   ),
-                  child: Text(
-                    id, 
-                    style: AppTextStyles.bodySmall.copyWith(color: AppColors.textSlate, fontWeight: FontWeight.w600),
-                    overflow: TextOverflow.ellipsis,
-                  ),
+                  child: Text(AppText.completedSC, style: AppTextStyles.bodySmall.copyWith(color: AppColors.primaryBlue, fontWeight: FontWeight.w700, fontSize: 10)),
                 ),
-               ),
-               const SizedBox(width: 8),
-               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                decoration: BoxDecoration(
-                  color: const Color(0xFFE0F2FE),
-                  borderRadius: BorderRadius.circular(6),
-                ),
-                child: Text(AppText.completedSC, style: AppTextStyles.bodySmall.copyWith(color: AppColors.primaryBlue, fontWeight: FontWeight.w700, fontSize: 10)),
-              ),
-            ],
-          ),
-          const SizedBox(height: 12),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(name, style: AppTextStyles.bodyLarge, overflow: TextOverflow.ellipsis),
-                    const SizedBox(height: 4),
-                    Text(details, style: AppTextStyles.bodySmall.copyWith(color: AppColors.textSlate), overflow: TextOverflow.ellipsis),
-                  ],
-                ),
-              ),
-              const SizedBox(width: 8),
-              Text(amount, style: AppTextStyles.bodyLarge.copyWith(color: AppColors.primaryBlue)),
-            ],
-          ),
-          const SizedBox(height: 16),
-          Divider(color: Theme.of(context).dividerColor),
-           const SizedBox(height: 12),
-           Row(
-             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-             children: [
-                Flexible(
-                  child: Row(
+              ],
+            ),
+            const SizedBox(height: 12),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                     const Icon(Icons.calendar_today_rounded, size: 14, color: AppColors.textLight),
-                     const SizedBox(width: 6),
-                     Flexible(child: Text(date, style: AppTextStyles.bodySmall.copyWith(color: AppColors.textLight), overflow: TextOverflow.ellipsis)),
+                      Text(name, style: AppTextStyles.bodyLarge, overflow: TextOverflow.ellipsis),
+                      const SizedBox(height: 4),
+                      Text(details, style: AppTextStyles.bodySmall.copyWith(color: AppColors.textSlate), overflow: TextOverflow.ellipsis),
                     ],
                   ),
                 ),
-                 const Icon(Icons.chevron_right_rounded, size: 20, color: AppColors.textDark),
-             ],
-           ),
-        ],
+                const SizedBox(width: 8),
+                Text(amount, style: AppTextStyles.bodyLarge.copyWith(color: AppColors.primaryBlue)),
+              ],
+            ),
+            const SizedBox(height: 16),
+            Divider(color: Theme.of(context).dividerColor),
+             const SizedBox(height: 12),
+             Row(
+               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+               children: [
+                  Flexible(
+                    child: Row(
+                      children: [
+                       const Icon(Icons.calendar_today_rounded, size: 14, color: AppColors.textLight),
+                       const SizedBox(width: 6),
+                       Flexible(child: Text(date, style: AppTextStyles.bodySmall.copyWith(color: AppColors.textLight), overflow: TextOverflow.ellipsis)),
+                      ],
+                    ),
+                  ),
+                   const Icon(Icons.chevron_right_rounded, size: 20, color: AppColors.textDark),
+               ],
+             ),
+          ],
+        ),
       ),
     );
   }

@@ -61,24 +61,17 @@ class AccountantDashboardController extends GetxController {
     );
   }
 
+  final rxIndex = 0.obs;
+
+  void changeTabIndex(int index) {
+    rxIndex.value = index;
+  }
+
   void navigateToPayments() {
-    Get.toNamed(AppRoutes.ACCOUNTANT_PAYMENTS);
+    changeTabIndex(1);
   }
 
   void onBottomNavTap(int index) {
-    switch (index) {
-      case 0:
-        // Already on Dashboard
-        break;
-      case 1:
-        Get.toNamed(AppRoutes.ACCOUNTANT_PAYMENTS);
-        break;
-      case 2:
-        // Get.toNamed(AppRoutes.ACCOUNTANT_REPORTS);
-        break;
-      case 3:
-        Get.toNamed(AppRoutes.ACCOUNTANT_PROFILE);
-        break;
-    }
+    rxIndex.value = index;
   }
 }

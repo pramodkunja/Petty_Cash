@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import '../../../../routes/app_routes.dart';
 import '../../../../utils/app_colors.dart';
 import '../../../../utils/app_text.dart';
 import '../../../../utils/app_text_styles.dart';
@@ -42,7 +44,7 @@ class PendingPaymentsTab extends StatelessWidget {
                     Container(
                       padding: const EdgeInsets.all(8),
                       decoration: BoxDecoration(
-                        color: const Color(0xFFE0F2FE),
+                        color: AppColors.primaryBlue.withOpacity(0.15),
                         borderRadius: BorderRadius.circular(12),
                       ),
                       child: const Icon(Icons.account_balance_wallet_outlined, color: AppColors.primaryBlue, size: 20),
@@ -115,19 +117,23 @@ class PendingPaymentsTab extends StatelessWidget {
     required String category,
     required String amount,
   }) {
-    return Container(
-      padding: const EdgeInsets.all(20),
-      decoration: BoxDecoration(
-        color: Theme.of(context).cardColor,
-        borderRadius: BorderRadius.circular(24),
-         boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(0.02),
-              blurRadius: 10,
-              offset: const Offset(0, 2),
-            ),
-          ],
-      ),
+    return GestureDetector(
+      onTap: () {
+        Get.toNamed(AppRoutes.ACCOUNTANT_PAYMENT_REQUEST_DETAILS);
+      },
+      child: Container(
+        padding: const EdgeInsets.all(20),
+        decoration: BoxDecoration(
+          color: Theme.of(context).cardColor,
+          borderRadius: BorderRadius.circular(24),
+           boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.02),
+                blurRadius: 10,
+                offset: const Offset(0, 2),
+              ),
+            ],
+        ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -157,7 +163,7 @@ class PendingPaymentsTab extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                 decoration: BoxDecoration(
-                  color: const Color(0xFFDCFCE7),
+                  color: AppColors.successGreen.withOpacity(0.15),
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: Text(AppText.approved, style: AppTextStyles.bodySmall.copyWith(color: AppColors.successGreen, fontWeight: FontWeight.w600)),
@@ -166,7 +172,7 @@ class PendingPaymentsTab extends StatelessWidget {
                Container(
                 padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                 decoration: BoxDecoration(
-                  color: const Color(0xFFFFF7ED),
+                  color: AppColors.warningOrange.withOpacity(0.15),
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: Text(AppText.notPaid, style: AppTextStyles.bodySmall.copyWith(color: AppColors.warningOrange, fontWeight: FontWeight.w600)),
@@ -174,14 +180,15 @@ class PendingPaymentsTab extends StatelessWidget {
               const Spacer(),
               Row(
                 children: [
-                  Text(AppText.view, style: AppTextStyles.buttonText.copyWith(color: AppColors.textDark, fontSize: 14)),
+                  Text(AppText.view, style: AppTextStyles.buttonText.copyWith(color: Theme.of(context).textTheme.bodyLarge?.color, fontSize: 14)),
                   const SizedBox(width: 4),
-                  const Icon(Icons.chevron_right_rounded, size: 20, color: AppColors.textDark),
+                  Icon(Icons.chevron_right_rounded, size: 20, color: Theme.of(context).iconTheme.color),
                 ],
               ),
             ],
           ),
         ],
+      ),
       ),
     );
   }

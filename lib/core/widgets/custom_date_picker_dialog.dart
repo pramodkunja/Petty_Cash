@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../../utils/app_colors.dart';
 
 enum PickerViewMode { month, year }
 
@@ -65,7 +66,7 @@ class _CustomDatePickerDialogState extends State<CustomDatePickerDialog> {
                       fontSize: 24,
                       fontWeight: FontWeight.bold,
                       color: _viewMode == PickerViewMode.year 
-                          ? const Color(0xFF0EA5E9) // Blue when active
+                          ? AppColors.primary // Blue when active
                           : const Color(0xFF0F172A),
                     ),
                   ),
@@ -98,7 +99,7 @@ class _CustomDatePickerDialogState extends State<CustomDatePickerDialog> {
                 Get.back();
               },
               style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFF0EA5E9),
+                backgroundColor: AppColors.primary,
                 foregroundColor: Colors.white,
                 padding: const EdgeInsets.symmetric(vertical: 16),
                 shape: RoundedRectangleBorder(
@@ -141,7 +142,7 @@ class _CustomDatePickerDialogState extends State<CustomDatePickerDialog> {
           },
           child: Container(
             decoration: BoxDecoration(
-              color: isSelected ? const Color(0xFF0EA5E9) : Colors.transparent,
+              color: isSelected ? AppColors.primary : Colors.transparent,
               borderRadius: BorderRadius.circular(12),
               border: isSelected ? null : Border.all(color: const Color(0xFFE2E8F0)),
             ),
@@ -186,7 +187,7 @@ class _CustomDatePickerDialogState extends State<CustomDatePickerDialog> {
           },
           child: Container(
             decoration: BoxDecoration(
-              color: isSelected ? const Color(0xFF0EA5E9) : Colors.transparent,
+              color: isSelected ? AppColors.primary : Colors.transparent,
               borderRadius: BorderRadius.circular(12),
               border: isSelected ? null : Border.all(color: const Color(0xFFE2E8F0)),
             ),

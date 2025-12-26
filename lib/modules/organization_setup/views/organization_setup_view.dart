@@ -72,32 +72,32 @@ class OrganizationSetupView extends GetView<OrganizationSetupController> {
                 ),
                 const SizedBox(height: 20),
 
-                _buildLabel(AppText.organizationCode),
-                const SizedBox(height: 8),
-                Obx(() => Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).cardColor, // Light grey background for readonly
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        controller.orgCode.value,
-                        style: AppTextStyles.bodyMedium.copyWith(
-                          color: AppTextStyles.bodyMedium.color,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                      GestureDetector(
-                        onTap: controller.copyToClipboard,
-                        child: const Icon(Icons.copy_rounded, size: 20, color: AppColors.primaryBlue),
-                      ),
-                    ],
-                  ),
-                )),
-                const SizedBox(height: 32),
+                // _buildLabel(AppText.organizationCode),
+                // const SizedBox(height: 8),
+                // Obx(() => Container(
+                //   padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+                //   decoration: BoxDecoration(
+                //     color: Theme.of(context).cardColor, // Light grey background for readonly
+                //     borderRadius: BorderRadius.circular(12),
+                //   ),
+                //   child: Row(
+                //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                //     children: [
+                //       Text(
+                //         controller.orgCode.value,
+                //         style: AppTextStyles.bodyMedium.copyWith(
+                //           color: AppTextStyles.bodyMedium.color,
+                //           fontWeight: FontWeight.w500,
+                //         ),
+                //       ),
+                //       GestureDetector(
+                //         onTap: controller.copyToClipboard,
+                //         child: const Icon(Icons.copy_rounded, size: 20, color: AppColors.primaryBlue),
+                //       ),
+                //     ],
+                //   ),
+                // )),
+                // const SizedBox(height: 32),
                 
                 // Admin Details Section
                 Text(

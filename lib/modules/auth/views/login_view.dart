@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../routes/app_routes.dart';
 import '../../../../utils/app_colors.dart';
 import '../../../../utils/app_text_styles.dart';
@@ -17,119 +18,108 @@ class LoginView extends GetView<AuthController> {
       backgroundColor: Theme.of(context).scaffoldBackgroundColor, // Dynamic background
       body: Center(
         child: SingleChildScrollView(
-          padding: const EdgeInsets.symmetric(horizontal: 24.0),
+          padding: EdgeInsets.symmetric(horizontal: 24.w),
           child: ConstrainedBox(
-            constraints: const BoxConstraints(maxWidth: 400),
+            constraints: BoxConstraints(maxWidth: 400.w),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                // Shield Icon
-                Align(
+                // Animated Logo
+                const Align(
                   alignment: Alignment.center,
-                  child: Container(
-                    width: 60,
-                    height: 60,
-                    decoration: BoxDecoration(
-                      color: Theme.of(context).brightness == Brightness.dark 
-                          ? AppColors.primaryBlue.withOpacity(0.2) 
-                          : const Color(0xFFE0F2FE),
-                      borderRadius: BorderRadius.circular(16),
-                    ),
-                    child: const Icon(
-                      Icons.security_rounded,
-                      color: Color(0xFF0284C7), // Light Blue
-                      size: 32,
-                    ),
-                  ),
+                  child: AnimatedLoginLogo(),
                 ),
-                const SizedBox(height: 32),
+                SizedBox(height: 32.h),
 
                 // Welcome Text
                 Text(
                   AppText.welcomeBack,
                   style: AppTextStyles.h1,
+                  textAlign: TextAlign.center,
                 ),
-                const SizedBox(height: 8),
+                SizedBox(height: 8.h),
                 Text(
                   AppText.signInSubtitle,
                   style: AppTextStyles.bodyLarge.copyWith(color: AppColors.textSlate),
+                  textAlign: TextAlign.center,
                 ),
-                const SizedBox(height: 32),
+                SizedBox(height: 32.h),
 
                 // Email Input
                 Text(
                   AppText.emailAddress,
                   style: AppTextStyles.bodyMedium.copyWith(fontWeight: FontWeight.w600, color: AppTextStyles.bodyMedium.color),
                 ),
-                const SizedBox(height: 8),
+                SizedBox(height: 8.h),
                 TextField(
                   controller: controller.emailController,
                   decoration: InputDecoration(
                     hintText: AppText.emailPlaceholder,
                     hintStyle: AppTextStyles.hintText,
-                    prefixIcon: const Icon(Icons.email_outlined, color: AppColors.textLight),
+                    prefixIcon: Icon(Icons.email_outlined, color: AppColors.textLight, size: 24.sp),
                     filled: true,
                     fillColor: Theme.of(context).cardColor,
-                    contentPadding: const EdgeInsets.symmetric(vertical: 16),
+                    contentPadding: EdgeInsets.symmetric(vertical: 16.h),
                     border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
+                      borderRadius: BorderRadius.circular(12.r),
                       borderSide: BorderSide.none,
                     ),
                     enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
+                      borderRadius: BorderRadius.circular(12.r),
                       borderSide: BorderSide(color: Theme.of(context).dividerColor),
                     ),
                     focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
+                      borderRadius: BorderRadius.circular(12.r),
                       borderSide: const BorderSide(color: AppColors.primaryBlue),
                     ),
                   ),
                 ),
-                const SizedBox(height: 20),
+                SizedBox(height: 20.h),
 
                 // Password Input
                 Text(
                   AppText.password,
                   style: AppTextStyles.bodyMedium.copyWith(fontWeight: FontWeight.w600, color: AppTextStyles.bodyMedium.color),
                 ),
-                const SizedBox(height: 8),
+                SizedBox(height: 8.h),
                 Obx(() => TextField(
                   controller: controller.passwordController,
                   obscureText: !controller.isPasswordVisible.value,
                   decoration: InputDecoration(
                     hintText: AppText.passwordPlaceholder,
                     hintStyle: AppTextStyles.hintText,
-                    prefixIcon: const Icon(Icons.lock_outline, color: AppColors.textLight),
+                    prefixIcon: Icon(Icons.lock_outline, color: AppColors.textLight, size: 24.sp),
                     suffixIcon: IconButton(
                       icon: Icon(
                         controller.isPasswordVisible.value
                             ? Icons.visibility_outlined
                             : Icons.visibility_off_outlined,
                         color: AppColors.textLight,
+                        size: 24.sp,
                       ),
                       onPressed: controller.togglePasswordVisibility,
                     ),
                     filled: true,
                     fillColor: Theme.of(context).cardColor,
-                    contentPadding: const EdgeInsets.symmetric(vertical: 16),
+                    contentPadding: EdgeInsets.symmetric(vertical: 16.h),
                     border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
+                      borderRadius: BorderRadius.circular(12.r),
                       borderSide: BorderSide.none,
                     ),
                     enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
+                      borderRadius: BorderRadius.circular(12.r),
                       borderSide: BorderSide(color: Theme.of(context).dividerColor),
                     ),
                     focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
+                      borderRadius: BorderRadius.circular(12.r),
                       borderSide: const BorderSide(color: AppColors.primaryBlue),
                     ),
                   ),
                 )),
                 
                 // Forgot Password
-                const SizedBox(height: 8),
+                SizedBox(height: 8.h),
                 Align(
                   alignment: Alignment.centerRight,
                   child: TextButton(
@@ -148,7 +138,7 @@ class LoginView extends GetView<AuthController> {
                     ),
                   ),
                 ),
-                const SizedBox(height: 16),
+                SizedBox(height: 16.h),
 
                 // Login Button
                 Obx(() => PrimaryButton(
@@ -156,18 +146,18 @@ class LoginView extends GetView<AuthController> {
                   onPressed: controller.login,
                   isLoading: controller.isLoading,
                 )),
-                const SizedBox(height: 60),
+                SizedBox(height: 60.h),
 
                 // Enterprise Setup Footer
                 Row(
                   children: [
                     const Expanded(child: Divider(color: Color(0xFFE2E8F0))),
                     Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      padding: EdgeInsets.symmetric(horizontal: 16.w),
                       child: Text(
                         AppText.enterpriseSetup,
                         style: GoogleFonts.inter(
-                          fontSize: 12,
+                          fontSize: 12.sp,
                           fontWeight: FontWeight.w600,
                           color: const Color(0xFF94A3B8),
                           letterSpacing: 1.0,
@@ -177,23 +167,24 @@ class LoginView extends GetView<AuthController> {
                     const Expanded(child: Divider(color: Color(0xFFE2E8F0))),
                   ],
                 ),
-                const SizedBox(height: 24),
+                SizedBox(height: 24.h),
                 Center(
                   child: InkWell(
                     onTap: () => Get.toNamed(AppRoutes.ORGANIZATION_SETUP),
-                    borderRadius: BorderRadius.circular(8),
+                    borderRadius: BorderRadius.circular(8.r),
                     child: Padding(
-                      padding: const EdgeInsets.all(8.0),
+                      padding: EdgeInsets.all(8.r),
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          const Icon(Icons.domain_add_outlined, color: Color(0xFF475569), size: 20),
-                          const SizedBox(width: 8),
+                          Icon(Icons.domain_add_outlined, color: const Color(0xFF475569), size: 20.sp),
+                          SizedBox(width: 8.w),
                           Text(
                             AppText.setUpOrganization,
                             style: GoogleFonts.inter(
                               color: const Color(0xFF475569),
                               fontWeight: FontWeight.w500,
+                              fontSize: 14.sp,
                             ),
                           ),
                         ],
@@ -201,25 +192,6 @@ class LoginView extends GetView<AuthController> {
                     ),
                   ),
                 ),
-
-
-                //  Center(
-                //   child: Row(
-                //     mainAxisSize: MainAxisSize.min,
-                //     children: [
-                //       const Icon(Icons.lock_rounded, color: Color(0xFFCBD5E1), size: 14),
-                //       const SizedBox(width: 6),
-                //        Text(
-                //         'Secured by Enterprise ID',
-                //         style: GoogleFonts.inter(
-                //           color: const Color(0xFFCBD5E1),
-                //           fontSize: 12,
-                //           fontWeight: FontWeight.w500,
-                //         ),
-                //       ),
-                //     ],
-                //   ),
-                // ),
               ],
             ),
           ),
@@ -228,3 +200,133 @@ class LoginView extends GetView<AuthController> {
     );
   }
 }
+
+class AnimatedLoginLogo extends StatefulWidget {
+  const AnimatedLoginLogo({Key? key}) : super(key: key);
+
+  @override
+  State<AnimatedLoginLogo> createState() => _AnimatedLoginLogoState();
+}
+
+class _AnimatedLoginLogoState extends State<AnimatedLoginLogo> with TickerProviderStateMixin {
+  late AnimationController _controller;
+  final List<String> _letters = ['C', 'a', 's', 'h', 'o', 'r', 'a'];
+  final List<Animation<double>> _letterFadeAnimations = [];
+  final List<Animation<double>> _letterSlideAnimations = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      vsync: this,
+      duration: const Duration(seconds: 4), // Loop duration
+    )..repeat(); // Keep animating
+
+    // Letters Reveal One by One
+    // We want the text to appear (1.5s), stay (1.5s), fade out or reset (1s) = 4s total loop
+    
+    double startTime = 0.0;
+    double step = 0.08; 
+
+    for (int i = 0; i < _letters.length; i++) {
+        double start = startTime + (i * step); // e.g. 0.0, 0.08, 0.16...
+        double end = start + 0.1;
+        
+        // Fade In
+        _letterFadeAnimations.add(TweenSequence([
+          TweenSequenceItem(tween: Tween<double>(begin: 0.0, end: 1.0), weight: 10), // Fade In
+          TweenSequenceItem(tween: ConstantTween<double>(1.0), weight: 60), // Stay Visible
+          TweenSequenceItem(tween: Tween<double>(begin: 1.0, end: 0.0), weight: 10), // Fade Out
+          TweenSequenceItem(tween: ConstantTween<double>(0.0), weight: 20), // Stay Hidden
+        ]).animate(
+          CurvedAnimation(
+            parent: _controller,
+            curve: Interval(start, 1.0, curve: Curves.linear), // Distribute across cycle
+          ),
+        ));
+        
+        // Slide In
+        _letterSlideAnimations.add(TweenSequence([
+           TweenSequenceItem(tween: Tween<double>(begin: 10.0, end: 0.0).chain(CurveTween(curve: Curves.easeOut)), weight: 10),
+           TweenSequenceItem(tween: ConstantTween<double>(0.0), weight: 90),
+        ]).animate(
+          CurvedAnimation(
+             parent: _controller,
+             curve: Interval(start, 1.0),
+          ),
+        ));
+    }
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        // Stable Shield
+        Image.asset(
+          'assets/images/cashora_shield.png',
+          height: 65.h, // Increased from 50
+        ),
+        SizedBox(width: 16.w), // Increased spacing
+        
+        // Text Column (Name + Subtitle)
+        Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Animated Name
+            AnimatedBuilder(
+              animation: _controller,
+              builder: (context, child) {
+                return Row(
+                  children: List.generate(_letters.length, (index) {
+                    return Opacity(
+                      opacity: _letterFadeAnimations[index].value,
+                      child: Transform.translate(
+                        offset: Offset(0, _letterSlideAnimations[index].value),
+                        child: Text(
+                          _letters[index],
+                          style: GoogleFonts.outfit(
+                            fontSize: 42.sp, // Increased from 34
+                            fontWeight: FontWeight.bold,
+                            color: AppColors.primary,
+                            letterSpacing: -1.0,
+                            height: 1.0,
+                          ),
+                        ),
+                      ),
+                    );
+                  }),
+                );
+              },
+            ),
+            
+            // Subtitle
+            Padding(
+              padding: EdgeInsets.only(left: 2.w), // Slight alignment adjustment
+              child: Text(
+                'Smart petty cash',
+                style: GoogleFonts.inter(
+                  fontSize: 13.sp, // Slightly smaller/stable
+                  fontWeight: FontWeight.w500,
+                  color: const Color(0xFF2D1B69), 
+                  height: 1.2,
+                ),
+              ),
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+}
+

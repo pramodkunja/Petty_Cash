@@ -22,7 +22,7 @@ class AccountantProfileView extends GetView<AccountantProfileController> {
         title: Text(AppText.myProfile, style: AppTextStyles.h3.copyWith(fontWeight: FontWeight.w600)),
         actions: [
           TextButton(
-            onPressed: () {}, // TODO: Edit Profile
+            onPressed: controller.editProfile,
             child: Text(AppText.edit, style: AppTextStyles.buttonText.copyWith(color: AppColors.primaryBlue)),
           )
         ],

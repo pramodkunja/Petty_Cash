@@ -52,8 +52,8 @@ class AccountantBottomBar extends StatelessWidget {
               label: AppText.navReports,
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.settings_outlined),
-              label: AppText.settings,
+              icon: Icon(Icons.person_outline),
+              label: AppText.myProfile,
             ),
           ],
         ),

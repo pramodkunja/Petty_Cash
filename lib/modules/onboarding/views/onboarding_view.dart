@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../utils/app_colors.dart';
 import '../../../../utils/app_text.dart';
 import '../controllers/onboarding_controller.dart';
@@ -11,171 +12,163 @@ class OnboardingView extends GetView<OnboardingController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-      // Top Bar with Skip or Step Count
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        leading: Obx(() => controller.currentPage.value == 2 
-            ? IconButton(
-                icon: Icon(Icons.arrow_back, color: Theme.of(context).iconTheme.color),
-                onPressed: () => controller.pageController.previousPage(
-                  duration: const Duration(milliseconds: 300), 
-                  curve: Curves.easeInOut
-                ),
-              )
-            : const SizedBox.shrink()
-        ),
-        actions: [
-          Obx(() {
-            if (controller.currentPage.value == 2) {
-              return Padding(
-                padding: const EdgeInsets.only(right: 20, top: 20),
-                child: Text(
-                  'Step 3/3',
-                  style: GoogleFonts.inter(
-                    color: AppColors.primaryBlue,
-                    fontSize: 14,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-              );
-            } else {
-              return TextButton(
-                onPressed: controller.skip,
-                child: Text(
-                  AppText.skip,
-                  style: GoogleFonts.inter(
-                    color: AppColors.textSlate,
-                    fontSize: 14,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-              );
-            }
-          }),
-        ],
-      ),
-      body: Column(
+      backgroundColor: Colors.black, // Dark background fallback
+      body: Stack(
         children: [
-          // Page Content
-          Expanded(
-            child: PageView.builder(
-              controller: controller.pageController,
-              onPageChanged: controller.onPageChanged,
-              itemCount: controller.onboardingData.length,
-              itemBuilder: (context, index) {
-                final data = controller.onboardingData[index];
-                return Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 24),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      // Image / Illustration Placeholder
-                      Expanded(
-                        flex: 3,
-                        child: Container(
-                          width: double.infinity,
-                          decoration: BoxDecoration(
-                            color: const Color(0xFF2E5C55), // Teal/Greenish specific to design 1/2 or Dark Blue for 3
-                             gradient: LinearGradient(
-                              begin: Alignment.topLeft,
-                              end: Alignment.bottomRight,
-                              colors: index == 0 
-                                ? [const Color(0xFF3B6B64), const Color(0xFF2E4F4A)] // Teal-ish
-                                : index == 1
-                                    ? [const Color(0xFF4B7B6E), const Color(0xFF3E6359)] // Green-ish
-                                    : [const Color(0xFF1E293B), const Color(0xFF0F172A)], // Dark Blue
-                            ),
-                            borderRadius: BorderRadius.circular(30),
-                          ),
-                          child: Center(
-                            // Placeholder Icon until asset is available
-                            child: Icon(
-                              data['icon'], 
-                              size: 100, 
-                              color: Colors.white.withOpacity(0.8),
-                            ),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(height: 40),
-                      
-                      // Title & Description
-                      Expanded(
-                        flex: 2,
-                        child: Column(
-                          children: [
-                            Text(
-                              data['title'],
-                              textAlign: TextAlign.center,
-                              style: GoogleFonts.inter(
-                                fontSize: 28,
-                                fontWeight: FontWeight.bold,
-                                color: Theme.of(context).textTheme.bodyLarge?.color,
-                                height: 1.2,
-                              ),
-                            ),
-                            const SizedBox(height: 16),
-                            Text(
-                              data['description'],
-                              textAlign: TextAlign.center,
-                              style: GoogleFonts.inter(
-                                fontSize: 14,
-                                color: AppColors.textSlate,
-                                height: 1.5,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
+          // 1. Full Screen Pages
+          PageView.builder(
+            controller: controller.pageController,
+            onPageChanged: controller.onPageChanged,
+            itemCount: controller.onboardingData.length,
+            itemBuilder: (context, index) {
+              final data = controller.onboardingData[index];
+              return Stack(
+                fit: StackFit.expand,
+                children: [
+                  // Background Image
+                  Image.network(
+                    data['image'],
+                    fit: BoxFit.cover,
+                    loadingBuilder: (context, child, loadingProgress) {
+                      if (loadingProgress == null) return child;
+                      return Container(color: const Color(0xFF1E293B)); // Placeholder color
+                    },
+                    errorBuilder: (context, error, stackTrace) => Container(
+                      color: const Color(0xFF1E293B),
+                      child: Center(child: Icon(Icons.image_not_supported, color: Colors.white24, size: 50.sp)),
+                    ),
                   ),
-                );
-              },
-            ),
-          ),
-          
-          // Bottom Controls
-          Padding(
-            padding: const EdgeInsets.fromLTRB(24, 0, 24, 40),
-            child: Column(
-              children: [
-                // Dots Indicator
-                Obx(() => Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: List.generate(
-                    controller.onboardingData.length,
-                    (index) => AnimatedContainer(
-                      duration: const Duration(milliseconds: 300),
-                      margin: const EdgeInsets.symmetric(horizontal: 4),
-                      height: 8,
-                      width: controller.currentPage.value == index ? 24 : 8,
-                      decoration: BoxDecoration(
-                        color: controller.currentPage.value == index
-                            ? AppColors.primaryBlue
-                            : AppColors.borderLight,
-                        borderRadius: BorderRadius.circular(4),
+
+                  // Gradient Overlay (Darkens bottom for text readability)
+                  Container(
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                        colors: [
+                          Colors.black.withOpacity(0.1),
+                          Colors.black.withOpacity(0.2),
+                          const Color(0xFF0F172A).withOpacity(0.8), // Dark Blue/Slate
+                          const Color(0xFF0F172A),
+                        ],
+                        stops: const [0.0, 0.4, 0.7, 1.0],
                       ),
                     ),
                   ),
-                )),
-                const SizedBox(height: 32),
-                
+
+                  // Content
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 40.h),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.end, // Push content down
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        if (data['title'] == 'Expensify') ...[
+                          // Specific styling for the first slide (Expensify Brand)
+                          Text(
+                            data['title'],
+                            style: GoogleFonts.outfit(
+                              fontSize: 48.sp,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                              letterSpacing: -1.0,
+                            ),
+                          ),
+                        ] else ...[
+                          Text(
+                            data['title'],
+                            style: GoogleFonts.outfit(
+                              fontSize: 40.sp, // Large headline
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                              height: 1.1,
+                            ),
+                          ),
+                        ],
+                        
+                        SizedBox(height: 12.h),
+                        
+                        if ((data['subtitle'] as String).isNotEmpty) ...[
+                          Text(
+                            data['subtitle'],
+                            style: GoogleFonts.inter(
+                              fontSize: 20.sp,
+                              fontWeight: FontWeight.w500,
+                              color: Colors.white.withOpacity(0.9),
+                            ),
+                          ),
+                          SizedBox(height: 16.h),
+                        ],
+
+                        Text(
+                          data['description'],
+                          style: GoogleFonts.inter(
+                            fontSize: 16.sp,
+                            color: Colors.white.withOpacity(0.8),
+                            height: 1.5,
+                          ),
+                        ),
+                        // Space for the bottom controls (Button + Dots)
+                        SizedBox(height: 140.h), 
+                      ],
+                    ),
+                  ),
+                ],
+              );
+            },
+          ),
+
+          // 2. Top Right "Skip" Button (Floating)
+          Positioned(
+            top: MediaQuery.of(context).padding.top + 16.h,
+            right: 16.w,
+            child: Obx(() {
+               if (controller.currentPage.value == 2) return const SizedBox.shrink();
+               return GestureDetector(
+                onTap: controller.skip,
+                child: Container(
+                  padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
+                  decoration: BoxDecoration(
+                    color: Colors.white.withOpacity(0.2), // Glassmorphism pill
+                    borderRadius: BorderRadius.circular(20.r),
+                    border: Border.all(color: Colors.white.withOpacity(0.1)),
+                  ),
+                  child: Text(
+                    'Skip onboarding', // Matches "Skip onboarding" pill
+                    style: GoogleFonts.inter(
+                      color: Colors.white,
+                      fontSize: 12.sp,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ),
+              );
+            }),
+          ),
+
+          // 3. Bottom Controls (Static)
+          Positioned(
+            bottom: 40.h,
+            left: 24.w,
+            right: 24.w,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
                 // Button
                 SizedBox(
                   width: double.infinity,
-                  height: 56,
+                  height: 56.h,
                   child: Obx(() {
                     bool isLast = controller.currentPage.value == 2;
                     return ElevatedButton(
                       onPressed: controller.nextPage,
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: AppColors.primaryBlue,
+                        backgroundColor: const Color(0xFF6366F1), // Indigo/Purple primary color from image
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(16),
+                          borderRadius: BorderRadius.circular(30.r), // Rounded Pill
                         ),
-                        elevation: 0,
+                        elevation: 8,
+                        shadowColor: const Color(0xFF6366F1).withOpacity(0.4),
                       ),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -183,34 +176,40 @@ class OnboardingView extends GetView<OnboardingController> {
                           Text(
                             isLast ? AppText.getStarted : AppText.next,
                             style: GoogleFonts.inter(
-                              fontSize: 16,
+                              fontSize: 16.sp,
                               fontWeight: FontWeight.w600,
                               color: Colors.white,
                             ),
                           ),
-                          const SizedBox(width: 8),
-                          const Icon(Icons.arrow_forward_rounded, color: Colors.white, size: 20),
+                          SizedBox(width: 8.w),
+                          Icon(Icons.arrow_forward_rounded, color: Colors.white, size: 20.sp),
                         ],
                       ),
                     );
                   }),
                 ),
                 
-                // Terms Text (Last Page Only)
-                Obx(() => controller.currentPage.value == 2
-                    ? Padding(
-                        padding: const EdgeInsets.only(top: 16),
-                        child: Text(
-                          AppText.onboardingTerms,
-                          textAlign: TextAlign.center,
-                          style: GoogleFonts.inter(
-                            fontSize: 12,
-                            color: AppColors.textSlate,
-                          ),
-                        ),
-                      )
-                    : const SizedBox(height: 0) // Maintain layout stability or shrink
-                ),
+                SizedBox(height: 24.h),
+
+                // Dots Indicator
+                Obx(() => Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: List.generate(
+                    controller.onboardingData.length,
+                    (index) => AnimatedContainer(
+                      duration: const Duration(milliseconds: 300),
+                      margin: EdgeInsets.symmetric(horizontal: 4.w),
+                      height: 8.h,
+                      width: controller.currentPage.value == index ? 24.w : 8.w,
+                      decoration: BoxDecoration(
+                        color: controller.currentPage.value == index
+                            ? const Color(0xFF818CF8) // Light Indigo Active
+                            : Colors.white.withOpacity(0.2), // Inactive
+                        borderRadius: BorderRadius.circular(4.r),
+                      ),
+                    ),
+                  ),
+                )),
               ],
             ),
           ),

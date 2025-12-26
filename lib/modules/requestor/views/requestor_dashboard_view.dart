@@ -16,75 +16,88 @@ class RequestorDashboardView extends GetView<RequestorController> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-      body: SafeArea(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.only(left: 24.0, right: 24.0, top: 24.0, bottom: 40.0), // Added bottom padding
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              _buildTopBar(),
-              const SizedBox(height: 16),
-                Obx(() => Text(
-                  'Hello, ${controller.userName}',
-                  style: TextStyle(
-                    fontSize: 28,
-                    fontWeight: FontWeight.w700,
-                    color: AppTextStyles.h1.color,
-                  ),
-                )),
-              const SizedBox(height: 24),
-              _buildActionButtons(),
-              const SizedBox(height: 24),
-              _buildMonthlyExpenseCard(context),
-              const SizedBox(height: 24),
-              _buildPendingRequestsCard(context),
-              const SizedBox(height: 24),
-              Text(
-                'Recent Requests',
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                  color: AppTextStyles.h2.color,
-                ),
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+        elevation: 0,
+        title: Row(
+          children: [
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                   Row(
+                    children: [
+                      Flexible(child: Text('Hello,', style: AppTextStyles.h3)),
+                      const SizedBox(width: 4),
+                      Flexible(child: Obx(() => Text(controller.userName.value, style: AppTextStyles.h3))),
+                    ],
+                   ),
+                  const SizedBox(height: 4),
+                  Text(AppText.mockDate, style: AppTextStyles.bodySmall),
+                ],
               ),
-              const SizedBox(height: 16),
-              _buildRecentRequestsList(),
-            ],
-          ),
+            ),
+            GestureDetector(
+              onTap: () => Get.toNamed(AppRoutes.REQUESTOR_NOTIFICATIONS),
+              child: Container(
+                padding: const EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  color: Theme.of(context).cardColor,
+                  shape: BoxShape.circle,
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.05),
+                      blurRadius: 10,
+                      offset: const Offset(0, 4),
+                    ),
+                  ],
+                ),
+                child: Icon(Icons.notifications_outlined, color: Theme.of(context).iconTheme.color),
+              ),
+            ),
+          ],
         ),
       ),
-      bottomNavigationBar: RequestorBottomBar(
-        currentIndex: 0, 
-        onTap: (index) {
-          if (index == 0) return; // Already here
-          if (index == 1) Get.toNamed(AppRoutes.MY_REQUESTS);
-          if (index == 2) {
-             Get.toNamed(AppRoutes.PROFILE);
-          }
-        },
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.only(left: 24.0, right: 24.0, top: 24.0, bottom: 40.0), 
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // _buildTopBar(), // Removed
+            // const SizedBox(height: 16), // Removed
+            //   Obx(() => Text( // Removed Greeting
+            //     'Hello, ${controller.userName}',
+            //     style: TextStyle(
+            //       fontSize: 28,
+            //       fontWeight: FontWeight.w700,
+            //       color: AppTextStyles.h1.color,
+            //     ),
+            //   )),
+            // const SizedBox(height: 24), // Removed
+            _buildActionButtons(),
+            const SizedBox(height: 24),
+            _buildMonthlyExpenseCard(context),
+            const SizedBox(height: 24),
+            _buildPendingRequestsCard(context),
+            const SizedBox(height: 24),
+            Text(
+              'Recent Requests',
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+                color: AppTextStyles.h2.color,
+              ),
+            ),
+            const SizedBox(height: 16),
+            _buildRecentRequestsList(),
+          ],
+        ),
       ),
     );
   }
 
-  Widget _buildTopBar() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        const CircleAvatar(
-          radius: 24,
-          backgroundImage: NetworkImage('https://i.pravatar.cc/150?u=a042581f4e29026024d'),
-          backgroundColor: Colors.grey, 
-        ),
-        Stack(
-          children: [
-            Icon(Icons.notifications, size: 28, color: AppTextStyles.h3.color),
-            // Optional: red dot
-            // Positioned(right: 0, top: 0, child: Container(width: 10, height: 10, decoration: BoxDecoration(color: Colors.red, shape: BoxShape.circle)))
-          ],
-        ),
-      ],
-    );
-  }
+
 
   Widget _buildActionButtons() {
     return Row(
@@ -161,7 +174,7 @@ class RequestorDashboardView extends GetView<RequestorController> {
             child: LinearProgressIndicator(
               value: 0.35, // 350/1000
               backgroundColor: AppColors.borderLight,
-              valueColor: const AlwaysStoppedAnimation<Color>(AppColors.primaryBlue),
+              valueColor: const AlwaysStoppedAnimation<Color>(AppColors.primary),
               minHeight: 8,
             ),
           ),
@@ -334,8 +347,8 @@ class RequestorDashboardView extends GetView<RequestorController> {
   }
 
   Color _getStatusColor(String status) {
-    if (status == 'Approved') return Colors.green;
-    if (status == 'Rejected') return Colors.red;
-    return Colors.orange;
+    if (status == 'Approved') return AppColors.success;
+    if (status == 'Rejected') return AppColors.error;
+    return AppColors.warning;
   }
 }

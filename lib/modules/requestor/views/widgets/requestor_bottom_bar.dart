@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../../utils/app_text.dart';
+import '../../../../utils/app_colors.dart';
 
 class RequestorBottomBar extends StatelessWidget {
   final int currentIndex;
@@ -28,8 +29,8 @@ class RequestorBottomBar extends StatelessWidget {
         currentIndex: currentIndex,
         onTap: onTap,
         backgroundColor: Colors.white,
-        selectedItemColor: const Color(0xFF0EA5E9), // Sky Blue
-        unselectedItemColor: const Color(0xFF94A3B8), // Slate 400
+        selectedItemColor: AppColors.primary, // Deep Purple
+        unselectedItemColor: AppColors.textLight, // Slate 400
         showUnselectedLabels: true,
         type: BottomNavigationBarType.fixed,
         elevation: 0,

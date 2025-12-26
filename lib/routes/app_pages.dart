@@ -5,6 +5,7 @@ import '../modules/splash/controllers/splash_controller.dart';
 import '../modules/onboarding/views/onboarding_view.dart';
 import '../modules/onboarding/controllers/onboarding_controller.dart';
 import '../modules/admin/views/admin_dashboard_view.dart';
+import '../modules/admin/views/admin_main_view.dart';
 import '../modules/admin/views/admin_approvals_view.dart';
 import '../modules/admin/views/admin_request_details_view.dart';
 import '../modules/admin/views/admin_success_view.dart';
@@ -21,6 +22,7 @@ import '../modules/admin/views/admin_clarification_status_view.dart';
 import '../modules/admin/controllers/admin_clarification_status_controller.dart';
 import '../modules/admin/controllers/admin_history_controller.dart';
 import '../modules/profile/views/profile_view.dart';
+import '../modules/profile/views/edit_profile_view.dart';
 import '../modules/profile/views/settings_view.dart';
 import '../modules/profile/controllers/profile_controller.dart';
 import '../modules/profile/controllers/settings_controller.dart';
@@ -40,6 +42,9 @@ import '../modules/home/views/home_view.dart';
 import '../modules/organization_setup/bindings/organization_setup_binding.dart';
 import '../modules/organization_setup/views/organization_setup_view.dart';
 import '../modules/organization_setup/views/organization_success_view.dart';
+import '../modules/notifications/views/requestor_notifications_view.dart';
+import '../modules/notifications/views/admin_notifications_view.dart';
+import '../modules/notifications/views/accountant_notifications_view.dart';
 import '../modules/forgot_password/bindings/forgot_password_binding.dart';
 import '../modules/forgot_password/views/forgot_password_view.dart';
 import '../modules/otp_verification/bindings/otp_verification_binding.dart';
@@ -49,6 +54,7 @@ import '../modules/reset_password/views/reset_password_view.dart';
 import '../modules/reset_password/views/reset_password_success_view.dart';
 import '../modules/requestor/bindings/requestor_binding.dart';
 import '../modules/requestor/views/requestor_dashboard_view.dart';
+import '../modules/requestor/views/requestor_main_view.dart';
 import '../modules/requestor/bindings/create_request_binding.dart';
 import '../modules/requestor/views/create_request/select_request_type_view.dart';
 import '../modules/requestor/views/create_request/request_details_view.dart';
@@ -170,7 +176,7 @@ class AppPages {
     ),
     GetPage(
       name: AppRoutes.REQUESTOR,
-      page: () => const RequestorDashboardView(),
+      page: () => const RequestorMainView(),
       binding: RequestorBinding(),
     ),
     GetPage(
@@ -210,9 +216,12 @@ class AppPages {
     ),
     GetPage(
       name: AppRoutes.ADMIN_DASHBOARD,
-      page: () => const AdminDashboardView(),
+      page: () => const AdminMainView(),
       binding: BindingsBuilder(() {
         Get.put(AdminDashboardController());
+        Get.put(AdminApprovalsController());
+        Get.put(AdminHistoryController());
+        Get.put(ProfileController());
       }),
     ),
     GetPage(
@@ -263,6 +272,13 @@ class AppPages {
     GetPage(
       name: AppRoutes.PROFILE,
       page: () => const ProfileView(),
+      binding: BindingsBuilder(() {
+        Get.put(ProfileController());
+      }),
+    ),
+    GetPage(
+      name: AppRoutes.EDIT_PROFILE,
+      page: () => const EditProfileView(),
       binding: BindingsBuilder(() {
         Get.put(ProfileController());
       }),
@@ -404,8 +420,20 @@ class AppPages {
       name: AppRoutes.ACCOUNTANT_FINANCIAL_REPORTS,
       page: () => const FinancialReportsView(),
       binding: BindingsBuilder(() {
-        Get.put(AccountantAnalyticsController()); // Reuse or put if not found
+        Get.put(AccountantAnalyticsController()); 
       }),
+    ),
+    GetPage(
+      name: AppRoutes.REQUESTOR_NOTIFICATIONS,
+      page: () => const RequestorNotificationView(),
+    ),
+    GetPage(
+      name: AppRoutes.ADMIN_NOTIFICATIONS,
+      page: () => const AdminNotificationView(),
+    ),
+    GetPage(
+      name: AppRoutes.ACCOUNTANT_NOTIFICATIONS,
+      page: () => const AccountantNotificationView(),
     ),
   ];
 }

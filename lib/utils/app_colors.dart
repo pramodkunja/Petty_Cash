@@ -2,12 +2,18 @@ import 'package:flutter/material.dart';
 
 class AppColors {
   // Primary Brand Colors
-  static const Color primaryBlue = Color(0xFF0EA5E9); // Sky Blue
-  static const Color primaryDark = Color(0xFF0F172A); // Slate 900
+  static const Color primary = Color(0xFF6B55CE); // Deep Purple
+  static const Color primaryLight = Color(0xFFA695EE); // Light Purple
+  static const Color primaryDark = Color(0xFF0F172A); // Slate 900 (Kept for Dark Mode bg)
+  
+  // Secondary / Accents
+  static const Color surfacePurple = Color(0xFFEBE7FE); // Very light purple
+  static const Color cardBackground = Color(0xFFF5F3FF); // Ultra light purple for cards
+  static const Color elementPurple = Color(0xFFD7CFFC); // Element purple
   
   // Backgrounds
-  static const Color backgroundLight = Color(0xFFF8FAFC); // Slate 50
-  static const Color backgroundAlt = Color(0xFFF6F8FA); // Slightly darker
+  static const Color backgroundLight = Colors.white; // Pure White as requested
+  static const Color backgroundAlt = Color(0xFFF8FAFC); // Slate 50 (for slight contrast if needed)
   static const Color white = Colors.white;
 
   // Text Colors
@@ -28,6 +34,17 @@ class AppColors {
   static const Color warningOrange = Color(0xFFB45309); // Amber 700
   static const Color warningBg = Color(0xFFFEF3C7); // Amber 100
   
-  static const Color infoBlue = Color(0xFF0EA5E9); 
-  static const Color infoBg = Color(0xFFE0F2FE); // Blue 100
+  static const Color infoBlue = primary; 
+  static const Color infoBg = surfacePurple; // Was Blue 100, now matching theme
+
+  
+  // Aliases for compatibility
+  static const Color success = successGreen;
+  static const Color error = errorRed;
+  static const Color warning = warningOrange;
+  static const Color purple = Color(0xFF9333EA); // Purple 600
+  static const Color indigo = Color(0xFF4F46E5); // Indigo 600
+  
+  // Deprecated - to be replaced
+  static const Color primaryBlue = primary; 
 }

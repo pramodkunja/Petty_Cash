@@ -100,17 +100,7 @@ class AdminHistoryView extends GetView<AdminHistoryController> {
           ),
         ),
       ),
-      bottomNavigationBar: AdminBottomBar(
-        currentIndex: 2,
-        onTap: (index) {
-          if (index == 2) return;
-          switch (index) {
-            case 0: Get.offNamed(AppRoutes.ADMIN_DASHBOARD); break;
-            case 1: Get.offNamed(AppRoutes.ADMIN_APPROVALS); break;
-            case 3: Get.offNamed(AppRoutes.PROFILE); break;
-          }
-        },
-      ),
+
     );
   }
 

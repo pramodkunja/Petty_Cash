@@ -12,7 +12,8 @@ import '../../../../core/services/auth_service.dart';
 // Needs custom layout for list items as per image (Icon box left, Text, Arrow)
 
 class ProfileView extends GetView<ProfileController> {
-  const ProfileView({Key? key}) : super(key: key);
+  final bool isTab;
+  const ProfileView({Key? key, this.isTab = false}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -21,22 +22,21 @@ class ProfileView extends GetView<ProfileController> {
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
-        leading: IconButton(
+        leading: isTab ? null : IconButton(
           icon: const Icon(Icons.arrow_back_ios_new_rounded, color: AppColors.textDark),
           onPressed: () => Get.offNamed(AppRoutes.ADMIN_DASHBOARD),
         ),
+        automaticallyImplyLeading: !isTab,
         centerTitle: true,
         title: Text(AppText.myProfile, style: AppTextStyles.h3),
         actions: [
-          // Only show Edit if Admin or Super Admin
-          if (['admin', 'super_admin'].contains(Get.find<AuthService>().currentUser.value?.role.toLowerCase()))
           TextButton(
             onPressed: controller.editProfile,
-            child: Text(AppText.edit, style: AppTextStyles.buttonText.copyWith(color: AppColors.primaryBlue)),
+            child: Text(AppText.edit, style: AppTextStyles.buttonText.copyWith(color: AppColors.primary)),
           )
         ],
       ),
-      bottomNavigationBar: _buildBottomBar(), 
+      bottomNavigationBar: isTab ? null : _buildBottomBar(), 
       body: SingleChildScrollView(
         padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 20),
         child: Column(
@@ -50,7 +50,7 @@ class ProfileView extends GetView<ProfileController> {
               child: const CircleAvatar(
                 radius: 50,
                 backgroundColor: Colors.orangeAccent,
-                backgroundImage: NetworkImage('https://i.pravatar.cc/150?u=alex'), // Mock
+               // backgroundImage: NetworkImage('https://i.pravatar.cc/150?u=alex'), // Mock
                 // child: Icon(Icons.person, size: 50, color: Colors.white),
               ),
             ),
@@ -72,32 +72,32 @@ class ProfileView extends GetView<ProfileController> {
                 children: [
                   _buildInfoTile(
                     icon: Icons.person,
-                    iconBg: const Color(0xFFE0F2FE),
-                    iconColor: AppColors.primaryBlue,
+                    iconBg: AppColors.infoBg,
+                    iconColor: AppColors.primary,
                     label: AppText.fullName,
                     value: controller.rxName.value,
                   ),
                   const Divider(height: 24),
                   _buildInfoTile(
                     icon: Icons.email,
-                    iconBg: const Color(0xFFE0F2FE),
-                    iconColor: AppColors.primaryBlue,
+                    iconBg: AppColors.infoBg,
+                    iconColor: AppColors.primary,
                     label: AppText.emailAddress, // Or 'Email'
                     value: controller.rxEmail.value,
                   ),
                   const Divider(height: 24),
                   _buildInfoTile(
                     icon: Icons.phone,
-                    iconBg: const Color(0xFFE0F2FE),
-                    iconColor: AppColors.primaryBlue,
+                    iconBg: AppColors.infoBg,
+                    iconColor: AppColors.primary,
                     label: AppText.phone,
                     value: controller.rxPhone.value,
                   ),
                   const Divider(height: 24),
                   _buildInfoTile(
                     icon: Icons.badge,
-                    iconBg: const Color(0xFFE0F2FE),
-                    iconColor: AppColors.primaryBlue,
+                    iconBg: AppColors.infoBg,
+                    iconColor: AppColors.primary,
                     label: AppText.role,
                     value: controller.rxRole.value,
                     showArrow: false,
@@ -142,16 +142,16 @@ class ProfileView extends GetView<ProfileController> {
                 children: [
                    _buildActionTile(
                      icon: Icons.lock,
-                     iconBg: const Color(0xFFE0F2FE),
-                     iconColor: AppColors.primaryBlue,
+                     iconBg: AppColors.infoBg,
+                     iconColor: AppColors.primary,
                      title: AppText.changePassword,
                      onTap: controller.navigateToChangePassword,
                    ),
                    const Divider(height: 24),
                    _buildActionTile(
                      icon: Icons.settings,
-                     iconBg: const Color(0xFFE0F2FE),
-                     iconColor: AppColors.primaryBlue,
+                     iconBg: AppColors.infoBg,
+                     iconColor: AppColors.primary,
                      title: AppText.appSettings,
                      onTap: controller.navigateToSettings,
                    ),

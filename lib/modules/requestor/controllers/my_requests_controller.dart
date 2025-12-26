@@ -4,6 +4,14 @@ import '../../../../routes/app_routes.dart';
 
 class MyRequestsController extends GetxController {
   final currentTab = 0.obs; // 0: All, 1: Pending, 2: Approved, 3: Rejected
+
+  @override
+  void onInit() {
+    super.onInit();
+    if (Get.arguments != null && Get.arguments['filter'] == 'Pending') {
+      currentTab.value = 1;
+    }
+  }
   
   // Mock Data matching the design
   final allRequests = <Map<String, dynamic>>[

@@ -13,50 +13,66 @@ class MyRequestsView extends GetView<MyRequestsController> {
 
   @override
   Widget build(BuildContext context) {
-    // Check if arguments passed to set initial tab
-    if (Get.arguments != null && Get.arguments['filter'] == 'Pending') {
-      controller.changeTab(1);
-    }
-
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
         title: Text(AppText.myRequests, style: TextStyle(color: AppTextStyles.h3.color, fontWeight: FontWeight.w700)),
         centerTitle: true,
-        backgroundColor: Colors.transparent,
+        backgroundColor: Theme.of(context).cardColor, // White/Dark Card Color
+        surfaceTintColor: Colors.transparent, // Remove material 3 tint
         elevation: 0,
-        actions: const [], // Removed search icon
+        actions: const [], 
         automaticallyImplyLeading: false, 
       ),
       body: SafeArea(
         child: Column(
           children: [
-            // Search Bar
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-              child: CommonSearchBar(
-                hintText: AppText.searchRequests,
-                onChanged: controller.searchRequests,
+            // Header Section (Search + Tabs)
+            Container(
+              decoration: BoxDecoration(
+                color: Theme.of(context).cardColor, // Match AppBar
+                borderRadius: const BorderRadius.vertical(bottom: Radius.circular(20)),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.05),
+                    blurRadius: 10,
+                    offset: const Offset(0, 4),
+                  ),
+                ],
+              ),
+              child: Column(
+                children: [
+                  // Search Bar
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(16, 8, 16, 12),
+                    child: CommonSearchBar(
+                      hintText: AppText.searchRequests,
+                      onChanged: controller.searchRequests,
+                    ),
+                  ),
+      
+                  // Tabs
+                  Container(
+                    height: 50,
+                    margin: const EdgeInsets.fromLTRB(16, 0, 16, 16),
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).scaffoldBackgroundColor, // Contrast for tab track
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: Obx(() => Row(
+                      children: [
+                        _buildTab(context, AppText.filterAll, 0),
+                        _buildTab(context, AppText.filterPending, 1),
+                        _buildTab(context, AppText.filterApproved, 2),
+                        _buildTab(context, AppText.filterRejected, 3),
+                      ],
+                    )),
+                  ),
+                ],
               ),
             ),
 
-            // Tabs
-            Container(
-              height: 50,
-              margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-              decoration: BoxDecoration(
-                color: Theme.of(context).brightness == Brightness.dark ? Colors.black26 : const Color(0xFFE2E8F0),
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: Obx(() => Row(
-                children: [
-                  _buildTab(context, AppText.filterAll, 0),
-                  _buildTab(context, AppText.filterPending, 1),
-                  _buildTab(context, AppText.filterApproved, 2),
-                  _buildTab(context, AppText.filterRejected, 3),
-                ],
-              )),
-            ),
+            // List
 
             // List
             Expanded(
@@ -75,21 +91,10 @@ class MyRequestsView extends GetView<MyRequestsController> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () => Get.toNamed(AppRoutes.CREATE_REQUEST_TYPE),
-        backgroundColor: const Color(0xFF0EA5E9),
+        backgroundColor: AppColors.primary,
         child: const Icon(Icons.add, color: Colors.white),
       ),
-      bottomNavigationBar: RequestorBottomBar(
-        currentIndex: 1,
-        onTap: (index) {
-           if (index == 0) {
-             Get.offNamed(AppRoutes.REQUESTOR);
-           }
-           if (index == 1) return; // Already here
-           if (index == 2) {
-              Get.snackbar(AppText.comingSoon, AppText.profileUnderConstruction);
-           }
-        }
-      ), 
+ 
     );
   }
 
@@ -125,20 +130,20 @@ class MyRequestsView extends GetView<MyRequestsController> {
     
     switch (req['status']) {
       case 'Approved':
-        statusColor = const Color(0xFF15803D);
-        statusBg = const Color(0xFFDCFCE7);
+        statusColor = AppColors.successGreen;
+        statusBg = AppColors.successBg;
         break;
       case 'Pending':
-        statusColor = const Color(0xFFB45309);
-        statusBg = const Color(0xFFFEF3C7);
+        statusColor = AppColors.warning;
+        statusBg = AppColors.warning.withOpacity(0.1);
         break;
       case 'Rejected':
-        statusColor = const Color(0xFFB91C1C);
-        statusBg = const Color(0xFFFEE2E2);
+        statusColor = AppColors.error;
+        statusBg = AppColors.error.withOpacity(0.1);
         break;
       default:
-        statusColor = Colors.grey;
-        statusBg = Colors.grey[200]!;
+        statusColor = AppColors.textSlate;
+        statusBg = AppColors.textSlate.withOpacity(0.1);
     }
 
     return GestureDetector(
@@ -162,9 +167,9 @@ class MyRequestsView extends GetView<MyRequestsController> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(req['title'], style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600, color: Color(0xFF0F172A))),
+                  Text(req['title'], style: AppTextStyles.h3.copyWith(fontSize: 16)),
                   const SizedBox(height: 4),
-                  Text(req['date'], style: const TextStyle(fontSize: 13, color: Color(0xFF64748B))),
+                  Text(req['date'], style: AppTextStyles.bodyMedium.copyWith(color: AppColors.textSlate, fontSize: 13)),
                 ],
               ),
             ),

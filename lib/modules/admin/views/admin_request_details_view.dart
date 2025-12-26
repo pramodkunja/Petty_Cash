@@ -49,17 +49,17 @@ class AdminRequestDetailsView extends GetView<AdminRequestDetailsController> {
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
             decoration: BoxDecoration(
-              color: const Color(0xFFD1FAE5), // Light Green
+              color: AppColors.successBg, // Light Green
               borderRadius: BorderRadius.circular(20),
             ),
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                const Icon(Icons.check_circle, color: Color(0xFF10B981), size: 20),
+                const Icon(Icons.check_circle, color: AppColors.successGreen, size: 20),
                 const SizedBox(width: 8),
                 Text(
                   AppText.approvedSC,
-                  style: AppTextStyles.bodyMedium.copyWith(color: const Color(0xFF10B981), fontWeight: FontWeight.bold),
+                  style: AppTextStyles.bodyMedium.copyWith(color: AppColors.successGreen, fontWeight: FontWeight.bold),
                 ),
               ],
             ),
@@ -94,11 +94,11 @@ class AdminRequestDetailsView extends GetView<AdminRequestDetailsController> {
         children: [
           Container(
             padding: const EdgeInsets.all(16),
-            decoration: const BoxDecoration(
-              color: Color(0xFFFEE2E2), // Light Red
+            decoration: BoxDecoration(
+              color: AppColors.error.withOpacity(0.1), // Light Red
               shape: BoxShape.circle,
             ),
-            child: const Icon(Icons.block, color: Color(0xFFEF4444), size: 32),
+            child: const Icon(Icons.block, color: AppColors.error, size: 32),
           ),
           const SizedBox(height: 16),
           Obx(() => Text(
@@ -109,12 +109,12 @@ class AdminRequestDetailsView extends GetView<AdminRequestDetailsController> {
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
             decoration: BoxDecoration(
-              color: const Color(0xFFFEE2E2),
+              color: AppColors.error.withOpacity(0.1),
               borderRadius: BorderRadius.circular(20),
             ),
             child: Text(
               AppText.statusRejected.toUpperCase(),
-              style: AppTextStyles.bodyMedium.copyWith(color: const Color(0xFFEF4444), fontWeight: FontWeight.bold),
+              style: AppTextStyles.bodyMedium.copyWith(color: AppColors.error, fontWeight: FontWeight.bold),
             ),
           ),
           const SizedBox(height: 32),
@@ -429,11 +429,11 @@ class AdminRequestDetailsView extends GetView<AdminRequestDetailsController> {
             children: [
               Container(
                 padding: const EdgeInsets.all(10),
-                decoration: const BoxDecoration(
-                  color: Color(0xFFFEF3C7),
+                decoration: BoxDecoration(
+                  color: AppColors.warning.withOpacity(0.1),
                   shape: BoxShape.circle,
                 ),
-                child: const Icon(Icons.payments_outlined, color: Color(0xFFD97706), size: 24),
+                child: const Icon(Icons.payments_outlined, color: AppColors.warning, size: 24),
               ),
               const SizedBox(width: 16),
               Column(
@@ -448,10 +448,10 @@ class AdminRequestDetailsView extends GetView<AdminRequestDetailsController> {
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
             decoration: BoxDecoration(
-              color: const Color(0xFFFEF3C7),
+              color: AppColors.warning.withOpacity(0.1),
               borderRadius: BorderRadius.circular(8),
             ),
-            child: Text("Pending", style: AppTextStyles.bodyMedium.copyWith(color: const Color(0xFFD97706), fontWeight: FontWeight.bold, fontSize: 12)),
+            child: Text("Pending", style: AppTextStyles.bodyMedium.copyWith(color: AppColors.warning, fontWeight: FontWeight.bold, fontSize: 12)),
           ),
         ],
       ),
@@ -565,7 +565,7 @@ class AdminRequestDetailsView extends GetView<AdminRequestDetailsController> {
       width: double.infinity,
       padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
-        color: const Color(0xFFFEF2F2), // Light Red
+        color: AppColors.error.withOpacity(0.05), // Light Red
         borderRadius: BorderRadius.circular(24),
       ),
       child: Column(
@@ -575,25 +575,25 @@ class AdminRequestDetailsView extends GetView<AdminRequestDetailsController> {
             children: [
               Container(
                 padding: const EdgeInsets.all(6),
-                decoration: const BoxDecoration(
-                  color: Color(0xFFFEE2E2),
+                decoration: BoxDecoration(
+                  color: AppColors.error.withOpacity(0.1),
                   shape: BoxShape.circle,
                 ),
-                child: const Icon(Icons.comment_rounded, color: Color(0xFFEF4444), size: 16),
+                child: const Icon(Icons.comment_rounded, color: AppColors.error, size: 16),
               ),
               const SizedBox(width: 12),
-              Text("REASON FOR REJECTION", style: AppTextStyles.h3.copyWith(fontSize: 14, color: const Color(0xFF7F1D1D))),
+              Text("REASON FOR REJECTION", style: AppTextStyles.h3.copyWith(fontSize: 14, color: AppColors.error.withOpacity(0.8))),
             ],
           ),
           const SizedBox(height: 12),
           Text(
             '"The receipt image provided is blurry, and the date of transaction is not visible. Please attach a clear photo of the receipt and resubmit."',
-            style: AppTextStyles.bodyMedium.copyWith(color: const Color(0xFF991B1B), height: 1.5, fontWeight: FontWeight.w500),
+            style: AppTextStyles.bodyMedium.copyWith(color: AppColors.error, height: 1.5, fontWeight: FontWeight.w500),
           ),
            const SizedBox(height: 12),
            Text(
              "Note from Approver • Oct 28, 2023",
-             style: AppTextStyles.bodyMedium.copyWith(color: const Color(0xFFEF4444), fontSize: 12),
+             style: AppTextStyles.bodyMedium.copyWith(color: AppColors.error, fontSize: 12),
            ),
         ],
       ),

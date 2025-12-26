@@ -69,8 +69,8 @@ class AdminUserSuccessView extends StatelessWidget {
                      text: userName,
                      style: AppTextStyles.h3.copyWith(fontSize: 14),
                      children: [
-                       TextSpan(text: ' has been deactivated.\n', style: AppTextStyles.bodyMedium.copyWith(color: Colors.blueGrey)),
-                       TextSpan(text: 'Their access to the petty cash system has been revoked.', style: AppTextStyles.bodyMedium.copyWith(color: Colors.blueGrey)),
+                       TextSpan(text: ' has been deactivated.\n', style: AppTextStyles.bodyMedium.copyWith(color: AppColors.textSlate)),
+                       TextSpan(text: 'Their access to the petty cash system has been revoked.', style: AppTextStyles.bodyMedium.copyWith(color: AppColors.textSlate)),
                      ]
                    ),
                  )
@@ -101,7 +101,7 @@ class AdminUserSuccessView extends StatelessWidget {
                         children: [
                           const CircleAvatar(
                             radius: 30,
-                            backgroundColor: Colors.teal, 
+                            backgroundColor: AppColors.primaryLight, 
                             backgroundImage: NetworkImage('https://i.pravatar.cc/150?u=sarah'),
                           ),
                           const SizedBox(width: 16),
@@ -153,14 +153,14 @@ class AdminUserSuccessView extends StatelessWidget {
                       style: TextButton.styleFrom(
                         backgroundColor: Theme.of(context).brightness == Brightness.dark 
                             ? Colors.white.withOpacity(0.05) 
-                            : Colors.lightBlue.shade50,
+                            : AppColors.primaryLight.withOpacity(0.1),
                         padding: const EdgeInsets.symmetric(vertical: 16),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(30),
                           side: BorderSide(
                             color: Theme.of(context).brightness == Brightness.dark 
                               ? Colors.white.withOpacity(0.1) 
-                              : Colors.lightBlue.shade200
+                            : AppColors.primaryLight.withOpacity(0.5)
                           ),
                         ),
                       ),

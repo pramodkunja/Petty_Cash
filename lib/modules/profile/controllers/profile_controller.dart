@@ -1,5 +1,8 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../../routes/app_routes.dart';
+import '../../../../core/services/auth_service.dart';
+import '../../../../data/models/user_model.dart';
 
 class ProfileController extends GetxController {
   // Mock Data matching image
@@ -7,6 +10,46 @@ class ProfileController extends GetxController {
   final rxEmail = 'alex.morgan@company.com'.obs;
   final rxPhone = '+1 123-456-7890'.obs;
   final rxRole = 'Team Member'.obs; // Or Approver/Admin based on context
+
+  // Form Controllers
+  final nameController = TextEditingController();
+  final emailController = TextEditingController();
+  final phoneController = TextEditingController();
+  final roleController = TextEditingController();
+  
+  final isSaving = false.obs;
+
+  @override
+  void onInit() {
+    super.onInit();
+    final user = Get.find<AuthService>().currentUser.value;
+    if (user != null) {
+      rxName.value = user.name;
+      rxEmail.value = user.email;
+      rxRole.value = user.role;
+      // rxPhone is not in User model yet, keep default or mock
+    }
+    _updateControllers();
+  }
+
+  void _updateControllers() {
+    nameController.text = rxName.value;
+    emailController.text = rxEmail.value;
+    phoneController.text = rxPhone.value;
+    roleController.text = rxRole.value;
+  }
+
+  @override
+  void onClose() {
+    // NOTE: Commenting out disposal to prevent 'used after disposed' error 
+    // when navigating while keyboard is active or during rapid transitions.
+    // GetX lifecycle can sometimes trigger onClose while the View is still detaching.
+    // nameController.dispose();
+    // emailController.dispose();
+    // phoneController.dispose();
+    // roleController.dispose();
+    super.onClose();
+  }
 
   void navigateToSettings() {
     Get.toNamed(AppRoutes.SETTINGS);
@@ -17,12 +60,34 @@ class ProfileController extends GetxController {
     Get.offAllNamed(AppRoutes.LOGIN);
   }
   
-
-
   void editProfile() {
-    // Navigate to Admin Edit User with current user data (mocked for now)
-    // In a real app, you'd pass the actual user model
-    Get.toNamed(AppRoutes.ADMIN_EDIT_USER); 
+    // Update controllers with latest values before navigating
+    _updateControllers();
+    Get.toNamed(AppRoutes.EDIT_PROFILE);
+  }
+
+  Future<void> saveProfile() async {
+    isSaving.value = true;
+    
+    // Simulate API call
+    await Future.delayed(const Duration(seconds: 1));
+    
+    // Update local state
+    rxName.value = nameController.text;
+    rxPhone.value = phoneController.text;
+    // Email and Role are read-only
+    
+    isSaving.value = false;
+    Get.back();
+    
+    Get.snackbar(
+      'Success',
+      'Profile updated successfully',
+      snackPosition: SnackPosition.BOTTOM,
+      backgroundColor: Get.theme.primaryColor, // Use theme primary
+      colorText: Colors.white,
+      margin: const EdgeInsets.all(16),
+    );
   }
 
   void navigateToManageUsers() {

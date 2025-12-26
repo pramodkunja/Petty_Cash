@@ -1,13 +1,14 @@
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
+import '../../../utils/app_colors.dart';
 import '../../../core/services/auth_service.dart';
 
 class RequestorController extends GetxController {
   
-  final selectedIndex = 0.obs;
+  final currentIndex = 0.obs;
 
-  void changeTabIndex(int index) {
-    selectedIndex.value = index;
+  void changeTab(int index) {
+    currentIndex.value = index;
   }
 
   final recentRequests = <Map<String, dynamic>>[
@@ -17,8 +18,8 @@ class RequestorController extends GetxController {
       'amount': 45.00,
       'status': 'Pending',
       'icon': Icons.restaurant,
-      'color': Colors.orange[100],
-      'iconColor': Colors.orange,
+      'color': AppColors.warning.withOpacity(0.1),
+      'iconColor': AppColors.warning,
     },
     {
       'title': 'Flight to Conference',
@@ -26,8 +27,8 @@ class RequestorController extends GetxController {
       'amount': 289.99,
       'status': 'Approved',
       'icon': Icons.flight,
-      'color': Colors.blue[100],
-      'iconColor': Colors.blue,
+      'color': AppColors.primary.withOpacity(0.1),
+      'iconColor': AppColors.primary,
     },
      {
       'title': 'Taxi from Airport',
@@ -35,8 +36,8 @@ class RequestorController extends GetxController {
       'amount': 25.50,
       'status': 'Rejected',
       'icon': Icons.directions_car,
-      'color': Colors.red[100],
-      'iconColor': Colors.red,
+      'color': AppColors.error.withOpacity(0.1),
+      'iconColor': AppColors.error,
     },
   ].obs;
 

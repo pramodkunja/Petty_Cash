@@ -1,6 +1,6 @@
 class AppConfig {
-  static const String appName = 'Cash Enterprise App';
-  static const String apiBaseUrl = 'https://api.enterprise-cash.com/v1';
+  static const String appName = 'Cashora';
+  static const String apiBaseUrl = 'http://192.168.0.149:8000';
   
   // Timeouts
   static const int connectTimeout = 15000;

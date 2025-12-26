@@ -74,17 +74,17 @@ class ConfirmPaymentView extends GetView<PaymentFlowController> {
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
             decoration: BoxDecoration(
-              color: const Color(0xFFE8F4F0),
+              color: AppColors.successBg,
               borderRadius: BorderRadius.circular(20),
             ),
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                const Icon(Icons.verified, size: 16, color: Color(0xFF2D8C6E)),
+                const Icon(Icons.verified, size: 16, color: AppColors.successGreen),
                 const SizedBox(width: 6),
                 Text(
                   AppText.verifiedVendor,
-                  style: AppTextStyles.bodySmall.copyWith(color: const Color(0xFF2D8C6E), fontWeight: FontWeight.bold),
+                  style: AppTextStyles.bodySmall.copyWith(color: AppColors.successGreen, fontWeight: FontWeight.bold),
                 ),
               ],
             ),
@@ -174,10 +174,10 @@ class ConfirmPaymentView extends GetView<PaymentFlowController> {
 
   Widget _buildAppSelectionGrid() {
     final apps = [
-      {'name': AppText.gpay, 'icon': Icons.account_balance_wallet, 'color': Colors.blue},
-      {'name': AppText.phonePe, 'icon': Icons.payments, 'color': Colors.purple},
-      {'name': AppText.paytm, 'icon': Icons.account_balance, 'color': Colors.blueAccent},
-      {'name': 'Custom', 'icon': Icons.keyboard, 'color': Colors.orange}, // Changed to Custom with Keyboard icon
+      {'name': AppText.gpay, 'icon': Icons.account_balance_wallet, 'color': AppColors.primaryBlue},
+      {'name': AppText.phonePe, 'icon': Icons.payments, 'color': AppColors.purple},
+      {'name': AppText.paytm, 'icon': Icons.account_balance, 'color': AppColors.indigo},
+      {'name': 'Custom', 'icon': Icons.keyboard, 'color': AppColors.warning}, // Changed to Custom with Keyboard icon
     ];
 
     return Row(
@@ -243,8 +243,8 @@ class ConfirmPaymentView extends GetView<PaymentFlowController> {
                 return ElevatedButton(
                   onPressed: isEnabled ? () => controller.onPayViaUpi() : null,
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: isEnabled ? const Color(0xFF1aa3df) : Colors.grey[300],
-                    foregroundColor: isEnabled ? Colors.white : Colors.grey[600],
+                    backgroundColor: isEnabled ? AppColors.primaryBlue : AppColors.textSlate.withOpacity(0.3),
+                    foregroundColor: isEnabled ? Colors.white : AppColors.textSlate,
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
                     elevation: isEnabled ? 2 : 0,
                   ),

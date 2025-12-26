@@ -130,9 +130,9 @@ class SpendAnalyticsView extends GetView<AccountantAnalyticsController> {
                             centerSpaceRadius: 40,
                             sections: [
                               PieChartSectionData(color: AppColors.primaryBlue, value: 45, radius: 20, showTitle: false),
-                              PieChartSectionData(color: const Color(0xFF6366F1), value: 25, radius: 20, showTitle: false),
-                              PieChartSectionData(color: const Color(0xFF10B981), value: 20, radius: 20, showTitle: false),
-                              PieChartSectionData(color: Colors.grey[300], value: 10, radius: 20, showTitle: false),
+                              PieChartSectionData(color: AppColors.indigo, value: 25, radius: 20, showTitle: false),
+                              PieChartSectionData(color: AppColors.successGreen, value: 20, radius: 20, showTitle: false),
+                              PieChartSectionData(color: AppColors.borderLight, value: 10, radius: 20, showTitle: false),
                             ],
                           ),
                         ),
@@ -146,11 +146,11 @@ class SpendAnalyticsView extends GetView<AccountantAnalyticsController> {
                       children: [
                         _buildLegendItem(AppColors.primaryBlue, 'Office Supplies', '45%'),
                         const SizedBox(height: 8),
-                         _buildLegendItem(const Color(0xFF6366F1), 'Travel', '25%'),
+                         _buildLegendItem(AppColors.indigo, 'Travel', '25%'),
                         const SizedBox(height: 8),
-                         _buildLegendItem(const Color(0xFF10B981), 'Food & Bev', '20%'),
+                         _buildLegendItem(AppColors.successGreen, 'Food & Bev', '20%'),
                         const SizedBox(height: 8),
-                         _buildLegendItem(Colors.grey[300]!, 'Others', '10%'),
+                         _buildLegendItem(AppColors.borderLight, 'Others', '10%'),
                       ],
                     ),
                   )
@@ -262,12 +262,12 @@ class SpendAnalyticsView extends GetView<AccountantAnalyticsController> {
               ),
               Container(
                  padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-                decoration: BoxDecoration(color: const Color(0xFFDCFCE7), borderRadius: BorderRadius.circular(12)),
+                decoration: BoxDecoration(color: AppColors.successBg, borderRadius: BorderRadius.circular(12)),
                  child: Row(
                    children: [
-                     const Icon(Icons.trending_up, size: 12, color: Color(0xFF16A34A)),
+                     const Icon(Icons.trending_up, size: 12, color: AppColors.successGreen),
                      const SizedBox(width: 2),
-                     Text(trend, style: const TextStyle(fontSize: 10, color: Color(0xFF16A34A), fontWeight: FontWeight.bold)),
+                     Text(trend, style: const TextStyle(fontSize: 10, color: AppColors.successGreen, fontWeight: FontWeight.bold)),
                    ],
                  ),
               ),

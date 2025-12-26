@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../../utils/app_text.dart';
 import '../../../../utils/app_text_styles.dart';
+import '../../../../utils/app_colors.dart';
 
 class RequestDetailsReadView extends StatelessWidget {
   const RequestDetailsReadView({Key? key}) : super(key: key);
@@ -15,14 +16,14 @@ class RequestDetailsReadView extends StatelessWidget {
     Color statusColor;
     Color statusBg;
     if (status == 'Approved') {
-      statusColor = const Color(0xFF15803D);
-      statusBg = const Color(0xFFDCFCE7);
+      statusColor = AppColors.successGreen;
+      statusBg = AppColors.successBg;
     } else if (status == 'Rejected') {
-      statusColor = const Color(0xFFB91C1C);
-      statusBg = const Color(0xFFFEE2E2);
+      statusColor = AppColors.error;
+      statusBg = AppColors.error.withOpacity(0.1);
     } else {
-      statusColor = const Color(0xFFB45309);
-      statusBg = const Color(0xFFFEF3C7);
+      statusColor = AppColors.warning;
+      statusBg = AppColors.warning.withOpacity(0.1);
     }
 
     return Scaffold(
@@ -111,8 +112,8 @@ class RequestDetailsReadView extends StatelessWidget {
                           children: [
                             Container(
                               padding: const EdgeInsets.all(10),
-                              decoration: BoxDecoration(color: isImage ? const Color(0xFFE0F2FE) : const Color(0xFFDCFCE7), borderRadius: BorderRadius.circular(12)),
-                              child: Icon(isImage ? Icons.image : Icons.receipt, color: isImage ? const Color(0xFF0EA5E9) : const Color(0xFF15803D)),
+                              decoration: BoxDecoration(color: isImage ? AppColors.infoBg : AppColors.successBg, borderRadius: BorderRadius.circular(12)),
+                              child: Icon(isImage ? Icons.image : Icons.receipt, color: isImage ? AppColors.infoBlue : AppColors.successGreen),
                             ),
                             const SizedBox(width: 16),
                             Expanded(
@@ -136,7 +137,7 @@ class RequestDetailsReadView extends StatelessWidget {
                    width: double.infinity,
                    padding: const EdgeInsets.all(20),
                    decoration: BoxDecoration(color: Theme.of(context).cardColor, borderRadius: BorderRadius.circular(20)),
-                   child: Text(AppText.noAttachments, style: AppTextStyles.bodyMedium.copyWith(color: Colors.grey)),
+                   child: Text(AppText.noAttachments, style: AppTextStyles.bodyMedium.copyWith(color: AppColors.textSlate)),
                  ),
                const SizedBox(height: 40),
              ],
@@ -149,7 +150,7 @@ class RequestDetailsReadView extends StatelessWidget {
   Widget _buildDetailRow(IconData icon, String label, String value) {
     return Row(
       children: [
-        Icon(icon, size: 20, color: const Color(0xFF64748B)),
+        Icon(icon, size: 20, color: AppColors.textSlate),
         const SizedBox(width: 12),
         Text(label, style: AppTextStyles.bodyMedium),
         const Spacer(),

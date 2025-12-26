@@ -230,17 +230,21 @@ class PaymentRequestDetailsView extends GetView<PaymentFlowController> {
                         onTap: () {
                           Get.toNamed(AppRoutes.ACCOUNTANT_PAYMENT_BILL_DETAILS);
                         },
-                        child: Row(
-                          children: [
-                            Text(
-                              'View Bill Details',
-                              style: AppTextStyles.bodyMedium.copyWith(
-                                color: AppColors.primaryBlue, 
-                                fontWeight: FontWeight.w600
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(vertical: 4), // Increase hit area
+                          color: Colors.transparent,
+                          child: Row(
+                            children: [
+                              Text(
+                                'View Bill Details',
+                                style: AppTextStyles.bodyMedium.copyWith(
+                                  color: AppColors.primaryBlue, 
+                                  fontWeight: FontWeight.w600
+                                ),
                               ),
-                            ),
-                            const Icon(Icons.chevron_right, size: 16, color: AppColors.primaryBlue),
-                          ],
+                              const Icon(Icons.chevron_right, size: 16, color: AppColors.primaryBlue),
+                            ],
+                          ),
                         ),
                       ),
                     ],

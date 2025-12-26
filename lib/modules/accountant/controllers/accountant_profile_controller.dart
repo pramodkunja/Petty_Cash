@@ -10,6 +10,10 @@ class AccountantProfileController extends GetxController {
   final rxPhone = '+1 123-456-7890'.obs;
   final rxRole = 'Accountant'.obs;
 
+  void editProfile() {
+    Get.toNamed(AppRoutes.EDIT_PROFILE);
+  }
+
   void navigateToSettings() {
     Get.toNamed(AppRoutes.SETTINGS); // Resuing existing settings
   }

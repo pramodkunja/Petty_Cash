@@ -46,6 +46,7 @@ abstract class AppRoutes {
   static const ADMIN_USER_SUCCESS = '/admin/users/success';
 
   static const PROFILE = '/profile';
+  static const EDIT_PROFILE = '/edit-profile';
   static const SETTINGS = '/settings';
   static const SETTINGS_NOTIFICATIONS = '/settings/notifications';
   static const SETTINGS_APPEARANCE = '/settings/appearance';
@@ -59,4 +60,9 @@ abstract class AppRoutes {
   static const MY_REQUESTS = '/my-requests';
   static const REQUEST_DETAILS_READ = '/request-details-read';
   static const MONTHLY_SPENT = '/monthly-spent';
+
+  // Notifications
+  static const REQUESTOR_NOTIFICATIONS = '/requestor/notifications';
+  static const ADMIN_NOTIFICATIONS = '/admin/notifications';
+  static const ACCOUNTANT_NOTIFICATIONS = '/accountant/notifications';
 }

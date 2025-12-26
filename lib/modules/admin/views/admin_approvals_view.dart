@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../utils/app_colors.dart';
 import '../../../../utils/app_text.dart';
 import '../../../../utils/app_text_styles.dart';
@@ -20,34 +21,34 @@ class AdminApprovalsView extends GetView<AdminApprovalsController> {
           backgroundColor: Theme.of(context).scaffoldBackgroundColor,
           elevation: 0,
           leading: IconButton(
-            icon: const Icon(Icons.arrow_back_ios_new_rounded, color: AppColors.textDark, size: 20),
+            icon: Icon(Icons.arrow_back_ios_new_rounded, color: AppColors.textDark, size: 20.sp),
             onPressed: () => Get.back(),
           ),
           centerTitle: true,
           title: Text(AppText.approvalsTitle, style: AppTextStyles.h3),
           actions: [
-            IconButton(onPressed: () {}, icon: const Icon(Icons.notifications_outlined, color: AppColors.textDark)),
+            IconButton(onPressed: () {}, icon: Icon(Icons.notifications_outlined, color: AppColors.textDark, size: 24.sp)),
           ],
           bottom: PreferredSize(
-            preferredSize: const Size.fromHeight(60),
+            preferredSize: Size.fromHeight(60.h),
             child: Container(
-              margin: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
-              padding: const EdgeInsets.all(4),
+              margin: EdgeInsets.symmetric(horizontal: 24.w, vertical: 8.h),
+              padding: EdgeInsets.all(4.r),
               decoration: BoxDecoration(
                 color: Get.isDarkMode ? Colors.black26 : const Color(0xFFF1F5F9),
-                borderRadius: BorderRadius.circular(20), // Pill shape for tab bar container
+                borderRadius: BorderRadius.circular(20.r), // Pill shape for tab bar container
               ),
               child: TabBar(
                 padding: EdgeInsets.zero,
                 isScrollable: false,
                 indicator: BoxDecoration(
                   color: AppColors.primaryBlue,
-                  borderRadius: BorderRadius.circular(16),
+                  borderRadius: BorderRadius.circular(16.r),
                   boxShadow: [
                     BoxShadow(
                       color: AppColors.primaryBlue.withOpacity(0.3),
-                      blurRadius: 8,
-                      offset: const Offset(0, 4),
+                      blurRadius: 8.r,
+                      offset: Offset(0, 4.h),
                     ),
                   ],
                 ),
@@ -73,17 +74,7 @@ class AdminApprovalsView extends GetView<AdminApprovalsController> {
             _buildRequestList(controller.clarificationRequests),
           ],
         ),
-        bottomNavigationBar: AdminBottomBar(
-          currentIndex: 1,
-          onTap: (index) {
-            if (index == 1) return;
-            switch (index) {
-              case 0: Get.offNamed(AppRoutes.ADMIN_DASHBOARD); break;
-              case 2: Get.offNamed(AppRoutes.ADMIN_HISTORY); break;
-              case 3: Get.offNamed(AppRoutes.PROFILE); break;
-            }
-          },
-        ),
+
       ),
     );
   }
@@ -95,23 +86,23 @@ class AdminApprovalsView extends GetView<AdminApprovalsController> {
       );
     }
     return ListView.separated(
-      padding: const EdgeInsets.all(24),
+      padding: EdgeInsets.all(24.r),
       itemCount: items.length,
-      separatorBuilder: (_, __) => const SizedBox(height: 12),
+      separatorBuilder: (_, __) => SizedBox(height: 12.h),
       itemBuilder: (context, index) {
         final item = items[index];
         return GestureDetector(
           onTap: () => controller.navigateToDetails(item),
           child: Container(
-            padding: const EdgeInsets.all(16),
+            padding: EdgeInsets.all(16.r),
             decoration: BoxDecoration(
               color: Theme.of(context).cardColor,
-              borderRadius: BorderRadius.circular(20),
+              borderRadius: BorderRadius.circular(20.r),
               boxShadow: [
                 BoxShadow(
                   color: Colors.black.withOpacity(0.08),
-                  blurRadius: 10,
-                  offset: const Offset(0, 2),
+                  blurRadius: 10.r,
+                  offset: Offset(0, 2.h),
                 ),
               ],
             ),
@@ -121,8 +112,8 @@ class AdminApprovalsView extends GetView<AdminApprovalsController> {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(item['title'], style: AppTextStyles.h3.copyWith(fontSize: 16)),
-                    const SizedBox(height: 4),
+                    Text(item['title'], style: AppTextStyles.h3.copyWith(fontSize: 16.sp)),
+                    SizedBox(height: 4.h),
                     Text('${AppText.from} ${item['user']}', style: AppTextStyles.bodyMedium),
                   ],
                 ),
@@ -131,12 +122,12 @@ class AdminApprovalsView extends GetView<AdminApprovalsController> {
                   children: [
                     Text(
                       '₹${item['amount']}', 
-                      style: AppTextStyles.h3.copyWith(color: AppColors.primaryBlue, fontSize: 16),
+                      style: AppTextStyles.h3.copyWith(color: AppColors.primaryBlue, fontSize: 16.sp),
                     ),
-                    const SizedBox(height: 4),
+                    SizedBox(height: 4.h),
                     Text(
                       item['date'],
-                      style: AppTextStyles.bodyMedium.copyWith(fontSize: 12),
+                      style: AppTextStyles.bodyMedium.copyWith(fontSize: 12.sp),
                     ),
                   ],
                 ),

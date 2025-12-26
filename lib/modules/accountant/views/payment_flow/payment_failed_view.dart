@@ -144,10 +144,10 @@ class PaymentFailedView extends StatelessWidget {
                   Container(
                     padding: const EdgeInsets.all(6),
                     decoration: BoxDecoration(
-                      color: Colors.blue[100],
+                      color: AppColors.infoBg,
                       shape: BoxShape.circle,
                     ),
-                    child: Text('JD', style: AppTextStyles.bodySmall.copyWith(fontSize: 10, color: AppColors.primaryBlue, fontWeight: FontWeight.bold)),
+                    child: Text('JD', style: AppTextStyles.bodySmall.copyWith(fontSize: 10, color: AppColors.primary, fontWeight: FontWeight.bold)),
                   ),
                   const SizedBox(width: 8),
                 ],

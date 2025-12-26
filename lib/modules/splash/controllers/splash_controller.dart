@@ -8,7 +8,7 @@ class SplashController extends GetxController with GetSingleTickerProviderStateM
   final AuthService _authService = Get.find<AuthService>();
   
   // Animation duration
-  final int splashDuration = 3000;
+  final int splashDuration = 5000;
   
   // Progress bar
   final RxDouble progress = 0.0.obs;
@@ -22,11 +22,19 @@ class SplashController extends GetxController with GetSingleTickerProviderStateM
   void _startLoading() async {
     // Simulate loading steps (e.g., config, user data, etc.)
     // Step 1: Initialize (0-30%)
-    await Future.delayed(const Duration(milliseconds: 500));
+    await Future.delayed(const Duration(milliseconds: 500)); 
+
+    // FORCE RESET FOR DEMO/TESTING: Clear session to ensure Splash -> Onboarding -> Login flow
+    // as requested by user. 
+    final storage = Get.find<StorageService>();
+    await storage.delete('auth_token');
+    await storage.delete('has_seen_onboarding');
+    await _authService.logout(); // Ensure AuthService state is also reset
+
     progress.value = 0.3;
     
     // Step 2: Check Auth / Load Resources (30-80%)
-    await Future.delayed(const Duration(milliseconds: 1000));
+    await Future.delayed(const Duration(milliseconds: 2000));
     progress.value = 0.8;
     
     // Step 3: Finalizing (80-100%)
@@ -45,17 +53,12 @@ class SplashController extends GetxController with GetSingleTickerProviderStateM
       final storage = Get.find<StorageService>();
       String? enabled = await storage.read('face_id_enabled');
       
+      // Always navigate to the main app first using RouteGuard logic (INITIAL)
+      Get.offAllNamed(AppRoutes.INITIAL);
+      
       if (enabled == 'true') {
-        // Navigate to LockView if enabled
-        // We need to import LockView or use a named route.
-        // Since we don't have a named route for LockView (it was pushed directly in LifecycleManager),
-        // we can add it to routes or import it here. 
-        // Ideally, adding AppRoutes.LOCK is cleaner, but for now importing view directly is faster 
-        // and acceptable as it's a special utility view.
-        // Wait, we need to import it.
-        Get.offAll(() => const LockView());
-      } else {
-        Get.offAllNamed(AppRoutes.REQUESTOR);
+        // Overlay the LockView
+        Get.to(() => const LockView(), opaque: false, fullscreenDialog: true);
       }
     } 
     // 2. Check if onboarding seen

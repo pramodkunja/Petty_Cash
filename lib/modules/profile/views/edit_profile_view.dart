@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart'; // Added
 import '../../../../utils/app_colors.dart';
 import '../../../../utils/app_text.dart';
 import '../../../../utils/app_text_styles.dart';
@@ -17,14 +18,14 @@ class EditProfileView extends GetView<ProfileController> {
         backgroundColor: Colors.transparent,
         elevation: 0,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios_new_rounded, color: AppColors.textDark),
+          icon: Icon(Icons.arrow_back_ios_new_rounded, color: AppColors.textDark, size: 24.sp),
           onPressed: () => Get.back(),
         ),
         centerTitle: true,
         title: Text('Edit Profile', style: AppTextStyles.h3),
       ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(24),
+        padding: EdgeInsets.all(24.w),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
@@ -33,25 +34,40 @@ class EditProfileView extends GetView<ProfileController> {
               child: Container(
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  border: Border.all(color: AppColors.primaryLight, width: 4),
+                  border: Border.all(color: AppColors.primaryLight, width: 4.w),
                 ),
-                child: const CircleAvatar(
-                  radius: 50,
+                child: CircleAvatar(
+                  radius: 50.r,
                   backgroundColor: AppColors.backgroundLight,
-                  child: Icon(Icons.person, size: 50, color: AppColors.textLight),
+                  child: Icon(Icons.person, size: 50.sp, color: AppColors.textLight),
                 ),
               ),
             ),
-            const SizedBox(height: 32),
+            SizedBox(height: 32.h),
 
             // Form Fields
-            _buildTextField(
-              context,
-              label: AppText.fullName,
-              controller: controller.nameController,
-              icon: Icons.person_outline,
+            Row(
+              children: [
+                Expanded(
+                  child: _buildTextField(
+                    context,
+                    label: 'First Name',
+                    controller: controller.firstNameController,
+                    icon: Icons.person_outline,
+                  ),
+                ),
+                SizedBox(width: 16.w),
+                Expanded(
+                  child: _buildTextField(
+                    context,
+                    label: 'Last Name',
+                    controller: controller.lastNameController,
+                    icon: Icons.person_outline,
+                  ),
+                ),
+              ],
             ),
-            const SizedBox(height: 20),
+            SizedBox(height: 20.h),
             
             _buildTextField(
               context,
@@ -60,7 +76,7 @@ class EditProfileView extends GetView<ProfileController> {
               icon: Icons.email_outlined,
               readOnly: true,
             ),
-            const SizedBox(height: 20),
+            SizedBox(height: 20.h),
             
             _buildTextField(
               context,
@@ -69,7 +85,7 @@ class EditProfileView extends GetView<ProfileController> {
               icon: Icons.phone_outlined,
               keyboardType: TextInputType.phone,
             ),
-             const SizedBox(height: 20),
+             SizedBox(height: 20.h),
             
             _buildTextField(
               context,
@@ -79,7 +95,7 @@ class EditProfileView extends GetView<ProfileController> {
               readOnly: true,
             ),
 
-            const SizedBox(height: 40),
+            SizedBox(height: 40.h),
 
             Obx(() => PrimaryButton(
               text: 'Save Changes',
@@ -110,7 +126,7 @@ class EditProfileView extends GetView<ProfileController> {
             color: AppTextStyles.bodyMedium.color
           ),
         ),
-        const SizedBox(height: 8),
+        SizedBox(height: 8.h),
         TextField(
           controller: controller,
           readOnly: readOnly,
@@ -119,22 +135,22 @@ class EditProfileView extends GetView<ProfileController> {
             color: readOnly ? AppColors.textSlate : AppColors.textDark,
           ),
           decoration: InputDecoration(
-            prefixIcon: Icon(icon, color: readOnly ? AppColors.textSlate : AppColors.textLight),
+            prefixIcon: Icon(icon, color: readOnly ? AppColors.textSlate : AppColors.textLight, size: 24.sp),
             filled: true,
             fillColor: readOnly 
                 ? AppColors.backgroundLight // or a specific read-only color
                 : Theme.of(context).cardColor,
-            contentPadding: const EdgeInsets.symmetric(vertical: 16),
+            contentPadding: EdgeInsets.symmetric(vertical: 16.h),
             border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
+              borderRadius: BorderRadius.circular(12.r),
               borderSide: BorderSide.none,
             ),
             enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
+              borderRadius: BorderRadius.circular(12.r),
               borderSide: BorderSide(color: Theme.of(context).dividerColor),
             ),
             focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
+              borderRadius: BorderRadius.circular(12.r),
               borderSide: BorderSide(color: readOnly ? Theme.of(context).dividerColor : AppColors.primary),
             ),
           ),

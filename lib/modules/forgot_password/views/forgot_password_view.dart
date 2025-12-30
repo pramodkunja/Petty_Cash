@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart'; // Added
 import '../../../../utils/app_colors.dart';
 import '../../../../utils/app_text.dart';
 import '../../../../utils/app_text_styles.dart';
@@ -18,10 +19,10 @@ class ForgotPasswordView extends GetView<ForgotPasswordController> {
           children: [
             // Back Button
             Positioned(
-              top: 16,
-              left: 16,
+              top: 16.h,
+              left: 16.w,
               child: IconButton(
-                icon: const Icon(Icons.arrow_back_ios_new_rounded, color: Colors.black),
+                icon: Icon(Icons.arrow_back_ios_new_rounded, color: Colors.black, size: 24.sp),
                 onPressed: () => Get.back(),
               ),
             ),
@@ -29,103 +30,103 @@ class ForgotPasswordView extends GetView<ForgotPasswordController> {
             // Main Content
             Center(
               child: SingleChildScrollView(
-                padding: const EdgeInsets.symmetric(horizontal: 24.0),
+                padding: EdgeInsets.symmetric(horizontal: 24.0.w),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     // Lock Icon Badge
                     Container(
-                      width: 80,
-                      height: 80,
+                      width: 80.w,
+                      height: 80.w,
                       decoration: BoxDecoration(
                         color: AppColors.infoBg,
                         shape: BoxShape.circle,
                       ),
-                      child: const Icon(
+                      child: Icon(
                         Icons.lock_reset_outlined,
-                        size: 40,
+                        size: 40.sp,
                         color: AppColors.primary,
                       ),
                     ),
-                    const SizedBox(height: 32),
+                    SizedBox(height: 32.h),
                     
                     // Title
                     Text(
                       'Forgot Password',
-                      style: AppTextStyles.h2.copyWith(fontSize: 24, fontWeight: FontWeight.bold),
+                      style: AppTextStyles.h2.copyWith(fontSize: 24.sp, fontWeight: FontWeight.bold),
                       textAlign: TextAlign.center,
                     ),
-                    const SizedBox(height: 12),
+                    SizedBox(height: 12.h),
                     
                     // Subtitle
                     Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                      padding: EdgeInsets.symmetric(horizontal: 16.0.w),
                       child: Text(
                         'Enter your email or phone number to receive a verification code.',
                         style: AppTextStyles.bodyMedium.copyWith(color: AppColors.textSlate, height: 1.5),
                         textAlign: TextAlign.center,
                       ),
                     ),
-                    const SizedBox(height: 40),
+                    SizedBox(height: 40.h),
                     
                     // Input Field
                     TextField(
                       controller: controller.emailController,
                       decoration: InputDecoration(
-                        prefixIcon: const Icon(Icons.alternate_email_rounded, color: AppColors.textSlate),
+                        prefixIcon: Icon(Icons.alternate_email_rounded, color: AppColors.textSlate, size: 24.sp),
                         hintText: 'Email or Phone Number',
-                        hintStyle: TextStyle(color: AppColors.textSlate.withOpacity(0.7)),
+                        hintStyle: TextStyle(color: AppColors.textSlate.withOpacity(0.7), fontSize: 14.sp),
                         filled: true,
                         fillColor: Theme.of(context).cardColor,
-                        contentPadding: const EdgeInsets.symmetric(vertical: 20, horizontal: 16),
+                        contentPadding: EdgeInsets.symmetric(vertical: 20.h, horizontal: 16.w),
                         border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(16),
+                          borderRadius: BorderRadius.circular(16.r),
                           borderSide: const BorderSide(color: AppColors.borderLight),
                         ),
                         enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(16),
+                          borderRadius: BorderRadius.circular(16.r),
                           borderSide: const BorderSide(color: AppColors.borderLight),
                         ),
                         focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(16),
+                          borderRadius: BorderRadius.circular(16.r),
                           borderSide: const BorderSide(color: AppColors.primary),
                         ),
                       ),
                     ),
-                    const SizedBox(height: 40), 
+                    SizedBox(height: 40.h), 
                     
                     // Send OTP Button
                     Obx(() => SizedBox(
                       width: double.infinity,
-                      height: 56,
+                      height: 56.h,
                       child: ElevatedButton(
                         onPressed: controller.isLoading ? null : controller.sendCode,
                         style: ElevatedButton.styleFrom(
                           backgroundColor: AppColors.primary,
                           shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(16),
+                            borderRadius: BorderRadius.circular(16.r),
                           ),
                           elevation: 0,
                         ),
                         child: controller.isLoading
-                            ? const SizedBox(
-                                height: 24,
-                                width: 24,
-                                child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2),
+                            ? SizedBox(
+                                height: 24.h,
+                                width: 24.w,
+                                child: const CircularProgressIndicator(color: Colors.white, strokeWidth: 2),
                               )
-                            : const Text(
+                            : Text(
                                 'Send OTP',
                                 style: TextStyle(
                                   color: Colors.white,
-                                  fontSize: 16,
+                                  fontSize: 16.sp,
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
                       ),
                     )),
                     
-                    const SizedBox(height: 32),
+                    SizedBox(height: 32.h),
                     
                     // Footer Link
                     Row(
@@ -133,7 +134,7 @@ class ForgotPasswordView extends GetView<ForgotPasswordController> {
                       children: [
                         Text(
                           'Remember your password? ',
-                          style: AppTextStyles.bodyMedium.copyWith(color: AppColors.textSlate),
+                          style: AppTextStyles.bodyMedium.copyWith(color: AppColors.textSlate, fontSize: 14.sp),
                         ),
                         GestureDetector(
                           onTap: () => Get.back(),
@@ -142,6 +143,7 @@ class ForgotPasswordView extends GetView<ForgotPasswordController> {
                             style: AppTextStyles.bodyMedium.copyWith(
                               color: AppColors.primary,
                               fontWeight: FontWeight.bold,
+                              fontSize: 14.sp,
                             ),
                           ),
                         ),

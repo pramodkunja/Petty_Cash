@@ -5,6 +5,7 @@ import '../../../../routes/app_routes.dart';
 import '../../../../utils/app_colors.dart';
 import '../views/widgets/update_balances_dialog.dart';
 import '../../../../core/services/auth_service.dart';
+import '../controllers/accountant_profile_controller.dart';
 
 class AccountantDashboardController extends GetxController {
   
@@ -14,13 +15,16 @@ class AccountantDashboardController extends GetxController {
     final user = _authService.currentUser.value;
     if (user == null) return 'Approver';
     
-    // User model stores full name in 'name' property
+    // Use firstName if available, otherwise fall back to name logic
+    if (user.firstName.isNotEmpty) {
+      return user.firstName;
+    }
+    
     String name = user.name;
     if (name.isEmpty || name == 'Unknown') {
       name = user.email.isNotEmpty ? user.email : 'Approver';
     }
     
-    // Get first word as short name if it contains spaces
     if (name.contains(' ')) {
       return name.split(' ').first;
     }
@@ -100,5 +104,10 @@ class AccountantDashboardController extends GetxController {
 
   void onBottomNavTap(int index) {
     rxIndex.value = index;
+    if (index == 3) {
+      if (Get.isRegistered<AccountantProfileController>()) {
+        Get.find<AccountantProfileController>().fetchProfile();
+      }
+    }
   }
 }

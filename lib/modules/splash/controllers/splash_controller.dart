@@ -45,14 +45,19 @@ class SplashController extends GetxController with GetSingleTickerProviderStateM
     // 1. Check if logged in
     if (_authService.isLoggedIn) {
       final storage = Get.find<StorageService>();
-      String? enabled = await storage.read('face_id_enabled');
+      String? bioEnabled = await storage.read('face_id_enabled');
       
-      // Always navigate to the main app first using RouteGuard logic (INITIAL)
-      Get.offAllNamed(AppRoutes.INITIAL);
-      
-      if (enabled == 'true') {
-        // Overlay the LockView
-        Get.to(() => const LockView(), opaque: false, fullscreenDialog: true);
+      if (bioEnabled == 'true') {
+        // If Biometric is Enabled: Go to Lock Screen
+        // Lock screen will verify session and then route to INITIAL -> Dashboard
+        Get.offAllNamed(AppRoutes.LOCK);
+      } else {
+        // If Biometric is NOT Enabled:
+        // User requested "start from first". 
+        // We force a Login to ensure security and prevent accidental dashboard access.
+        // Or we could send to a "Welcome Back" screen that requires a manual click.
+        // For strict security:
+        Get.offAllNamed(AppRoutes.LOGIN);
       }
     } else {
       Get.offAllNamed(AppRoutes.LOGIN);

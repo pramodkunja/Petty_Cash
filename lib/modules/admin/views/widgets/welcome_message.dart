@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../utils/app_colors.dart';
 import '../../../../utils/app_text_styles.dart';
 
@@ -30,10 +31,9 @@ class _WelcomeMessageState extends State<WelcomeMessage>
     super.initState();
     _controller = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 1200), // Smooth 1.2s transition
+      duration: const Duration(milliseconds: 1200),
     );
 
-    // Fade: 0 -> 1
     _fadeAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
       CurvedAnimation(
         parent: _controller,
@@ -41,7 +41,6 @@ class _WelcomeMessageState extends State<WelcomeMessage>
       ),
     );
 
-    // Slide: From slightly bottom to center
     _slideAnimation =
         Tween<Offset>(begin: const Offset(0, 0.2), end: Offset.zero).animate(
           CurvedAnimation(
@@ -50,8 +49,6 @@ class _WelcomeMessageState extends State<WelcomeMessage>
           ),
         );
 
-    // Size (Height factor): 0 -> 1
-    // We use SizeTransition on axis vertical
     _sizeAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
       CurvedAnimation(
         parent: _controller,
@@ -59,7 +56,6 @@ class _WelcomeMessageState extends State<WelcomeMessage>
       ),
     );
 
-    // Listen to controller state
     ever(widget.showWelcome, (bool show) {
       if (show) {
         _controller.forward();
@@ -68,7 +64,6 @@ class _WelcomeMessageState extends State<WelcomeMessage>
       }
     });
 
-    // Initial check
     if (widget.showWelcome.value) {
       _controller.forward();
     }
@@ -84,7 +79,7 @@ class _WelcomeMessageState extends State<WelcomeMessage>
   Widget build(BuildContext context) {
     return SizeTransition(
       sizeFactor: _sizeAnimation,
-      axisAlignment: -1.0, // Expand from top
+      axisAlignment: -1.0,
       child: FadeTransition(
         opacity: _fadeAnimation,
         child: SlideTransition(
@@ -92,20 +87,19 @@ class _WelcomeMessageState extends State<WelcomeMessage>
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const SizedBox(height: 24),
-              // Staggered-like Text Structure
+              SizedBox(height: 24.h), // Responsive
               Container(
-                padding: const EdgeInsets.only(left: 4),
+                padding: EdgeInsets.only(left: 4.w), // Responsive
                 decoration: BoxDecoration(
                   border: Border(
                     left: BorderSide(
                       color: AppColors.primaryBlue.withOpacity(0.5),
-                      width: 4,
+                      width: 4.w, // Responsive
                     ),
                   ),
                 ),
                 child: Padding(
-                  padding: const EdgeInsets.only(left: 12.0),
+                  padding: EdgeInsets.only(left: 12.0.w), // Responsive
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -113,13 +107,12 @@ class _WelcomeMessageState extends State<WelcomeMessage>
                         'Welcome back,',
                         style: AppTextStyles.h2.copyWith(
                           color: AppColors.textSlate,
-                          fontSize: 18,
+                          fontSize: 18.sp, // Responsive
                           fontWeight: FontWeight.w500,
                           letterSpacing: 0.5,
                         ),
                       ),
-                      const SizedBox(height: 6),
-                      // Gradient or specialized text style
+                      SizedBox(height: 6.h), // Responsive
                       ShaderMask(
                         shaderCallback: (bounds) => const LinearGradient(
                           colors: [AppColors.primaryBlue, Color(0xFF60A5FA)],
@@ -129,10 +122,10 @@ class _WelcomeMessageState extends State<WelcomeMessage>
                         child: Text(
                           widget.name,
                           style: AppTextStyles.h1.copyWith(
-                            fontSize: 42,
+                            fontSize: 42.sp, // Responsive
                             height: 1.1,
                             fontWeight: FontWeight.w800,
-                            color: Colors.white, // Required for ShaderMask
+                            color: Colors.white,
                             letterSpacing: -1.0,
                           ),
                         ),
@@ -141,7 +134,7 @@ class _WelcomeMessageState extends State<WelcomeMessage>
                   ),
                 ),
               ),
-              const SizedBox(height: 32),
+              SizedBox(height: 32.h), // Responsive
             ],
           ),
         ),

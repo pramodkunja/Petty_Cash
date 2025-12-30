@@ -3,6 +3,7 @@ import 'package:get/get.dart' hide Response, FormData, MultipartFile;
 import 'package:logger/logger.dart';
 import '../config/app_config.dart';
 import 'storage_service.dart';
+import 'auth_service.dart'; // Added Import
 
 class NetworkService extends GetxService {
   late Dio _dio;
@@ -35,12 +36,28 @@ class NetworkService extends GetxService {
           );
           return handler.next(response);
         },
-        onError: (DioException e, handler) {
+        onError: (DioException e, handler) async {
+          // 1. Handle 401 Unauthorized globally
+          if (e.response?.statusCode == 401) {
+            _logger.w('401 Unauthorized - Triggering auto-logout');
+            // Prevent circular dependency issues by fetching AuthService lazily if needed
+            // But usually Find is safe here if initialized
+            if (Get.isRegistered<AuthService>()) {
+              await Get.find<AuthService>().logout();
+              Get.offAllNamed('/login'); // Hardcoded string or AppRoutes.LOGIN
+            }
+          }
+
+          // 2. Log the error
           _logger.e(
             'ERROR[${e.response?.statusCode}] => PATH: ${e.requestOptions.path}',
             error: e.error,
             stackTrace: e.stackTrace,
           );
+
+          // 3. Normalize error for UI consumption (Optional but good for "Production Ready")
+          // Logic could go here to wrap e in a custom 'Failure' object
+          
           return handler.next(e);
         },
       ),

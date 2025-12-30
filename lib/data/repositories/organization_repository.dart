@@ -29,4 +29,26 @@ class OrganizationRepository {
       rethrow;
     }
   }
+
+  Future<Map<String, dynamic>> getApprovalLimits() async {
+    try {
+      final response = await _networkService.get('/users/approval-limit');
+      return response.data; 
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<void> updateApprovalLimits({
+    required int deemedLimit,
+  }) async {
+    try {
+      final data = {
+        'deemed_approval_limit': deemedLimit,
+      };
+      await _networkService.patch('/users/approval-limit', data: data);
+    } catch (e) {
+      rethrow;
+    }
+  }
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart'; // Added
 import '../../../../utils/app_colors.dart';
 import '../../../../utils/app_text.dart';
 import '../../../../utils/app_text_styles.dart';
@@ -25,45 +26,63 @@ class AccountantPaymentsView extends GetView<AccountantPaymentsController> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text('Payment Requests', style: AppTextStyles.h2),
-            const SizedBox(height: 4),
+            SizedBox(height: 4.h),
             Text('Accountant View', style: AppTextStyles.bodySmall),
           ],
         ),
         actions: [
           IconButton(
-            icon: Icon(Icons.filter_list_rounded, color: Theme.of(context).iconTheme.color),
+            icon: Icon(
+              Icons.filter_list_rounded,
+              color: Theme.of(context).iconTheme.color,
+              size: 24.sp,
+            ),
             onPressed: () {},
           )
         ],
         bottom: PreferredSize(
-          preferredSize: const Size.fromHeight(70), // Increased height for spacing
+          preferredSize: Size.fromHeight(70.h), // Increased height for spacing
           child: Container(
-             margin: const EdgeInsets.fromLTRB(20, 12, 20, 10), // Added top margin for space after Accountant View
-             decoration: BoxDecoration(
-               color: Theme.of(context).brightness == Brightness.dark ? Colors.white.withOpacity(0.1) : const Color(0xFFE2E8F0), 
-               borderRadius: BorderRadius.circular(30),
-             ),
-             clipBehavior: Clip.antiAlias, // Ensure child (indicator) clips perfectly
-             child: TabBar(
-               controller: controller.tabController,
-               indicatorSize: TabBarIndicatorSize.tab, // Fill the entire tab
-               indicator: BoxDecoration(
-                 color: AppColors.primaryBlue, // Blue to fill as requested
-                 borderRadius: BorderRadius.circular(30),
-                 // Remove Shadow if it looks like a "line"
-               ),
-               labelColor: Colors.white, 
-               unselectedLabelColor: AppColors.textSlate,
-               labelStyle: AppTextStyles.bodyMedium.copyWith(fontWeight: FontWeight.w600),
-               unselectedLabelStyle: AppTextStyles.bodyMedium,
-               dividerColor: Colors.transparent, // Remove any bottom line
-               indicatorPadding: EdgeInsets.zero, // Ensure no padding
-               labelPadding: EdgeInsets.zero, // Ensure full width tap target (optional, but good for fill)
-               tabs: const [
-                 Tab(text: 'Pending'),
-                 Tab(text: 'Completed'),
-               ],
-             ),
+            margin: EdgeInsets.fromLTRB(
+              20.w,
+              12.h,
+              20.w,
+              10.h,
+            ), // Added top margin for space after Accountant View
+            decoration: BoxDecoration(
+              color: Theme.of(context).brightness == Brightness.dark
+                  ? Colors.white.withOpacity(0.1)
+                  : const Color(0xFFE2E8F0),
+              borderRadius: BorderRadius.circular(30.r),
+            ),
+            clipBehavior:
+                Clip.antiAlias, // Ensure child (indicator) clips perfectly
+            child: TabBar(
+              controller: controller.tabController,
+              indicatorSize: TabBarIndicatorSize.tab, // Fill the entire tab
+              indicator: BoxDecoration(
+                color: AppColors.primaryBlue, // Blue to fill as requested
+                borderRadius: BorderRadius.circular(30.r),
+                // Remove Shadow if it looks like a "line"
+              ),
+              labelColor: Colors.white,
+              unselectedLabelColor: AppColors.textSlate,
+              labelStyle: AppTextStyles.bodyMedium.copyWith(
+                fontWeight: FontWeight.w600,
+                fontSize: 14.sp,
+              ),
+              unselectedLabelStyle: AppTextStyles.bodyMedium.copyWith(
+                fontSize: 14.sp,
+              ),
+              dividerColor: Colors.transparent, // Remove any bottom line
+              indicatorPadding: EdgeInsets.zero, // Ensure no padding
+              labelPadding: EdgeInsets
+                  .zero, // Ensure full width tap target (optional, but good for fill)
+              tabs: const [
+                Tab(text: 'Pending'),
+                Tab(text: 'Completed'),
+              ],
+            ),
           ),
         ),
       ),

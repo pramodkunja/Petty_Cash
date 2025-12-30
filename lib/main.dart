@@ -8,6 +8,8 @@ import 'core/services/auth_service.dart';
 import 'core/services/biometric_service.dart';
 import 'core/managers/app_lifecycle_manager.dart';
 import 'data/repositories/auth_repository.dart';
+import 'data/repositories/payment_repository.dart';
+import 'data/repositories/user_repository.dart';
 import 'routes/app_pages.dart';
 import 'routes/app_routes.dart';
 import 'utils/app_theme.dart';
@@ -35,7 +37,9 @@ Future<void> initServices() async {
   await Get.putAsync(() => StorageService().init());
   await Get.putAsync(() => NetworkService().init());
   Get.lazyPut(() => AuthRepository(Get.find<NetworkService>()));
+  Get.lazyPut(() => PaymentRepository(Get.find<NetworkService>())); // Added Payment Repo
   await Get.putAsync(() => AuthService(Get.find<AuthRepository>(), Get.find<StorageService>()).init());
+  Get.put(UserRepository()); // Moved after AuthService
   await Get.putAsync(() => BiometricService().init());
   Get.put(AppLifecycleManager());
 }

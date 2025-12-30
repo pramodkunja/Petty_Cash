@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart'; // Added
 import '../../../../utils/app_colors.dart';
 import '../../../../utils/app_text.dart';
 import '../../../../utils/app_text_styles.dart';
@@ -18,7 +19,7 @@ class AdminAddUserView extends GetView<AdminUserController> {
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AdminAppBar(title: AppText.addNewUserTitle),
       // bottomNavigationBar: Padding(
-      //   padding: const EdgeInsets.all(24),
+      //   padding: EdgeInsets.all(24.w),
       //   child: PrimaryButton(
       //     text: AppText.createUser,
       //     onPressed: () {
@@ -29,7 +30,7 @@ class AdminAddUserView extends GetView<AdminUserController> {
       //   ),
       // ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(24),
+        padding: EdgeInsets.all(24.w),
         child: Form(
           key: formKey,
           child: Column(
@@ -37,37 +38,37 @@ class AdminAddUserView extends GetView<AdminUserController> {
             children: [
               Center(
                 child: Container(
-                  padding: const EdgeInsets.all(4),
+                  padding: EdgeInsets.all(4.w),
                   decoration: BoxDecoration(
                     color: Theme.of(context).cardColor,
                     shape: BoxShape.circle,
                   ),
-                  child: const CircleAvatar(
-                    radius: 40,
+                  child: CircleAvatar(
+                    radius: 40.r,
                     backgroundColor: AppColors.backgroundAlt,
                     child: Icon(
                       Icons.person,
-                      size: 40,
+                      size: 40.sp,
                       color: AppColors.textLight,
                     ),
                   ),
                 ),
               ),
-              const SizedBox(height: 32),
+              SizedBox(height: 32.h),
 
               _buildLabel('First Name'),
               TextFormField(
                 controller: controller.firstNameController,
                 decoration: _inputDecoration(context, 'Enter first name'),
               ),
-              const SizedBox(height: 16),
+              SizedBox(height: 16.h),
 
               _buildLabel('Last Name'),
               TextFormField(
                 controller: controller.lastNameController,
                 decoration: _inputDecoration(context, 'Enter last name'),
               ),
-              const SizedBox(height: 16),
+              SizedBox(height: 16.h),
 
               _buildLabel(AppText.emailAddress),
               TextFormField(
@@ -79,7 +80,7 @@ class AdminAddUserView extends GetView<AdminUserController> {
                 ),
                 keyboardType: TextInputType.emailAddress,
               ),
-              const SizedBox(height: 16),
+              SizedBox(height: 16.h),
 
               _buildLabel(AppText.phone),
               TextFormField(
@@ -91,15 +92,15 @@ class AdminAddUserView extends GetView<AdminUserController> {
                 ),
                 keyboardType: TextInputType.phone,
               ),
-              const SizedBox(height: 16),
+              SizedBox(height: 16.h),
 
               _buildLabel(AppText.role),
               Obx(
                 () => Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  padding: EdgeInsets.symmetric(horizontal: 16.w),
                   decoration: BoxDecoration(
                     color: Theme.of(context).cardColor,
-                    borderRadius: BorderRadius.circular(30),
+                    borderRadius: BorderRadius.circular(30.r),
                     border: Border.all(color: Theme.of(context).dividerColor),
                   ),
                   child: DropdownButtonHideUnderline(
@@ -128,7 +129,7 @@ class AdminAddUserView extends GetView<AdminUserController> {
                 ),
               ),
 
-              const SizedBox(height: 48),
+              SizedBox(height: 48.h),
               PrimaryButton(
                 text: AppText.createUser,
                 onPressed: controller.createUser,
@@ -142,8 +143,8 @@ class AdminAddUserView extends GetView<AdminUserController> {
 
   Widget _buildLabel(String text) {
     return Padding(
-      padding: const EdgeInsets.only(left: 4, bottom: 8),
-      child: Text(text, style: AppTextStyles.h3.copyWith(fontSize: 14)),
+      padding: EdgeInsets.only(left: 4.w, bottom: 8.h),
+      child: Text(text, style: AppTextStyles.h3.copyWith(fontSize: 14.sp)),
     );
   }
 
@@ -157,21 +158,21 @@ class AdminAddUserView extends GetView<AdminUserController> {
       hintStyle: AppTextStyles.bodyMedium.copyWith(color: AppColors.textLight),
       filled: true,
       fillColor: Theme.of(context).cardColor,
-      contentPadding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+      contentPadding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 16.h),
       border: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(30),
+        borderRadius: BorderRadius.circular(30.r),
         borderSide: BorderSide(color: Theme.of(context).dividerColor),
       ),
       enabledBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(30),
+        borderRadius: BorderRadius.circular(30.r),
         borderSide: BorderSide(color: Theme.of(context).dividerColor),
       ),
       focusedBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(30),
+        borderRadius: BorderRadius.circular(30.r),
         borderSide: const BorderSide(color: AppColors.primaryBlue),
       ),
       suffixIcon: icon != null
-          ? Icon(icon, color: AppColors.textSlate, size: 20)
+          ? Icon(icon, color: AppColors.textSlate, size: 20.sp)
           : null,
     );
   }

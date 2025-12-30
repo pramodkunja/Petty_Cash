@@ -11,7 +11,21 @@ class RequestSuccessView extends GetView<CreateRequestController> {
   const RequestSuccessView({Key? key}) : super(key: key);
 
   @override
+  @override
   Widget build(BuildContext context) {
+    final args = Get.arguments as Map<String, dynamic>? ?? {};
+    final status = args['status'] as String? ?? 'pending';
+    final paymentStatus = args['payment_status'] as String? ?? 'Pending';
+    final amount = (args['amount'] as num?)?.toDouble() ?? 0.0;
+    final requestId = args['request_id'] as String? ?? '';
+    final categoryName = args['category'] as String? ?? 'General';
+    
+    // Extra details for View Details
+    final purpose = args['purpose'] as String? ?? '';
+    final description = args['description'] as String? ?? '';
+    final date = args['date'] as String? ?? '';
+    final attachments = args['attachments'] ?? [];
+
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
@@ -27,19 +41,45 @@ class RequestSuccessView extends GetView<CreateRequestController> {
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 12),
-          child: Obx(() {
-            if (controller.category.value == 'Deemed') {
-              return _buildDeemedSuccessUI(context);
-            } else {
-              return _buildStandardSuccessUI(context); 
-            }
-          }),
+          child: _buildDetailedSuccessUI(
+            context, 
+            status, 
+            paymentStatus,
+            amount, 
+            requestId, 
+            categoryName,
+            purpose,
+            description,
+            date,
+            attachments
+          ),
         ),
       ),
     );
   }
 
-  Widget _buildDeemedSuccessUI(BuildContext context) {
+  Widget _buildDetailedSuccessUI(
+    BuildContext context, 
+    String status, 
+    String paymentStatus,
+    double amount, 
+    String requestId, 
+    String categoryName,
+    String purpose,
+    String description,
+    String date,
+    dynamic attachments
+  ) {
+    final isApproved = status == 'auto_approved';
+    final mainIcon = isApproved ? Icons.check_rounded : Icons.hourglass_top_rounded;
+    final mainColor = isApproved ? AppColors.successGreen : AppColors.primaryBlue;
+    final bgShapeColor = isApproved 
+        ? (Theme.of(context).brightness == Brightness.dark ? const Color(0xFF064E3B) : const Color(0xFFE4F8F0))
+        : (Theme.of(context).primaryColor.withOpacity(0.1));
+
+    final title = isApproved ? AppText.requestApproved : AppText.requestSubmitted;
+    final subtitle = isApproved ? AppText.fundsAdded : AppText.requestSubmittedDesc;
+
     return Column(
       children: [
         const SizedBox(height: 20),
@@ -47,14 +87,14 @@ class RequestSuccessView extends GetView<CreateRequestController> {
           width: 80,
           height: 80,
           decoration: BoxDecoration(
-            color: Theme.of(context).brightness == Brightness.dark ? const Color(0xFF064E3B) : const Color(0xFFE4F8F0), 
+            color: bgShapeColor, 
             shape: BoxShape.circle,
           ),
-          child: const Icon(Icons.check_rounded, size: 40, color: AppColors.successGreen),
+          child: Icon(mainIcon, size: 40, color: mainColor),
         ),
         const SizedBox(height: 24),
         Text(
-          AppText.requestApproved,
+          title,
           textAlign: TextAlign.center,
           style: AppTextStyles.h1.copyWith(fontSize: 24, height: 1.2, color: AppTextStyles.h1.color),
         ),
@@ -62,7 +102,7 @@ class RequestSuccessView extends GetView<CreateRequestController> {
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),
           child: Text(
-            AppText.fundsAdded,
+            subtitle,
             textAlign: TextAlign.center,
             style: AppTextStyles.bodyMedium.copyWith(color: AppTextStyles.bodyMedium.color, height: 1.5),
           ),
@@ -86,7 +126,7 @@ class RequestSuccessView extends GetView<CreateRequestController> {
                     Text(AppText.totalAmount, style: TextStyle(fontSize: 12, fontWeight: FontWeight.w700, color: Theme.of(context).textTheme.bodySmall?.color, letterSpacing: 1.0)),
                     const SizedBox(height: 8),
                     Text(
-                      '₹${controller.amount.value.toStringAsFixed(2)}',
+                      '₹${amount.toStringAsFixed(2)}',
                       style: TextStyle(fontSize: 42, fontWeight: FontWeight.w800, color: Theme.of(context).textTheme.bodyLarge?.color),
                     ),
                     const SizedBox(height: 24),
@@ -94,11 +134,11 @@ class RequestSuccessView extends GetView<CreateRequestController> {
                     const SizedBox(height: 24),
                     
                     _buildRowItem(
-                      icon: controller.selectedExpenseCategory.value?['icon'] ?? Icons.inventory_2_outlined,
+                      icon: Icons.inventory_2_outlined,
                       iconBg: Theme.of(context).primaryColor.withOpacity(0.1),
                       iconColor: AppColors.primaryBlue,
                       label: AppText.category,
-                      value: controller.selectedExpenseCategory.value?['name'] ?? 'General',
+                      value: categoryName,
                       context: context,
                     ),
                     const SizedBox(height: 20),
@@ -107,11 +147,12 @@ class RequestSuccessView extends GetView<CreateRequestController> {
                       iconBg: Theme.of(context).brightness == Brightness.dark ? Colors.white.withOpacity(0.1) : const Color(0xFFF1F5F9),
                        iconColor: Theme.of(context).textTheme.bodySmall?.color ?? const Color(0xFF64748B),
                       label: AppText.requestId,
-                      value: '#REQ-${DateTime.now().year}-89',
+                      value: '#$requestId',
                       context: context,
                     ),
                      const SizedBox(height: 24),
                      
+                     // Status Row
                      Row(
                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                        children: [
@@ -119,15 +160,15 @@ class RequestSuccessView extends GetView<CreateRequestController> {
                          Container(
                            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                            decoration: BoxDecoration(
-                               color: AppColors.successGreen.withOpacity(0.1), 
+                               color: isApproved ? AppColors.successGreen.withOpacity(0.1) : Colors.orange.withOpacity(0.1), 
                                borderRadius: BorderRadius.circular(20), 
-                               border: Border.all(color: AppColors.successGreen.withOpacity(0.3))
+                               border: Border.all(color: isApproved ? AppColors.successGreen.withOpacity(0.3) : Colors.orange.withOpacity(0.3))
                            ),
                            child: Row(
                              children: [
-                               const Icon(Icons.check, size: 14, color: AppColors.successGreen),
+                               Icon(isApproved ? Icons.check : Icons.access_time_rounded, size: 14, color: isApproved ? AppColors.successGreen : Colors.orange),
                                const SizedBox(width: 4),
-                               Text(AppText.approvedSC, style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w700, color: AppColors.successGreen)),
+                               Text(isApproved ? AppText.approvedSC : AppText.pendingSC, style: TextStyle(fontSize: 12, fontWeight: FontWeight.w700, color: isApproved ? AppColors.successGreen : Colors.orange)),
                              ],
                            ),
                          )
@@ -149,7 +190,7 @@ class RequestSuccessView extends GetView<CreateRequestController> {
                              children: [
                                Icon(Icons.hourglass_empty, size: 14, color: Theme.of(context).textTheme.bodySmall?.color),
                                const SizedBox(width: 4),
-                               Text(AppText.pendingSC, style: TextStyle(fontSize: 12, fontWeight: FontWeight.w700, color: Theme.of(context).textTheme.bodySmall?.color)),
+                               Text(paymentStatus, style: TextStyle(fontSize: 12, fontWeight: FontWeight.w700, color: Theme.of(context).textTheme.bodySmall?.color)),
                              ],
                            ),
                          )
@@ -172,7 +213,15 @@ class RequestSuccessView extends GetView<CreateRequestController> {
         const SizedBox(height: 16),
         TextButton(
           onPressed: () {
-             Get.offAllNamed(AppRoutes.REQUESTOR);
+             Get.toNamed(AppRoutes.REQUEST_DETAILS_READ, arguments: {
+               'title': purpose,
+               'amount': amount,
+               'status': status == 'auto_approved' ? 'Approved' : 'Pending',
+               'category': categoryName,
+               'date': date,
+               'description': description,
+               'attachments': attachments
+             });
           }, 
           child: Text(AppText.viewDetails, style: AppTextStyles.bodyMedium.copyWith(color: AppColors.primaryBlue, fontWeight: FontWeight.w600))
         ),
@@ -198,45 +247,6 @@ class RequestSuccessView extends GetView<CreateRequestController> {
               const SizedBox(height: 2),
               Text(value, style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600, color: Theme.of(context).textTheme.bodyLarge?.color)),
             ],
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildStandardSuccessUI(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        const SizedBox(height: 60),
-        Container(
-          width: 120,
-          height: 120,
-          decoration: BoxDecoration(
-            color: Theme.of(context).primaryColor.withOpacity(0.1),
-            shape: BoxShape.circle,
-          ),
-          child: const Icon(Icons.check_rounded, size: 60, color: AppColors.primaryBlue),
-        ),
-        const SizedBox(height: 32),
-        Text(
-          AppText.requestSubmitted,
-          style: AppTextStyles.h2.copyWith(color: AppTextStyles.h2.color),
-        ),
-        const SizedBox(height: 16),
-        Text(
-          AppText.requestSubmittedDesc,
-          textAlign: TextAlign.center,
-          style: AppTextStyles.bodyMedium.copyWith(color: AppTextStyles.bodyMedium.color, height: 1.5),
-        ),
-        const SizedBox(height: 60),
-        SizedBox(
-          width: double.infinity,
-          child: PrimaryButton(
-            text: AppText.goToDashboard,
-            onPressed: () {
-              Get.offAllNamed(AppRoutes.REQUESTOR); 
-            },
           ),
         ),
       ],

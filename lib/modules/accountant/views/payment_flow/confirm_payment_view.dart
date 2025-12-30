@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart'; // Added
 import '../../../../utils/app_colors.dart';
 import '../../../../utils/app_text.dart';
 import '../../../../utils/app_text_styles.dart';
@@ -13,30 +14,35 @@ class ConfirmPaymentView extends GetView<PaymentFlowController> {
     return Scaffold(
       backgroundColor: AppColors.backgroundLight,
       appBar: AppBar(
-        title: Text(AppText.confirmPayment, style: AppTextStyles.h3.copyWith(color: AppColors.textDark)),
+        title: Text(
+          AppText.confirmPayment,
+          style: AppTextStyles.h3.copyWith(color: AppColors.textDark),
+        ),
         centerTitle: true,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.black),
+          icon: Icon(Icons.arrow_back, color: Colors.black, size: 24.sp),
           onPressed: () => Get.back(),
         ),
         backgroundColor: AppColors.backgroundLight,
         elevation: 0,
       ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(20),
+        padding: EdgeInsets.all(20.w),
         child: Column(
           children: [
             _buildTotalPayableCard(),
-            const SizedBox(height: 16),
+            SizedBox(height: 16.h),
             _buildTransactionDetailsCard(),
-            const SizedBox(height: 24),
+            SizedBox(height: 24.h),
             Text(
               AppText.payViaInstalledApp,
-              style: AppTextStyles.bodyMedium.copyWith(color: AppColors.textSlate),
+              style: AppTextStyles.bodyMedium.copyWith(
+                color: AppColors.textSlate,
+              ),
             ),
-            const SizedBox(height: 16),
+            SizedBox(height: 16.h),
             _buildAppSelectionGrid(),
-            const SizedBox(height: 32),
+            SizedBox(height: 32.h),
           ],
         ),
       ),
@@ -49,42 +55,56 @@ class ConfirmPaymentView extends GetView<PaymentFlowController> {
       width: double.infinity,
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(24),
+        borderRadius: BorderRadius.circular(24.r),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withOpacity(0.05),
-            blurRadius: 10,
-            offset: const Offset(0, 4),
+            blurRadius: 10.r,
+            offset: Offset(0, 4.h),
           ),
         ],
       ),
-      padding: const EdgeInsets.symmetric(vertical: 32),
+      padding: EdgeInsets.symmetric(vertical: 32.h),
       child: Column(
         children: [
           Text(
             AppText.totalPayable,
-            style: AppTextStyles.bodySmall.copyWith(letterSpacing: 1.0, color: AppColors.textSlate, fontWeight: FontWeight.bold),
+            style: AppTextStyles.bodySmall.copyWith(
+              letterSpacing: 1.0,
+              color: AppColors.textSlate,
+              fontWeight: FontWeight.bold,
+            ),
           ),
-          const SizedBox(height: 12),
+          SizedBox(height: 12.h),
           Text(
             '₹ 1,250.00',
-            style: AppTextStyles.h1.copyWith(fontSize: 40, fontWeight: FontWeight.bold),
+            style: AppTextStyles.h1.copyWith(
+              fontSize: 40.sp,
+              fontWeight: FontWeight.bold,
+            ),
           ),
-          const SizedBox(height: 16),
+          SizedBox(height: 16.h),
           Container(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+            padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
             decoration: BoxDecoration(
               color: AppColors.successBg,
-              borderRadius: BorderRadius.circular(20),
+              borderRadius: BorderRadius.circular(20.r),
             ),
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                const Icon(Icons.verified, size: 16, color: AppColors.successGreen),
-                const SizedBox(width: 6),
+                Icon(
+                  Icons.verified,
+                  size: 16.sp,
+                  color: AppColors.successGreen,
+                ),
+                SizedBox(width: 6.w),
                 Text(
                   AppText.verifiedVendor,
-                  style: AppTextStyles.bodySmall.copyWith(color: AppColors.successGreen, fontWeight: FontWeight.bold),
+                  style: AppTextStyles.bodySmall.copyWith(
+                    color: AppColors.successGreen,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ],
             ),
@@ -98,41 +118,48 @@ class ConfirmPaymentView extends GetView<PaymentFlowController> {
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(24),
+        borderRadius: BorderRadius.circular(24.r),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withOpacity(0.05),
-            blurRadius: 10,
-            offset: const Offset(0, 4),
+            blurRadius: 10.r,
+            offset: Offset(0, 4.h),
           ),
         ],
       ),
       child: Column(
         children: [
           Padding(
-            padding: const EdgeInsets.all(20),
+            padding: EdgeInsets.all(20.w),
             child: Row(
               children: [
                 CircleAvatar(
                   backgroundColor: const Color(0xFFE0F7FA),
-                  radius: 24,
+                  radius: 24.r,
                   child: Text(
                     'RS',
-                    style: AppTextStyles.bodyLarge.copyWith(color: AppColors.primaryBlue, fontWeight: FontWeight.bold),
+                    style: AppTextStyles.bodyLarge.copyWith(
+                      color: AppColors.primaryBlue,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ),
-                const SizedBox(width: 16),
+                SizedBox(width: 16.w),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
                         AppText.payingTo,
-                        style: AppTextStyles.bodySmall.copyWith(color: AppColors.textSlate),
+                        style: AppTextStyles.bodySmall.copyWith(
+                          color: AppColors.textSlate,
+                        ),
                       ),
                       Text(
                         'Rahul Sharma (Vendor)',
-                        style: AppTextStyles.bodyLarge.copyWith(fontWeight: FontWeight.w600),
+                        style: AppTextStyles.bodyLarge.copyWith(
+                          fontWeight: FontWeight.w600,
+                        ),
                         overflow: TextOverflow.ellipsis,
                       ),
                     ],
@@ -141,29 +168,33 @@ class ConfirmPaymentView extends GetView<PaymentFlowController> {
               ],
             ),
           ),
-          const Divider(height: 1),
+          Divider(height: 1.h),
           Padding(
-            padding: const EdgeInsets.all(20),
+            padding: EdgeInsets.all(20.w),
             child: Row(
               children: [
                 const Icon(Icons.qr_code, color: Colors.grey),
-                const SizedBox(width: 16),
+                SizedBox(width: 16.w),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
                         AppText.upiId,
-                        style: AppTextStyles.bodySmall.copyWith(color: AppColors.textSlate),
+                        style: AppTextStyles.bodySmall.copyWith(
+                          color: AppColors.textSlate,
+                        ),
                       ),
                       Text(
                         'rahul.sharma@okhdfcbank',
-                        style: AppTextStyles.bodyMedium.copyWith(fontWeight: FontWeight.w500),
+                        style: AppTextStyles.bodyMedium.copyWith(
+                          fontWeight: FontWeight.w500,
+                        ),
                       ),
                     ],
                   ),
                 ),
-                const Icon(Icons.copy, size: 18, color: AppColors.primaryBlue),
+                Icon(Icons.copy, size: 18.sp, color: AppColors.primaryBlue),
               ],
             ),
           ),
@@ -174,113 +205,153 @@ class ConfirmPaymentView extends GetView<PaymentFlowController> {
 
   Widget _buildAppSelectionGrid() {
     final apps = [
-      {'name': AppText.gpay, 'icon': Icons.account_balance_wallet, 'color': AppColors.primaryBlue},
-      {'name': AppText.phonePe, 'icon': Icons.payments, 'color': AppColors.purple},
-      {'name': AppText.paytm, 'icon': Icons.account_balance, 'color': AppColors.indigo},
-      {'name': 'Custom', 'icon': Icons.keyboard, 'color': AppColors.warning}, // Changed to Custom with Keyboard icon
+      {
+        'name': AppText.gpay,
+        'icon': Icons.account_balance_wallet,
+        'color': AppColors.primaryBlue,
+      },
+      {
+        'name': AppText.phonePe,
+        'icon': Icons.payments,
+        'color': AppColors.purple,
+      },
+      {
+        'name': AppText.paytm,
+        'icon': Icons.account_balance,
+        'color': AppColors.indigo,
+      },
+      {
+        'name': 'Custom',
+        'icon': Icons.keyboard,
+        'color': AppColors.warning,
+      }, // Changed to Custom with Keyboard icon
     ];
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: apps.map((app) {
-        return Obx(() {
-          final isSelected = controller.selectedPaymentApp.value == app['name'];
-          return GestureDetector(
-            onTap: () => controller.selectPaymentApp(app['name'] as String),
-            child: Column(
-              children: [
-                Container(
-                  width: 64,
-                  height: 64,
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    shape: BoxShape.circle,
-                    border: Border.all(
-                      color: isSelected ? AppColors.primaryBlue : Colors.grey[200]!,
-                      width: isSelected ? 2 : 1,
+      children:
+          apps.map((app) {
+            return Obx(() {
+              final isSelected =
+                  controller.selectedPaymentApp.value == app['name'];
+              return GestureDetector(
+                onTap: () => controller.selectPaymentApp(app['name'] as String),
+                child: Column(
+                  children: [
+                    Container(
+                      width: 64.w,
+                      height: 64.w,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        shape: BoxShape.circle,
+                        border: Border.all(
+                          color:
+                              isSelected
+                                  ? AppColors.primaryBlue
+                                  : Colors.grey[200]!,
+                          width: isSelected ? 2.w : 1.w,
+                        ),
+                        boxShadow: [
+                          if (isSelected)
+                            BoxShadow(
+                              color: AppColors.primaryBlue.withOpacity(0.2),
+                              blurRadius: 8.r,
+                              offset: Offset(0, 4.h),
+                            ),
+                        ],
+                      ),
+                      child: Icon(
+                        app['icon'] as IconData,
+                        color: app['color'] as Color,
+                        size: 30.sp,
+                      ),
                     ),
-                    boxShadow: [
-                      if (isSelected)
-                        BoxShadow(
-                          color: AppColors.primaryBlue.withOpacity(0.2),
-                          blurRadius: 8,
-                          offset: const Offset(0, 4),
-                        )
-                    ],
-                  ),
-                  child: Icon(app['icon'] as IconData, color: app['color'] as Color, size: 30),
+                    SizedBox(height: 8.h),
+                    Text(
+                      app['name'] as String,
+                      style: AppTextStyles.bodySmall.copyWith(
+                        fontWeight:
+                            isSelected ? FontWeight.bold : FontWeight.normal,
+                        color:
+                            isSelected
+                                ? AppColors.textDark
+                                : AppColors.textSlate, // Corrected
+                      ),
+                    ),
+                  ],
                 ),
-                const SizedBox(height: 8),
-                Text(
-                  app['name'] as String,
-                  style: AppTextStyles.bodySmall.copyWith(
-                    fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
-                    color: isSelected ? AppColors.textDark : AppColors.textSlate // Corrected
-                  ),
-                ),
-              ],
-            ),
-          );
-        });
-      }).toList(),
+              );
+            });
+          }).toList(),
     );
   }
 
   Widget _buildBottomBar() {
     return Container(
-      padding: const EdgeInsets.all(24),
-      decoration: const BoxDecoration(
-        color: AppColors.backgroundLight,
-      ),
+      padding: EdgeInsets.all(24.w),
+      decoration: const BoxDecoration(color: AppColors.backgroundLight),
       child: Column(
-         mainAxisSize: MainAxisSize.min,
-         children: [
-            SizedBox(
-              width: double.infinity,
-              height: 56,
-              child: Obx(() {
-                final isEnabled = controller.selectedPaymentApp.value.isNotEmpty;
-                return ElevatedButton(
-                  onPressed: isEnabled ? () => controller.onPayViaUpi() : null,
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: isEnabled ? AppColors.primaryBlue : AppColors.textSlate.withOpacity(0.3),
-                    foregroundColor: isEnabled ? Colors.white : AppColors.textSlate,
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
-                    elevation: isEnabled ? 2 : 0,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          SizedBox(
+            width: double.infinity,
+            height: 56.h,
+            child: Obx(() {
+              final isEnabled = controller.selectedPaymentApp.value.isNotEmpty;
+              return ElevatedButton(
+                onPressed: isEnabled ? () => controller.onPayViaUpi() : null,
+                style: ElevatedButton.styleFrom(
+                  backgroundColor:
+                      isEnabled
+                          ? AppColors.primaryBlue
+                          : AppColors.textSlate.withOpacity(0.3),
+                  foregroundColor:
+                      isEnabled ? Colors.white : AppColors.textSlate,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30.r),
                   ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                       Text(
-                        AppText.payViaUpiApp,
-                        style: AppTextStyles.buttonText.copyWith(
-                          fontSize: 18,
-                          color: isEnabled ? Colors.white : Colors.grey[600]
-                        ),
-                      ),
-                      const SizedBox(width: 8),
-                      Icon(Icons.launch, color: isEnabled ? Colors.white : Colors.grey[600], size: 20),
-                    ],
-                  ),
-                );
-              }),
-            ),
-            const SizedBox(height: 16),
-            const Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(Icons.lock, size: 14, color: AppColors.textSlate),
-                SizedBox(width: 6),
-                Flexible(
-                  child: Text(
-                    AppText.securelyRedirects,
-                    style: TextStyle(fontSize: 12, color: AppColors.textSlate),
-                    textAlign: TextAlign.center,
-                  ),
+                  elevation: isEnabled ? 2 : 0,
                 ),
-              ],
-            ),
-         ],
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      AppText.payViaUpiApp,
+                      style: AppTextStyles.buttonText.copyWith(
+                        fontSize: 18.sp,
+                        color: isEnabled ? Colors.white : Colors.grey[600],
+                      ),
+                    ),
+                    SizedBox(width: 8.w),
+                    Icon(
+                      Icons.launch,
+                      color: isEnabled ? Colors.white : Colors.grey[600],
+                      size: 20.sp,
+                    ),
+                  ],
+                ),
+              );
+            }),
+          ),
+          SizedBox(height: 16.h),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(Icons.lock, size: 14.sp, color: AppColors.textSlate),
+              SizedBox(width: 6.w),
+              Flexible(
+                child: Text(
+                  AppText.securelyRedirects,
+                  style: TextStyle(
+                    fontSize: 12.sp,
+                    color: AppColors.textSlate,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            ],
+          ),
+        ],
       ),
     );
   }

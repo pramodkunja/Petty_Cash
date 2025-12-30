@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart'; // Added
 import '../../../../utils/app_colors.dart';
 import '../../../../utils/app_text.dart';
 import '../../../../utils/app_text_styles.dart';
@@ -17,55 +18,55 @@ class SettingsView extends GetView<SettingsController> {
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         elevation: 0,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back_ios_new_rounded, color: AppTextStyles.h3.color),
+          icon: Icon(Icons.arrow_back_ios_new_rounded, color: AppTextStyles.h3.color, size: 24.sp),
           onPressed: () => Get.back(),
         ),
         centerTitle: true,
         title: Text(AppText.settings, style: AppTextStyles.h3), // 'Settings'
       ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 20),
+        padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 20.h),
         child: Column(
           children: [
            
 
             // Settings Group 1
             Container(
-              decoration: BoxDecoration(color: Theme.of(context).cardColor, borderRadius: BorderRadius.circular(20)),
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              decoration: BoxDecoration(color: Theme.of(context).cardColor, borderRadius: BorderRadius.circular(20.r)),
+              padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
               child: Column(
                 children: [
                   CustomListTile(
                     title: AppText.notifications,
-                    leadingIconWidget: const Icon(Icons.notifications, color: AppColors.primaryBlue),
+                    leadingIconWidget: Icon(Icons.notifications, color: AppColors.primaryBlue, size: 24.sp),
                     onTap: controller.navigateToNotifications,
                   ),
                   CustomListTile(
                     title: AppText.currency,
-                    leadingIconWidget: const Icon(Icons.currency_pound, color: AppColors.primaryBlue),
+                    leadingIconWidget: Icon(Icons.currency_pound, color: AppColors.primaryBlue, size: 24.sp),
                     onTap: () {},
                   ),
                   CustomListTile(
                     title: AppText.appearance,
-                    leadingIconWidget: const Icon(Icons.contrast, color: AppColors.primaryBlue),
+                    leadingIconWidget: Icon(Icons.contrast, color: AppColors.primaryBlue, size: 24.sp),
                     onTap: controller.navigateToAppearance,
                     showDivider: false,
                   ),
                 ],
               ),
             ),
-             const SizedBox(height: 24),
+             SizedBox(height: 24.h),
 
              // Settings Group 2 (Face ID & Password)
             Container(
-              decoration: BoxDecoration(color: Theme.of(context).cardColor, borderRadius: BorderRadius.circular(20)),
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              decoration: BoxDecoration(color: Theme.of(context).cardColor, borderRadius: BorderRadius.circular(20.r)),
+              padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
               child: Column(
                 children: [
                    // Face ID Toggle
                    ListTile(
                      contentPadding: EdgeInsets.zero,
-                     leading: const Icon(Icons.fingerprint, color: AppColors.primaryBlue),
+                     leading: Icon(Icons.fingerprint, color: AppColors.primaryBlue, size: 24.sp),
                      title: Text(AppText.faceIdTouchId, style: AppTextStyles.bodyMedium.copyWith(color: AppTextStyles.h3.color)),
                      trailing: Obx(() => Switch(
                        value: controller.rxFaceIdEnabled.value, 
@@ -75,44 +76,44 @@ class SettingsView extends GetView<SettingsController> {
                        inactiveTrackColor: Colors.grey.shade200,
                      )),
                    ),
-                   const Divider(height: 1),
+                   Divider(height: 1.h),
                    CustomListTile(
                     title: AppText.changePassword,
-                    leadingIconWidget: const Icon(Icons.lock, color: AppColors.primaryBlue),
+                    leadingIconWidget: Icon(Icons.lock, color: AppColors.primaryBlue, size: 24.sp),
                     onTap: controller.navigateToChangePassword,
                     showDivider: false,
                   ),
                 ],
               ),
             ),
-            const SizedBox(height: 24),
+            SizedBox(height: 24.h),
 
             // Settings Group 3
             Container(
-              decoration: BoxDecoration(color: Theme.of(context).cardColor, borderRadius: BorderRadius.circular(20)),
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              decoration: BoxDecoration(color: Theme.of(context).cardColor, borderRadius: BorderRadius.circular(20.r)),
+              padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
               child: Column(
                 children: [
                   CustomListTile(
                     title: AppText.helpSupport,
-                    leadingIconWidget: const Icon(Icons.help, color: AppColors.primaryBlue),
+                    leadingIconWidget: Icon(Icons.help, color: AppColors.primaryBlue, size: 24.sp),
                     onTap: () {},
                   ),
                   CustomListTile(
                     title: AppText.privacyPolicy,
-                    leadingIconWidget: const Icon(Icons.security, color: AppColors.primaryBlue),
+                    leadingIconWidget: Icon(Icons.security, color: AppColors.primaryBlue, size: 24.sp),
                     onTap: () {},
                   ),
                   CustomListTile(
                     title: AppText.termsOfService,
-                    leadingIconWidget: const Icon(Icons.description, color: AppColors.primaryBlue),
+                    leadingIconWidget: Icon(Icons.description, color: AppColors.primaryBlue, size: 24.sp),
                     onTap: () {},
                     showDivider: false,
                   ),
                 ],
               ),
             ),
-            const SizedBox(height: 40),
+            SizedBox(height: 40.h),
             
             // Logout Button (Full width blue light)
             SizedBox(
@@ -121,13 +122,13 @@ class SettingsView extends GetView<SettingsController> {
                 onPressed: controller.logout,
                 style: TextButton.styleFrom(
                   backgroundColor: const Color(0xFFD1F2FA), // Light blue from image
-                  padding: const EdgeInsets.symmetric(vertical: 16),
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30))
+                  padding: EdgeInsets.symmetric(vertical: 16.h),
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.r))
                 ),
-                child: Text(AppText.logOut, style: AppTextStyles.buttonText.copyWith(color: AppColors.primaryBlue)),
+                child: Text(AppText.logOut, style: AppTextStyles.buttonText.copyWith(color: AppColors.primaryBlue, fontSize: 16.sp)),
               ),
             ),
-             const SizedBox(height: 20),
+             SizedBox(height: 20.h),
           ],
         ),
       ),

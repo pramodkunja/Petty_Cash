@@ -25,7 +25,15 @@ class AdminUserController extends GetxController {
     try {
       isLoadingUsers.value = true;
       final users = await _authRepository.getUsers();
-      rxUsers.assignAll(users);
+      
+      // Filter out the current logged-in user (Admin)
+      final currentUserId = Get.find<AuthService>().currentUser.value?.id;
+      final filteredUsers = users.where((user) {
+        // Ensure accurate comparison (handle String vs Int IDs safely)
+        return user['id'].toString() != currentUserId.toString();
+      }).toList();
+
+      rxUsers.assignAll(filteredUsers);
     } catch (e) {
       String errorMessage = 'Failed to load users.';
       if (e is DioException && e.response != null) {

@@ -3,50 +3,82 @@ import 'package:get/get.dart';
 import '../../../../routes/app_routes.dart';
 import '../../../../core/services/auth_service.dart';
 import '../../../../data/models/user_model.dart';
+import '../../../../data/repositories/user_repository.dart';
 
 class ProfileController extends GetxController {
-  // Mock Data matching image
-  final rxName = ''.obs;
+  final UserRepository _userRepository = Get.find<UserRepository>(); // Ensure this is put in binding
+  final AuthService _authService = Get.find<AuthService>();
+
+  final rxFirstName = ''.obs;
+  final rxLastName = ''.obs;
+  final rxName = ''.obs; // Keep full name for display if needed
   final rxEmail = ''.obs;
   final rxPhone = ''.obs;
   final rxRole = ''.obs;
   final rxOrgName = ''.obs;
   final rxOrgCode = ''.obs;
+  final rxUserId = ''.obs;
 
   // Form Controllers
-  final nameController = TextEditingController();
+  final firstNameController = TextEditingController();
+  final lastNameController = TextEditingController();
   final emailController = TextEditingController();
   final phoneController = TextEditingController();
   final roleController = TextEditingController();
   
   final isSaving = false.obs;
+  final isLoading = false.obs;
 
   @override
   void onInit() {
     super.onInit();
-    final authService = Get.find<AuthService>();
-    
-    // Initial load
-    _updateUser(authService.currentUser.value);
-
-    // Listen to changes
-    ever(authService.currentUser, _updateUser);
+    // Initial fetch to ensure data is fresh, ignoring login response staleness
+    fetchProfile();
   }
 
-  void _updateUser(User? user) {
-    if (user != null) {
-      rxName.value = user.name;
-      rxEmail.value = user.email;
-      rxRole.value = user.role;
-      rxOrgName.value = user.orgName;
-      rxOrgCode.value = user.orgCode;
-      rxPhone.value = user.phoneNumber;
-      _updateControllers();
+  Future<void> fetchProfile() async {
+    try {
+      isLoading.value = true;
+      // FETCH FROM API AS REQUESTED
+      final user = await _userRepository.getMe();
+      if (user != null) {
+        _updateLocalState(user);
+      } else {
+        // Fallback to existing current user data if API returns null
+        if (_authService.currentUser.value != null) {
+          _updateLocalState(_authService.currentUser.value!);
+        }
+      }
+    } catch (e) {
+      print('Profile fetch error: $e');
+    } finally {
+      isLoading.value = false;
     }
   }
 
+  void _updateLocalState(User user) {
+    rxFirstName.value = user.firstName;
+    rxLastName.value = user.lastName;
+    
+    // Construct display name logic
+    String displayName = user.name;
+    if ((displayName.isEmpty || displayName == 'Unknown') && user.firstName.isNotEmpty) {
+      displayName = '${user.firstName} ${user.lastName}'.trim();
+    }
+    
+    rxName.value = displayName;
+    rxEmail.value = user.email;
+    rxRole.value = user.role;
+    rxOrgName.value = user.orgName;
+    rxOrgCode.value = user.orgCode;
+    rxPhone.value = user.phoneNumber;
+    rxUserId.value = user.id;
+    _updateControllers();
+  }
+
   void _updateControllers() {
-    nameController.text = rxName.value;
+    firstNameController.text = rxFirstName.value;
+    lastNameController.text = rxLastName.value;
     emailController.text = rxEmail.value;
     phoneController.text = rxPhone.value;
     roleController.text = rxRole.value;
@@ -54,13 +86,11 @@ class ProfileController extends GetxController {
 
   @override
   void onClose() {
-    // NOTE: Commenting out disposal to prevent 'used after disposed' error 
-    // when navigating while keyboard is active or during rapid transitions.
-    // GetX lifecycle can sometimes trigger onClose while the View is still detaching.
-    // nameController.dispose();
-    // emailController.dispose();
-    // phoneController.dispose();
-    // roleController.dispose();
+    firstNameController.dispose();
+    lastNameController.dispose();
+    phoneController.dispose();
+    emailController.dispose();
+    roleController.dispose();
     super.onClose();
   }
 
@@ -69,38 +99,50 @@ class ProfileController extends GetxController {
   }
 
   void logout() {
-    // Implement logout logic
-    Get.offAllNamed(AppRoutes.LOGIN);
+    _authService.logout(); // Ensure explicit logout
   }
   
   void editProfile() {
-    // Update controllers with latest values before navigating
     _updateControllers();
     Get.toNamed(AppRoutes.EDIT_PROFILE);
   }
 
   Future<void> saveProfile() async {
     isSaving.value = true;
-    
-    // Simulate API call
-    await Future.delayed(const Duration(seconds: 1));
-    
-    // Update local state
-    rxName.value = nameController.text;
-    rxPhone.value = phoneController.text;
-    // Email and Role are read-only
-    
-    isSaving.value = false;
-    Get.back();
-    
-    Get.snackbar(
-      'Success',
-      'Profile updated successfully',
-      snackPosition: SnackPosition.BOTTOM,
-      backgroundColor: Get.theme.primaryColor, // Use theme primary
-      colorText: Colors.white,
-      margin: const EdgeInsets.all(16),
-    );
+    try {
+      final userId = rxUserId.value;
+      if (userId.isEmpty) {
+         Get.snackbar('Error', 'User ID not found');
+         return;
+      }
+
+      final data = {
+        'first_name': firstNameController.text.trim(),
+        'last_name': lastNameController.text.trim(),
+        'phone_number': phoneController.text.trim(), 
+      };
+      
+      final updatedUser = await _userRepository.updateUser(userId, data);
+      
+      if (updatedUser != null) {
+        _updateLocalState(updatedUser);
+      }
+      
+      isSaving.value = false;
+      Get.back();
+      
+      Get.snackbar(
+        'Success',
+        'Profile updated successfully',
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: Get.theme.primaryColor, // Access theme directly
+        colorText: Colors.white,
+        margin: const EdgeInsets.all(16),
+      );
+    } catch (e) {
+      isSaving.value = false;
+      Get.snackbar('Error', 'Failed to update profile');
+    }
   }
 
   void navigateToManageUsers() {

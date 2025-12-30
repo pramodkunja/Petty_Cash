@@ -1,103 +1,72 @@
 import 'package:get/get.dart';
 import '../../../../routes/app_routes.dart';
 import '../../../../utils/app_text.dart';
+import '../../../../data/repositories/admin_repository.dart';
+import '../../../../core/services/network_service.dart';
 
 class AdminApprovalsController extends GetxController with GetSingleTickerProviderStateMixin {
-  final requests = <Map<String, dynamic>>[].obs;
-  final selectedIndex = 1.obs;
+  late final AdminRepository _adminRepository;
   
-  // Tabs
-  late final tabController;
-  final tabs = [AppText.tabPending, AppText.tabApproved, AppText.tabRejected];
+  final pendingRequests = <Map<String, dynamic>>[].obs;
+  final approvedRequests = <Map<String, dynamic>>[].obs;
+  final unpaidRequests = <Map<String, dynamic>>[].obs;
+  final clarificationRequests = <Map<String, dynamic>>[].obs;
+  
+  final isLoading = true.obs;
 
   @override
   void onInit() {
     super.onInit();
-    // Use dynamic late initialization for TabController since we need TickerProvider
-    // but in GetxController usually onInit is fine if mixed in.
-    // However, GetSingleTickerProviderStateMixin expects a widget context often or properly initialized mixin.
-    // For simplicity with GetX simple state management for tabs might be easier, 
-    // but user wants standard UI. Let's mock data.
-    _loadMockData();
-  }
-  
-  void setupTabController(ticker) {
-    // This method will be called from View
+    _adminRepository = AdminRepository(Get.find<NetworkService>());
+    fetchAllRequests();
   }
 
-  void _loadMockData() {
-    requests.value = [
-      {
-        'id': 'REQ-001',
-        'title': 'Office Supplies',
-        'user': 'Eleanor Vance',
-        'date': 'Oct 28, 2023',
-        'amount': '55.00',
-        'status': AppText.statusPending,
-      },
-      {
-        'id': 'REQ-002',
-        'title': 'Team Lunch',
-        'user': 'Liam Chen',
-        'date': 'Oct 27, 2023',
-        'amount': '120.75',
-        'status': AppText.statusPending,
-      },
-      {
-        'id': 'REQ-003',
-        'title': 'Software Subscription',
-        'user': 'Ava Rodriguez',
-        'date': 'Oct 26, 2023',
-        'amount': '99.99',
-        'status': AppText.statusApproved,
-      },
-      {
-        'id': 'REQ-004',
-        'title': 'Client Meeting Expenses',
-        'user': 'Noah Kim',
-        'date': 'Oct 25, 2023',
-        'amount': '78.50',
-        'status': AppText.statusApproved,
-      },
-      {
-        'id': 'REQ-006',
-        'title': 'Conference Ticket',
-        'user': 'James Wilson',
-        'date': 'Oct 29, 2023',
-        'amount': '300.00',
-        'status': AppText.clarification,
-      },
-      {
-        'id': 'REQ-005',
-        'title': 'Travel Reimbursement',
-        'user': 'Isabella Garcia',
-        'date': 'Oct 24, 2023',
-        'amount': '250.00',
-        'status': AppText.statusRejected,
-      },
-    ];
-  }
-
-  List<Map<String, dynamic>> get pendingRequests => 
-      requests.where((r) => r['status'] == AppText.statusPending).toList();
+  Future<void> fetchAllRequests() async {
+    try {
+      isLoading.value = true;
       
-  List<Map<String, dynamic>> get approvedRequests => 
-      requests.where((r) => r['status'] == AppText.statusApproved).toList();
-      
-  List<Map<String, dynamic>> get rejectedRequests => 
-      requests.where((r) => r['status'] == AppText.statusRejected).toList();
+      final results = await Future.wait([
+        _adminRepository.getOrgExpenses(status: 'pending'),
+        _adminRepository.getOrgExpenses(status: 'approved'),
+        _adminRepository.getOrgExpenses(paymentStatus: 'pending'),
+        _adminRepository.getOrgExpenses(status: 'clarification_required'), 
+        _adminRepository.getOrgExpenses(status: 'clarification_responded')
+      ]);
 
-  List<Map<String, dynamic>> get clarificationRequests => 
-      requests.where((r) => r['status'] == AppText.clarification).toList();
+      pendingRequests.assignAll(results[0]);
+      approvedRequests.assignAll(results[1]);
+      unpaidRequests.assignAll(results[2]);
+      
+      // Combine clarification required and responded
+      final combinedClarification = <Map<String, dynamic>>[];
+      combinedClarification.addAll(results[3]);
+      combinedClarification.addAll(results[4]);
+      // Sort by date descending if possible, for now just list
+      clarificationRequests.assignAll(combinedClarification);
+
+    } catch (e) {
+      Get.snackbar('Error', 'Failed to fetch requests: $e');
+    } finally {
+      isLoading.value = false;
+    }
+  }
 
   void navigateToDetails(Map<String, dynamic> request) {
-    if (request['status'] == AppText.clarification) {
+    // If status implies clarification, go to clarification view
+    String status = request['status'] ?? '';
+    if (status == 'clarification_required' || status == 'clarification_responded') {
       Get.toNamed(AppRoutes.ADMIN_CLARIFICATION_STATUS, arguments: request);
     } else {
       Get.toNamed(AppRoutes.ADMIN_REQUEST_DETAILS, arguments: request);
     }
   }
-
-  // No longer needed for bottom bar, logic moved to view
-  // void changeTabIndex(int index) ... 
+  
+  String getInitials(String name) {
+    if (name.isEmpty) return '??';
+    List<String> parts = name.trim().split(' ');
+    if (parts.length > 1) {
+      return '${parts[0][0]}${parts[1][0]}'.toUpperCase();
+    }
+    return parts[0][0].toUpperCase();
+  }
 }

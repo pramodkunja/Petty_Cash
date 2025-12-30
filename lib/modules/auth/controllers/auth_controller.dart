@@ -16,12 +16,30 @@ class AuthController extends BaseController {
     isPasswordVisible.value = !isPasswordVisible.value;
   }
 
+  bool _isValidEmail(String email) {
+    return RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(email);
+  }
+
+  bool _isValidPassword(String password) {
+    return password.length >= 8;
+  }
+
   Future<void> login() async {
     final email = emailController.text.trim();
     final password = passwordController.text.trim();
 
     if (email.isEmpty || password.isEmpty) {
       Get.snackbar('Error', 'Please enter email and password');
+      return;
+    }
+
+    if (!_isValidEmail(email)) {
+      Get.snackbar('Error', 'Please enter a valid email address');
+      return;
+    }
+
+    if (!_isValidPassword(password)) {
+      Get.snackbar('Error', 'Password must be at least 8 characters');
       return;
     }
 
@@ -33,17 +51,21 @@ class AuthController extends BaseController {
       
       final user = _authService.currentUser.value;
       if (user != null) {
-        if (user.role.toLowerCase() == 'admin' || user.role.toLowerCase() == 'super_admin') {
+        final role = user.role.toLowerCase().trim();
+        if (role == 'admin' || role == 'super_admin') {
           Get.offAllNamed(AppRoutes.ADMIN_DASHBOARD);
-        } else if (user.role.toLowerCase() == 'accountant') {
+        } else if (role == 'accountant') {
           Get.offAllNamed(AppRoutes.ACCOUNTANT_DASHBOARD);
-        } else if (user.role.toLowerCase() == 'requestor') {
+        } else if (role == 'requestor') {
            Get.offAllNamed(AppRoutes.REQUESTOR);
         } else {
-           Get.offAllNamed(AppRoutes.REQUESTOR);
+           // SECURITY FIX: Deny unknown roles
+           Get.snackbar('Access Denied', 'Unknown user role: ${user.role}');
+           await _authService.logout(); // Force logout
         }
       } else {
-         Get.offAllNamed(AppRoutes.REQUESTOR);
+         // SECURITY FIX: Do not assume Requestor if user is null
+         Get.snackbar('Error', 'Login failed: Unable to retrieve user details.');
       }
     });
   }

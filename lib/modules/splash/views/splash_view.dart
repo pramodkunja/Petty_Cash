@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart'; // Added
 import '../../../../utils/app_colors.dart';
 import '../controllers/splash_controller.dart';
 
@@ -42,7 +43,7 @@ class _SplashViewState extends State<SplashView> with SingleTickerProviderStateM
 
     // 2. Expand Space for Text (Logo Moves Left) (0.8s - 1.5s)
     // Width grows to accommodate text (~240px)
-    _contentWidthAnimation = Tween<double>(begin: 0.0, end: 240.0).animate(
+    _contentWidthAnimation = Tween<double>(begin: 0.0, end: 200.w).animate( // Responsive width
       CurvedAnimation(
         parent: _mainController,
         curve: const Interval(0.25, 0.5, curve: Curves.easeInOut),
@@ -99,71 +100,73 @@ class _SplashViewState extends State<SplashView> with SingleTickerProviderStateM
           builder: (context, child) {
             return Row(
               mainAxisAlignment: MainAxisAlignment.center,
-              mainAxisSize: MainAxisSize.max, // Important to keep centered
+              mainAxisSize: MainAxisSize.max,
               children: [
                 // Logo
                 Transform.scale(
                   scale: _logoScaleAnimation.value,
                   child: Image.asset(
                     'assets/images/cashora_shield.png',
-                    width: 120, // Increased size
+                    width: 120.w, // Responsive width
                   ),
                 ),
                 
                 // Expanding Text Area
-                SizedBox(
-                  width: _contentWidthAnimation.value,
-                  height: 100, // Increased height for larger text
-                  child: ClipRect( // Clip content while expanding
-                    child: SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
-                      physics: const NeverScrollableScrollPhysics(),
-                      child: Padding(
-                        padding: const EdgeInsets.only(left: 16.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            // Letter by Letter
-                            Row(
-                              children: List.generate(_letters.length, (index) {
-                                return Opacity(
-                                  opacity: _letterFadeAnimations.isNotEmpty ? _letterFadeAnimations[index].value : 0.0,
-                                  child: Transform.translate(
-                                    offset: Offset(0, _letterSlideAnimations.isNotEmpty ? _letterSlideAnimations[index].value : 0.0),
-                                    child: Text(
-                                      _letters[index],
-                                      style: GoogleFonts.outfit(
-                                        fontSize: 60, // Increased font size
-                                        fontWeight: FontWeight.bold,
-                                        color: AppColors.primary,
-                                        letterSpacing: -1.0,
-                                        height: 1.0,
-                                      ),
-                                    ),
+                Container(
+                   constraints: BoxConstraints(maxWidth: 200.w), // Constrain max width
+                   width: _contentWidthAnimation.value,
+                   height: 100.h,
+                   child: ClipRect(
+                     child: SingleChildScrollView(
+                       scrollDirection: Axis.horizontal,
+                       physics: const NeverScrollableScrollPhysics(),
+                       child: Padding(
+                         padding: EdgeInsets.only(left: 16.0.w),
+                         child: Column(
+                           crossAxisAlignment: CrossAxisAlignment.start,
+                           mainAxisAlignment: MainAxisAlignment.center,
+                           children: [
+                             // Letter by Letter
+                             Row(
+                               children: List.generate(_letters.length, (index) {
+                                  // As before...
+                                 return Opacity(
+                                   opacity: _letterFadeAnimations.isNotEmpty ? _letterFadeAnimations[index].value : 0.0,
+                                   child: Transform.translate(
+                                     offset: Offset(0, _letterSlideAnimations.isNotEmpty ? _letterSlideAnimations[index].value : 0.0),
+                                     child: Text(
+                                       _letters[index],
+                                       style: GoogleFonts.outfit(
+                                         fontSize: 48.sp, 
+                                         fontWeight: FontWeight.bold,
+                                         color: AppColors.primary,
+                                         letterSpacing: -1.0,
+                                         height: 1.0,
+                                       ),
+                                     ),
+                                   ),
+                                 );
+                               }),
+                             ),
+                             SizedBox(height: 4.h),
+                             // Tagline
+                             Opacity(
+                                opacity: _taglineOpacityAnimation.value,
+                                child: Text(
+                                  'Smart petty cash',
+                                  style: GoogleFonts.inter(
+                                    fontSize: 14.sp, 
+                                    fontWeight: FontWeight.w500,
+                                    color: const Color(0xFF64748B),
+                                    letterSpacing: 0.2,
                                   ),
-                                );
-                              }),
-                            ),
-                            const SizedBox(height: 4),
-                            // Tagline
-                            Opacity(
-                               opacity: _taglineOpacityAnimation.value,
-                               child: Text(
-                                 'Smart petty cash',
-                                 style: GoogleFonts.inter(
-                                   fontSize: 16, // Slightly increased tagline
-                                   fontWeight: FontWeight.w500,
-                                   color: const Color(0xFF64748B),
-                                   letterSpacing: 0.2,
-                                 ),
-                               ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
+                                ),
+                             ),
+                           ],
+                         ),
+                       ),
+                     ),
+                   ),
                 ),
               ],
             );
@@ -172,4 +175,4 @@ class _SplashViewState extends State<SplashView> with SingleTickerProviderStateM
       ),
     );
   }
-} // End of class
+}

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart'; // Added
 import '../../../../utils/app_colors.dart';
 import '../../../../utils/app_text.dart';
 import '../../../../utils/app_text_styles.dart';
@@ -21,7 +22,11 @@ class BillDetailsView extends GetView<PaymentFlowController> {
       backgroundColor: AppColors.backgroundLight,
       appBar: AppBar(
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.black),
+          icon: Icon(
+            Icons.arrow_back,
+            color: Colors.black,
+            size: 24.sp,
+          ),
           onPressed: () => Get.back(),
         ),
         title: Text(
@@ -32,7 +37,11 @@ class BillDetailsView extends GetView<PaymentFlowController> {
         elevation: 0,
         actions: [
           IconButton(
-            icon: const Icon(Icons.share, color: Colors.black),
+            icon: Icon(
+              Icons.share,
+              color: Colors.black,
+              size: 24.sp,
+            ),
             onPressed: () {},
           ),
         ],
@@ -47,19 +56,19 @@ class BillDetailsView extends GetView<PaymentFlowController> {
               maxScale: 4.0,
               child: Center(
                 child: Container(
-                  width: MediaQuery.of(context).size.width * 0.9,
+                  width: 0.9.sw,
                   // Remove fixed height to allow InteractiveViewer to handle it nicely
-                  // height: MediaQuery.of(context).size.height * 0.7, 
+                  // height: MediaQuery.of(context).size.height * 0.7,
                   constraints: BoxConstraints(
-                    maxHeight: MediaQuery.of(context).size.height * 0.8,
+                    maxHeight: 0.8.sh,
                   ),
                   decoration: BoxDecoration(
                     color: Colors.white,
-                    borderRadius: BorderRadius.circular(12),
+                    borderRadius: BorderRadius.circular(12.r),
                     boxShadow: [
                       BoxShadow(
                         color: Colors.white.withOpacity(0.1),
-                        blurRadius: 20,
+                        blurRadius: 20.r,
                       )
                     ],
                   ),
@@ -70,27 +79,33 @@ class BillDetailsView extends GetView<PaymentFlowController> {
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Icon(Icons.receipt_long_rounded, size: 100, color: Colors.grey.shade300),
-                            const SizedBox(height: 16),
+                            Icon(
+                              Icons.receipt_long_rounded,
+                              size: 100.sp,
+                              color: Colors.grey.shade300,
+                            ),
+                            SizedBox(height: 16.h),
                             Text(
                               'Invoice #INV-2023-001',
-                              style: AppTextStyles.h2.copyWith(color: Colors.black87),
+                              style: AppTextStyles.h2.copyWith(
+                                color: Colors.black87,
+                              ),
                             ),
-                             const SizedBox(height: 8),
+                            SizedBox(height: 8.h),
                             Text(
                               'Tap to Zoom',
-                              style: AppTextStyles.bodySmall.copyWith(color: Colors.grey),
+                              style: AppTextStyles.bodySmall.copyWith(
+                                color: Colors.grey,
+                              ),
                             ),
                           ],
                         ),
                       ),
-                      
+
                       // Scanning Animation Overlay - Wrapped in IgnorePointer to allow Zooming
                       if (controller.isQrDetected.isFalse)
-                        const Positioned.fill(
-                          child: IgnorePointer(
-                            child: ScannerAnimation(),
-                          ),
+                        Positioned.fill(
+                          child: IgnorePointer(child: ScannerAnimation()),
                         ),
                     ],
                   ),
@@ -98,7 +113,7 @@ class BillDetailsView extends GetView<PaymentFlowController> {
               ),
             ),
           ),
-          
+
           Obx(() {
             if (controller.isQrDetected.isTrue) {
               return _buildQrDetectedPopup();
@@ -118,11 +133,11 @@ class BillDetailsView extends GetView<PaymentFlowController> {
       maxChildSize: 0.6,
       builder: (context, scrollController) {
         return Container(
-          decoration: const BoxDecoration(
+          decoration: BoxDecoration(
             color: Colors.white,
-            borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+            borderRadius: BorderRadius.vertical(top: Radius.circular(24.r)),
           ),
-          padding: const EdgeInsets.all(24),
+          padding: EdgeInsets.all(24.w),
           child: SingleChildScrollView(
             controller: scrollController,
             child: Column(
@@ -130,103 +145,129 @@ class BillDetailsView extends GetView<PaymentFlowController> {
               children: [
                 Center(
                   child: Container(
-                    width: 40,
-                    height: 4,
+                    width: 40.w,
+                    height: 4.h,
                     decoration: BoxDecoration(
                       color: Colors.grey[300],
-                      borderRadius: BorderRadius.circular(2),
+                      borderRadius: BorderRadius.circular(2.r),
                     ),
                   ),
                 ),
-                const SizedBox(height: 20),
+                SizedBox(height: 20.h),
                 Container(
-                  padding: const EdgeInsets.all(16),
+                  padding: EdgeInsets.all(16.w),
                   decoration: BoxDecoration(
                     color: const Color(0xFFE0F7FA),
-                    borderRadius: BorderRadius.circular(16),
+                    borderRadius: BorderRadius.circular(16.r),
                     border: Border.all(color: const Color(0xFFB2EBF2)),
                   ),
                   child: Row(
                     children: [
                       Container(
-                        padding: const EdgeInsets.all(8),
+                        padding: EdgeInsets.all(8.w),
                         decoration: BoxDecoration(
                           color: AppColors.primaryBlue,
-                          borderRadius: BorderRadius.circular(8),
+                          borderRadius: BorderRadius.circular(8.r),
                         ),
-                        child: const Icon(Icons.qr_code_scanner, color: Colors.white, size: 24),
+                        child: Icon(
+                          Icons.qr_code_scanner,
+                          color: Colors.white,
+                          size: 24.sp,
+                        ),
                       ),
-                      const SizedBox(width: 16),
+                      SizedBox(width: 16.w),
                       Expanded(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
                               AppText.paymentDetailsFound,
-                              style: AppTextStyles.bodyLarge.copyWith(fontWeight: FontWeight.w600),
+                              style: AppTextStyles.bodyLarge.copyWith(
+                                fontWeight: FontWeight.w600,
+                              ),
                             ),
-                            const SizedBox(height: 4),
+                            SizedBox(height: 4.h),
                             Text(
                               AppText.scannedFromQr,
-                              style: AppTextStyles.bodySmall.copyWith(color: AppColors.textSlate),
+                              style: AppTextStyles.bodySmall.copyWith(
+                                color: AppColors.textSlate,
+                              ),
                             ),
                           ],
                         ),
                       ),
-                      const Icon(Icons.check_circle, color: AppColors.primaryBlue, size: 24),
+                      Icon(
+                        Icons.check_circle,
+                        color: AppColors.primaryBlue,
+                        size: 24.sp,
+                      ),
                     ],
                   ),
                 ),
-                const SizedBox(height: 24),
-                _buildDetailRow(AppText.payeeName, 'Office Supplies Co.', boldValue: true),
-                const Divider(height: 24),
+                SizedBox(height: 24.h),
+                _buildDetailRow(
+                  AppText.payeeName,
+                  'Office Supplies Co.',
+                  boldValue: true,
+                ),
+                Divider(height: 24.h),
                 _buildDetailRow(AppText.upiId, 'office.supplies@upi'),
-                const Divider(height: 24),
+                Divider(height: 24.h),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
                       AppText.amount,
-                      style: AppTextStyles.bodyMedium.copyWith(color: AppColors.textSlate),
+                      style: AppTextStyles.bodyMedium.copyWith(
+                        color: AppColors.textSlate,
+                      ),
                     ),
                     Text(
                       '₹145.00',
-                      style: AppTextStyles.h1.copyWith(fontWeight: FontWeight.bold),
+                      style: AppTextStyles.h1.copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ],
                 ),
-                const SizedBox(height: 32),
+                SizedBox(height: 32.h),
                 SizedBox(
                   width: double.infinity,
-                  height: 56,
+                  height: 56.h,
                   child: ElevatedButton(
                     onPressed: () {
                       controller.onUseForPayment();
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: const Color(0xFF1aa3df), // Primary Blue
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(16.r),
+                      ),
                     ),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
                           AppText.useForPayment,
-                          style: AppTextStyles.buttonText.copyWith(fontSize: 18),
+                          style: AppTextStyles.buttonText.copyWith(
+                            fontSize: 18.sp,
+                          ),
                         ),
-                        const SizedBox(width: 8),
-                        const Icon(Icons.arrow_forward, color: Colors.white),
+                        SizedBox(width: 8.w),
+                        Icon(Icons.arrow_forward, color: Colors.white, size: 24.sp),
                       ],
                     ),
                   ),
                 ),
-                const SizedBox(height: 16),
+                SizedBox(height: 16.h),
                 Center(
                   child: TextButton(
                     onPressed: () => Get.back(),
                     child: Text(
                       AppText.dismiss,
-                      style: AppTextStyles.bodyMedium.copyWith(color: AppColors.textSlate),
+                      style: AppTextStyles.bodyMedium.copyWith(
+                        color: AppColors.textSlate,
+                      ),
                     ),
                   ),
                 ),
@@ -244,11 +285,13 @@ class BillDetailsView extends GetView<PaymentFlowController> {
       children: [
         Text(
           label,
-          style: AppTextStyles.bodyMedium.copyWith(color: AppColors.primaryBlue),
+          style: AppTextStyles.bodyMedium.copyWith(
+            color: AppColors.primaryBlue,
+          ),
         ),
         Text(
           value,
-          style: boldValue 
+          style: boldValue
               ? AppTextStyles.bodyLarge.copyWith(fontWeight: FontWeight.w700)
               : AppTextStyles.bodyMedium,
         ),
@@ -264,7 +307,8 @@ class ScannerAnimation extends StatefulWidget {
   State<ScannerAnimation> createState() => _ScannerAnimationState();
 }
 
-class _ScannerAnimationState extends State<ScannerAnimation> with SingleTickerProviderStateMixin {
+class _ScannerAnimationState extends State<ScannerAnimation>
+    with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _animation;
 
@@ -275,7 +319,7 @@ class _ScannerAnimationState extends State<ScannerAnimation> with SingleTickerPr
       vsync: this,
       duration: const Duration(seconds: 2),
     )..repeat(reverse: true);
-    
+
     _animation = Tween<double>(begin: 0.0, end: 1.0).animate(_controller);
   }
 
@@ -312,18 +356,22 @@ class ScannerPainter extends CustomPainter {
       ..style = PaintingStyle.stroke;
 
     final y = size.height * position;
-    
+
     // Draw scanning line
-    canvas.drawLine(Offset(0, y), Offset(size.width, y), paint..color = Colors.green);
+    canvas.drawLine(
+      Offset(0, y),
+      Offset(size.width, y),
+      paint..color = Colors.green,
+    );
 
     // Draw gradient glow below line
-    final gradientRect = Rect.fromLTWH(0, y, size.width, 50);
+    final gradientRect = Rect.fromLTWH(0, y, size.width, 50.h);
     final gradient = LinearGradient(
       begin: Alignment.topCenter,
       end: Alignment.bottomCenter,
       colors: [Colors.green.withOpacity(0.3), Colors.transparent],
     );
-    
+
     final glowPaint = Paint()..shader = gradient.createShader(gradientRect);
     canvas.drawRect(gradientRect, glowPaint);
   }

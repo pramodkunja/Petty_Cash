@@ -1,6 +1,9 @@
 import 'package:get/get.dart';
 import '../../../../routes/app_routes.dart';
 import '../../../../core/services/auth_service.dart';
+import '../../profile/controllers/profile_controller.dart';
+
+import 'admin_approvals_controller.dart';
 
 class AdminDashboardController extends GetxController {
   final count = 0.obs;
@@ -12,13 +15,16 @@ class AdminDashboardController extends GetxController {
     final user = Get.find<AuthService>().currentUser.value;
     if (user == null) return 'Approver';
 
-    // User model stores full name in 'name' property
+    // Use firstName if available, otherwise fall back to name parsing or email
+    if (user.firstName.isNotEmpty) {
+      return user.firstName;
+    }
+
     String name = user.name;
     if (name.isEmpty || name == 'Unknown') {
       name = user.email.isNotEmpty ? user.email : 'Approver';
     }
 
-    // Get first word as short name if it contains spaces
     if (name.contains(' ')) {
       return name.split(' ').first;
     }
@@ -38,6 +44,15 @@ class AdminDashboardController extends GetxController {
 
   void changeTab(int index) {
     currentIndex.value = index;
+    if (index == 1) {
+      if (Get.isRegistered<AdminApprovalsController>()) {
+        Get.find<AdminApprovalsController>().fetchAllRequests();
+      }
+    } else if (index == 3) {
+      if (Get.isRegistered<ProfileController>()) {
+        Get.find<ProfileController>().fetchProfile();
+      }
+    }
   }
 
   void navigateToApprovals() {

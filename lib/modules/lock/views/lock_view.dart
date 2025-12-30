@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart'; // Added
 import '../../../../core/services/biometric_service.dart';
+import '../../../../core/services/auth_service.dart';
 import '../../../../utils/app_colors.dart';
 import '../../../../utils/app_text_styles.dart';
 import '../../../../routes/app_routes.dart';
@@ -16,6 +18,7 @@ class LockView extends StatefulWidget {
 
 class _LockViewState extends State<LockView> {
   final BiometricService _biometricService = Get.find<BiometricService>();
+  final AuthService _authService = Get.find<AuthService>();
 
   @override
   void initState() {
@@ -27,7 +30,9 @@ class _LockViewState extends State<LockView> {
   Future<void> _authenticate() async {
     bool authenticated = await _biometricService.authenticate();
     if (authenticated) {
-      Get.back(); // Pop the lock screen
+      _authService.verifySession();
+      // Navigate to the correct dashboard via RouteGuard
+      Get.offAllNamed(AppRoutes.INITIAL); 
     }
   }
 
@@ -44,34 +49,34 @@ class _LockViewState extends State<LockView> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Container(
-                  padding: const EdgeInsets.all(20),
+                  padding: EdgeInsets.all(20.w),
                   decoration: BoxDecoration(
                     color: Colors.white.withOpacity(0.1),
                     shape: BoxShape.circle,
                   ),
-                  child: const Icon(Icons.lock_outline, size: 60, color: Colors.white),
+                  child: Icon(Icons.lock_outline, size: 60.sp, color: Colors.white),
                 ),
-                const SizedBox(height: 24),
+                SizedBox(height: 24.h),
                 Text(
                   'App Locked',
                   style: AppTextStyles.h2.copyWith(color: Colors.white, letterSpacing: 1),
                 ),
-                const SizedBox(height: 12),
+                SizedBox(height: 12.h),
                 Text(
                   'Unlock with Biometrics',
                   style: AppTextStyles.bodyMedium.copyWith(color: Colors.white70),
                 ),
-                const SizedBox(height: 48),
+                SizedBox(height: 48.h),
                 ElevatedButton(
                   onPressed: _authenticate,
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppColors.primary,
                     foregroundColor: Colors.white,
-                    padding: const EdgeInsets.symmetric(horizontal: 48, vertical: 16),
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+                    padding: EdgeInsets.symmetric(horizontal: 48.w, vertical: 16.h),
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.r)),
                     elevation: 0,
                   ),
-                  child: const Text('Unlock', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                  child: Text('Unlock', style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.bold)),
                 ),
               ],
             ),

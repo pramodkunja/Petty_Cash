@@ -56,21 +56,21 @@ class AdminApprovalsView extends GetView<AdminApprovalsController> {
                 tabs: [
                   Tab(text: AppText.tabPending),
                   Tab(text: AppText.tabApproved),
-                  Tab(text: AppText.tabRejected),
+                  const Tab(text: 'Unpaid'), // Replaces Rejected
                   Tab(text: AppText.clarification),
                 ],
               ),
             ),
           ),
         ),
-        body: TabBarView(
+        body: Obx(() => TabBarView(
           children: [
             _buildRequestList(controller.pendingRequests),
             _buildRequestList(controller.approvedRequests),
-            _buildRequestList(controller.rejectedRequests),
+            _buildRequestList(controller.unpaidRequests),
             _buildRequestList(controller.clarificationRequests),
           ],
-        ),
+        )),
 
       ),
     );
@@ -88,6 +88,25 @@ class AdminApprovalsView extends GetView<AdminApprovalsController> {
       separatorBuilder: (_, __) => SizedBox(height: 12.h),
       itemBuilder: (context, index) {
         final item = items[index];
+        
+        // Robust Extraction
+        final String title = item['title']?.toString() ?? item['purpose']?.toString() ?? 'Unnamed Request';
+        final String user = item['user']?.toString() ?? item['employee_name']?.toString() ?? 'Unknown User';
+        final String amount = (item['amount'] is num) ? (item['amount'] as num).toStringAsFixed(2) : (item['amount']?.toString() ?? '0.00');
+        
+        String dateStr = item['date']?.toString() ?? item['created_at']?.toString() ?? '';
+        if (dateStr.isNotEmpty) {
+           try {
+             final DateTime dt = DateTime.parse(dateStr);
+             final months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+             dateStr = '${months[dt.month - 1]} ${dt.day}, ${dt.year}';
+           } catch (_) {
+             if (dateStr.contains('T')) dateStr = dateStr.split('T')[0];
+           }
+        } else {
+           dateStr = "No Date";
+        }
+
         return GestureDetector(
           onTap: () => controller.navigateToDetails(item),
           child: Container(
@@ -106,24 +125,27 @@ class AdminApprovalsView extends GetView<AdminApprovalsController> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(item['title'], style: AppTextStyles.h3.copyWith(fontSize: 16.sp)),
-                    SizedBox(height: 4.h),
-                    Text('${AppText.from} ${item['user']}', style: AppTextStyles.bodyMedium),
-                  ],
+                Expanded( // Added Expanded to avoid overflow with long titles
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(title, style: AppTextStyles.h3.copyWith(fontSize: 16.sp), maxLines: 1, overflow: TextOverflow.ellipsis),
+                      SizedBox(height: 4.h),
+                      Text('${AppText.from} $user', style: AppTextStyles.bodyMedium, maxLines: 1, overflow: TextOverflow.ellipsis),
+                    ],
+                  ),
                 ),
+                SizedBox(width: 8.w),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     Text(
-                      '₹${item['amount']}', 
+                      '₹$amount', 
                       style: AppTextStyles.h3.copyWith(color: AppColors.primaryBlue, fontSize: 16.sp),
                     ),
                     SizedBox(height: 4.h),
                     Text(
-                      item['date'],
+                      dateStr,
                       style: AppTextStyles.bodyMedium.copyWith(fontSize: 12.sp),
                     ),
                   ],

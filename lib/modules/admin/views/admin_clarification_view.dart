@@ -44,51 +44,88 @@ class AdminClarificationView extends GetView<AdminRequestDetailsController> {
               ),
               child: Row(
                 children: [
-                   Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Obx(() => Text(
-                        controller.request['user'] ?? 'User',
-                        style: AppTextStyles.h3.copyWith(fontSize: 16),
-                      )),
-                      const SizedBox(height: 4),
-                       Obx(() => Text(
-                        controller.request['title'] ?? 'Title',
-                        style: AppTextStyles.bodyMedium.copyWith(color: AppColors.textSlate),
-                      )),
-                    ],
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Obx(() {
+                          final req = controller.request;
+                          final user = req['user']?.toString() ?? req['employee_name']?.toString() ?? req['created_by']?.toString() ?? 'Unknown User';
+                          return Text(
+                            user,
+                            style: AppTextStyles.h3.copyWith(fontSize: 16),
+                          );
+                        }),
+                        const SizedBox(height: 4),
+                        Obx(() {
+                           final req = controller.request;
+                           final title = req['title']?.toString() ?? req['purpose']?.toString() ?? 'Expense';
+                           return Text(
+                            title,
+                            style: AppTextStyles.bodyMedium.copyWith(color: AppColors.textSlate),
+                            maxLines: 2, 
+                            overflow: TextOverflow.ellipsis,
+                          );
+                        }),
+                      ],
+                    ),
                   ),
-                  const Spacer(),
-                   // Placeholder Ticket Image
-                   Container(
-                     height: 80,
-                     width: 100,
-                     decoration: BoxDecoration(
-                       color: const Color(0xFFFDE68A), // Amber 200
-                        borderRadius: BorderRadius.circular(12),
-                        image: const DecorationImage(
-                          // Using a placeholder that looks like a receipt
-                          image: NetworkImage('https://img.freepik.com/free-psd/receipt-mockup-floating_1332-9024.jpg?w=200'), 
-                          fit: BoxFit.cover,
-                        ),
-                     ),
-                   ),
+                  const SizedBox(width: 12),
+                   // Thumbnail or Icon
+                   Obx(() {
+                     final req = controller.request;
+                     String? imageUrl;
+                     if (req['receipt_url'] != null && req['receipt_url'].toString().isNotEmpty) {
+                       imageUrl = req['receipt_url'].toString();
+                     } else if (req['attachments'] is List && (req['attachments'] as List).isNotEmpty) {
+                         final first = (req['attachments'] as List).first;
+                         if (first is String) imageUrl = first;
+                         if (first is Map) imageUrl = first['url'] ?? first['file'] ?? first['path'];
+                     }
+                     
+                     if (imageUrl != null && (imageUrl.endsWith('.jpg') || imageUrl.endsWith('.png') || imageUrl.endsWith('.jpeg'))) {
+                        return Container(
+                          height: 80,
+                          width: 80,
+                          decoration: BoxDecoration(
+                            color: Colors.grey[200],
+                            borderRadius: BorderRadius.circular(12),
+                            image: DecorationImage(
+                              image: NetworkImage(imageUrl),
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                        );
+                     }
+                     return Container(
+                       height: 80,
+                       width: 80,
+                       decoration: BoxDecoration(
+                         color: AppColors.primaryBlue.withOpacity(0.1),
+                         borderRadius: BorderRadius.circular(12),
+                       ),
+                       child: Icon(Icons.receipt_long, color: AppColors.primaryBlue, size: 32),
+                     );
+                   }),
                 ],
               ),
             ),
-             // Price Badge separately or inside? Design shows price inside light blue pill.
              const SizedBox(height: 12),
-             Obx(() => Container(
-               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-               decoration: BoxDecoration(
-                 color: Theme.of(context).primaryColor.withOpacity(0.1), // Light Blue
-                 borderRadius: BorderRadius.circular(20),
-               ),
-               child: Text(
-                 '₹${controller.request['amount'] ?? '0.00'}',
-                 style: AppTextStyles.h3.copyWith(fontSize: 14, color: AppColors.primaryBlue),
-               ),
-             )),
+             Obx(() {
+               final req = controller.request;
+                final String amount = (req['amount'] is num) ? (req['amount'] as num).toStringAsFixed(2) : (req['amount']?.toString() ?? '0.00');
+               return Container(
+                 padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                 decoration: BoxDecoration(
+                   color: Theme.of(context).primaryColor.withOpacity(0.1), // Light Blue
+                   borderRadius: BorderRadius.circular(20),
+                 ),
+                 child: Text(
+                   '₹$amount',
+                   style: AppTextStyles.h3.copyWith(fontSize: 14, color: AppColors.primaryBlue),
+                 ),
+               );
+             }),
 
             const SizedBox(height: 32),
             Text(AppText.yourQuestions, style: AppTextStyles.h3.copyWith(fontSize: 16)),

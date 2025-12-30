@@ -3,8 +3,14 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'dart:io';
+import 'package:file_picker/file_picker.dart';
+import 'package:flutter/foundation.dart';
+
+import 'package:cash/data/repositories/request_repository.dart';
+import '../../../../core/services/network_service.dart';
 
 class CreateRequestController extends GetxController {
+  late final RequestRepository _requestRepository;
   final ImagePicker _picker = ImagePicker();
 
   // Observable state
@@ -14,18 +20,45 @@ class CreateRequestController extends GetxController {
   final purpose = ''.obs;
   final description = ''.obs;
   final attachedFiles = <XFile>[].obs;
+  final isLoading = false.obs;
 
   // New Expense Category Logic
   final selectedExpenseCategory = Rxn<Map<String, dynamic>>();
-  final List<Map<String, dynamic>> expenseCategories = [
-    {'name': 'Travel', 'icon': Icons.flight},
-    {'name': 'Food & Dining', 'icon': Icons.restaurant},
-    {'name': 'Office Supplies', 'icon': Icons.shopping_bag},
-    {'name': 'Transport', 'icon': Icons.directions_car},
-    {'name': 'Accommodation', 'icon': Icons.hotel},
-    {'name': 'Entertainment', 'icon': Icons.movie},
-    {'name': 'Other', 'icon': Icons.category},
-  ];
+  final expenseCategories = <Map<String, dynamic>>[].obs;
+
+  Future<void> fetchCategories() async {
+    try {
+      final categoriesProxy = await _requestRepository.getCategories();
+      
+      final Map<String, IconData> iconMap = {
+        'travel': Icons.flight,
+        'meals': Icons.restaurant,
+        'software': Icons.computer,
+        'office_supplies': Icons.shopping_bag,
+        'others': Icons.category,
+        'transport': Icons.directions_car,
+        'accommodation': Icons.hotel,
+        'entertainment': Icons.movie,
+      };
+
+      final List<Map<String, dynamic>> mappedCategories = categoriesProxy.map((catString) {
+        // Format name: "office_supplies" -> "Office Supplies"
+        String name = catString.split('_').map((word) => 
+          word.isNotEmpty ? '${word[0].toUpperCase()}${word.substring(1)}' : ''
+        ).join(' ');
+
+        return {
+          'name': name,
+          'id': catString, // Keep original ID for API
+          'icon': iconMap[catString] ?? Icons.circle,
+        };
+      }).toList();
+
+      expenseCategories.value = mappedCategories;
+    } catch (e) {
+      print("Failed to load categories: $e");
+    }
+  }
 
   // Text Controllers
   final amountController = TextEditingController();
@@ -35,6 +68,9 @@ class CreateRequestController extends GetxController {
   @override
   void onInit() {
     super.onInit();
+    _requestRepository = RequestRepository(Get.find<NetworkService>());
+    fetchCategories();
+
     amountController.addListener(() {
       final val = double.tryParse(amountController.text.replaceAll(',', '')) ?? 0.0;
       amount.value = val;
@@ -54,8 +90,60 @@ class CreateRequestController extends GetxController {
     });
   }
 
+
+
+
+
+// ... class definition ...
+
   Future<void> pickImage(ImageSource source) async {
+    Get.snackbar('Debug', 'Opening picker...', duration: const Duration(seconds: 1), snackPosition: SnackPosition.BOTTOM);
     print("Attempting to pick image from $source");
+    
+    // 1. Web: Must use FilePicker and handle bytes (path is null)
+    if (kIsWeb) {
+      try {
+        FilePickerResult? result = await FilePicker.platform.pickFiles(
+          type: FileType.image,
+          allowMultiple: false,
+          withData: true, // Important for Web
+        );
+
+        if (result != null && result.files.single.bytes != null) {
+          final file = XFile.fromData(
+            result.files.single.bytes!,
+            name: result.files.single.name,
+          );
+          attachedFiles.add(file);
+        } else {
+             print("User canceled or no data on web");
+        }
+      } catch (e) {
+        Get.snackbar('Error', 'Failed to pick image on Web: $e', snackPosition: SnackPosition.BOTTOM, backgroundColor: Colors.red[100]);
+      }
+      return;
+    }
+
+    // 2. Desktop: Use FilePicker (path is valid)
+    // Safe to use Platform check here because we already checked kIsWeb
+    if (Platform.isWindows || Platform.isLinux || Platform.isMacOS) {
+      try {
+        FilePickerResult? result = await FilePicker.platform.pickFiles(
+          type: FileType.image,
+          allowMultiple: false,
+        );
+
+        if (result != null && result.files.single.path != null) {
+          final file = XFile(result.files.single.path!);
+          attachedFiles.add(file);
+        }
+      } catch (e) {
+        Get.snackbar('Error', 'Failed to pick image on Desktop: $e', snackPosition: SnackPosition.BOTTOM, backgroundColor: Colors.red[100]);
+      }
+      return;
+    }
+
+    // 3. Mobile: Use ImagePicker with permissions
     PermissionStatus status;
     
     if (source == ImageSource.camera) {
@@ -116,6 +204,18 @@ class CreateRequestController extends GetxController {
   }
 
   bool validateRequest() {
+    if (amount.value <= 0) {
+       Get.snackbar(
+        'Error',
+        'Please enter a valid amount',
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: Colors.red[100],
+        colorText: Colors.red[900],
+        margin: const EdgeInsets.all(16),
+      );
+      return false;
+    }
+
     if (selectedExpenseCategory.value == null) {
       Get.snackbar(
         'Error',
@@ -141,8 +241,59 @@ class CreateRequestController extends GetxController {
     return true;
   }
 
-  void submitRequest() {
-    Get.offAllNamed('/create-request/success');
+  Future<void> submitRequest() async {
+    if (!validateRequest()) return;
+
+    try {
+      isLoading.value = true;
+      
+      // Map UI values to API expected format
+      final apiRequestType = requestType.value == 'Pre-approved' ? 'pre_approved' : 'post_approved';
+      final apiCategory = selectedExpenseCategory.value?['id'] ?? 
+          (selectedExpenseCategory.value?['name'] as String)
+          .toLowerCase()
+          .replaceAll(' & ', '_')
+          .replaceAll(' ', '_');
+      
+      final response = await _requestRepository.submitRequest(
+        requestType: apiRequestType,
+        amount: amount.value,
+        purpose: purpose.value,
+        description: description.value,
+        category: apiCategory,
+        file: attachedFiles.isNotEmpty ? attachedFiles.first : null,
+      );
+      
+      // Navigate to success, passing the status/response
+      // The previous code had '/create-request/success'. We should check if we can pass arguments or if the success view controller reads arguments.
+      // I'll assume we pass 'status' and 'amount'.
+      
+      Get.offAllNamed(
+        '/create-request/success', 
+        arguments: {
+           'status': response['status'], // 'auto_approved' or 'pending'
+           'payment_status': response['payment_status'], // Fetch from response
+           'amount': response['amount'],
+           'request_id': response['request_id'],
+           'category': selectedExpenseCategory.value?['name'],
+           'purpose': purpose.value,
+           'description': description.value,
+           'date': DateTime.now().toString(), // Current date
+           'attachments': attachedFiles.map((file) => {
+             'name': file.name,
+             'size': 'Unknown', // File size might need async read, skip for now or 'Unknown'
+             'type': 'image', // Assuming images for now
+             'path': file.path, // Or bytes reference if needed
+             'file': file // Pass XFile object for valid reference
+           }).toList(),
+        }
+      );
+
+    } catch (e) {
+      Get.snackbar('Error', 'Failed to submit request: $e', snackPosition: SnackPosition.BOTTOM, duration: const Duration(seconds: 5));
+    } finally {
+      isLoading.value = false;
+    }
   }
   
   @override

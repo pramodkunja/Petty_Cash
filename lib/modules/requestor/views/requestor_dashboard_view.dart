@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../routes/app_routes.dart';
 import '../../../../utils/app_colors.dart';
 import '../../../../utils/app_text.dart';
@@ -7,6 +8,7 @@ import '../../../../utils/app_text_styles.dart';
 import '../../../../utils/widgets/buttons/primary_button.dart';
 import '../../../../utils/widgets/buttons/secondary_button.dart';
 import '../controllers/requestor_controller.dart';
+import '../controllers/my_requests_controller.dart';
 import 'widgets/requestor_bottom_bar.dart';
 import '../../admin/views/widgets/welcome_message.dart';
 import '../../../../utils/date_helper.dart';
@@ -18,7 +20,7 @@ class RequestorDashboardView extends GetView<RequestorController> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-       appBar: AppBar(
+      appBar: AppBar(
         automaticallyImplyLeading: false,
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         elevation: 0,
@@ -30,8 +32,10 @@ class RequestorDashboardView extends GetView<RequestorController> {
                 children: [
                   Row(
                     children: [
-                      Flexible(child: Text('Hello,', style: AppTextStyles.h3)),
-                      const SizedBox(width: 4),
+                      Flexible(
+                          child: Text(AppText.helloUser,
+                              style: AppTextStyles.h3)),
+                      SizedBox(width: 4.w),
                       // Dynamic user greeting
                       Flexible(
                         child: Obx(
@@ -43,7 +47,7 @@ class RequestorDashboardView extends GetView<RequestorController> {
                       ),
                     ],
                   ),
-                  const SizedBox(height: 4),
+                  SizedBox(height: 4.h),
                   Text(
                     DateHelper.getFormattedDate(),
                     style: AppTextStyles.bodySmall,
@@ -54,7 +58,7 @@ class RequestorDashboardView extends GetView<RequestorController> {
             GestureDetector(
               onTap: () => Get.toNamed(AppRoutes.ADMIN_NOTIFICATIONS),
               child: Container(
-                padding: const EdgeInsets.all(8),
+                padding: EdgeInsets.all(8.w),
                 decoration: BoxDecoration(
                   color: Theme.of(context).cardColor,
                   shape: BoxShape.circle,
@@ -62,7 +66,7 @@ class RequestorDashboardView extends GetView<RequestorController> {
                     BoxShadow(
                       color: Colors.black.withOpacity(0.05),
                       blurRadius: 10,
-                      offset: const Offset(0, 4),
+                      offset: Offset(0, 4.h),
                     ),
                   ],
                 ),
@@ -76,11 +80,11 @@ class RequestorDashboardView extends GetView<RequestorController> {
         ),
       ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.only(
-          left: 24.0,
-          right: 24.0,
+        padding: EdgeInsets.only(
+          left: 24.w,
+          right: 24.w,
           top: 0.0,
-          bottom: 40.0,
+          bottom: 40.h,
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -89,33 +93,18 @@ class RequestorDashboardView extends GetView<RequestorController> {
               name: controller.shortName,
               showWelcome: controller.showWelcome,
             ),
-            // _buildTopBar(), // Removed
-            // const SizedBox(height: 16), // Removed
-            //   Obx(() => Text( // Removed Greeting
-            //     'Hello, ${controller.userName}',
-            //     style: TextStyle(
-            //       fontSize: 28,
-            //       fontWeight: FontWeight.w700,
-            //       color: AppTextStyles.h1.color,
-            //     ),
-            //   )),
-            // const SizedBox(height: 24), // Removed
-            const SizedBox(height: 24),
+            SizedBox(height: 24.h),
             _buildActionButtons(),
-            const SizedBox(height: 24),
+            SizedBox(height: 24.h),
             _buildMonthlyExpenseCard(context),
-            const SizedBox(height: 24),
+            SizedBox(height: 24.h),
             _buildPendingRequestsCard(context),
-            const SizedBox(height: 24),
+            SizedBox(height: 24.h),
             Text(
-              'Recent Requests',
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-                color: AppTextStyles.h2.color,
-              ),
+              AppText.recentRequests,
+              style: AppTextStyles.h3, // Standardized style
             ),
-            const SizedBox(height: 16),
+            SizedBox(height: 16.h),
             _buildRecentRequestsList(),
           ],
         ),
@@ -130,10 +119,10 @@ class RequestorDashboardView extends GetView<RequestorController> {
           child: PrimaryButton(
             text: AppText.newRequest,
             onPressed: () => Get.toNamed(AppRoutes.CREATE_REQUEST_TYPE),
-            icon: const Icon(Icons.add_circle, size: 20, color: Colors.white),
+            icon: Icon(Icons.add_circle, size: 20.sp, color: Colors.white),
           ),
         ),
-        const SizedBox(width: 16),
+        SizedBox(width: 16.w),
         // Example for future: SecondaryButton usage
         Expanded(
           child: SecondaryButton(
@@ -141,9 +130,9 @@ class RequestorDashboardView extends GetView<RequestorController> {
             onPressed: () {
               // Future implementation
             },
-            icon: const Icon(
+            icon: Icon(
               Icons.upload_file,
-              size: 20,
+              size: 20.sp,
               color: AppColors.textDark,
             ),
           ),
@@ -154,15 +143,15 @@ class RequestorDashboardView extends GetView<RequestorController> {
 
   Widget _buildMonthlyExpenseCard(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(24),
+      padding: EdgeInsets.all(24.w),
       decoration: BoxDecoration(
         color: Theme.of(context).cardColor,
-        borderRadius: BorderRadius.circular(24),
+        borderRadius: BorderRadius.circular(24.r),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withOpacity(0.02),
             blurRadius: 10,
-            offset: const Offset(0, 4),
+            offset: Offset(0, 4.h),
           ),
         ],
       ),
@@ -176,19 +165,19 @@ class RequestorDashboardView extends GetView<RequestorController> {
               fontWeight: FontWeight.w500,
             ),
           ),
-          const SizedBox(height: 8),
+          SizedBox(height: 8.h),
           Text(
-            'This Month\'s Spending', // Could be dynamic
-            style: AppTextStyles.h3.copyWith(fontSize: 18),
+            AppText.thisMonthsSpending,
+            style: AppTextStyles.h3.copyWith(fontSize: 18.sp),
           ),
-          const SizedBox(height: 16),
+          SizedBox(height: 16.h),
           Row(
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
-              Text('₹350.50', style: AppTextStyles.h1.copyWith(fontSize: 32)),
+              Text('₹350.50', style: AppTextStyles.h1.copyWith(fontSize: 32.sp)),
               const Spacer(),
               Padding(
-                padding: const EdgeInsets.only(bottom: 6),
+                padding: EdgeInsets.only(bottom: 6.h),
                 child: Text(
                   '/ ₹1000 ${AppText.limit}',
                   style: AppTextStyles.bodyMedium.copyWith(
@@ -198,19 +187,19 @@ class RequestorDashboardView extends GetView<RequestorController> {
               ),
             ],
           ),
-          const SizedBox(height: 16),
+          SizedBox(height: 16.h),
           ClipRRect(
-            borderRadius: BorderRadius.circular(4),
+            borderRadius: BorderRadius.circular(4.r),
             child: LinearProgressIndicator(
               value: 0.35, // 350/1000
               backgroundColor: AppColors.borderLight,
               valueColor: const AlwaysStoppedAnimation<Color>(
                 AppColors.primary,
               ),
-              minHeight: 8,
+              minHeight: 8.h,
             ),
           ),
-          const SizedBox(height: 20),
+          SizedBox(height: 20.h),
           InkWell(
             onTap: () => Get.toNamed(AppRoutes.MONTHLY_SPENT),
             child: Text(
@@ -228,36 +217,38 @@ class RequestorDashboardView extends GetView<RequestorController> {
 
   Widget _buildPendingRequestsCard(BuildContext context) {
     return GestureDetector(
-      onTap: () =>
-          Get.toNamed(AppRoutes.MY_REQUESTS, arguments: {'filter': 'Pending'}),
+      onTap: () {
+        Get.find<MyRequestsController>().changeTab(1);
+        controller.changeTab(1);
+      },
       child: Container(
-        padding: const EdgeInsets.all(20),
+        padding: EdgeInsets.all(20.w),
         decoration: BoxDecoration(
           color: Theme.of(context).cardColor,
-          borderRadius: BorderRadius.circular(24),
+          borderRadius: BorderRadius.circular(24.r),
           boxShadow: [
             BoxShadow(
               color: Colors.black.withOpacity(0.02),
               blurRadius: 10,
-              offset: const Offset(0, 4),
+              offset: Offset(0, 4.h),
             ),
           ],
         ),
         child: Row(
           children: [
             Container(
-              width: 48,
-              height: 48,
+              width: 48.w,
+              height: 48.w,
               decoration: BoxDecoration(
                 color: AppColors.infoBg,
-                borderRadius: BorderRadius.circular(12),
+                borderRadius: BorderRadius.circular(12.r),
               ),
               child: const Icon(
                 Icons.pending_actions,
                 color: AppColors.primaryBlue,
               ),
             ),
-            const SizedBox(width: 16),
+            SizedBox(width: 16.w),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -266,21 +257,21 @@ class RequestorDashboardView extends GetView<RequestorController> {
                     AppText.pendingApprovals,
                     style: AppTextStyles.bodyLarge,
                   ),
-                  const SizedBox(height: 4),
-                  Text(
-                    '3 ${AppText.requestsWaiting}', // Dynamic count
+                  SizedBox(height: 4.h),
+                  Obx(() => Text(
+                    '${controller.pendingCount.value} ${AppText.requestsWaiting}', // Dynamic count
                     style: AppTextStyles.bodySmall,
-                  ),
+                  )),
                 ],
               ),
             ),
             SecondaryButton(
               text: 'View All',
-              onPressed: () => Get.toNamed(
-                AppRoutes.MY_REQUESTS,
-                arguments: {'filter': 'Pending'},
-              ),
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              onPressed: () {
+                Get.find<MyRequestsController>().changeTab(1);
+                controller.changeTab(1);
+              },
+              padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
             ),
           ],
         ),
@@ -294,30 +285,30 @@ class RequestorDashboardView extends GetView<RequestorController> {
         shrinkWrap: true,
         physics: const NeverScrollableScrollPhysics(),
         itemCount: controller.recentRequests.length,
-        separatorBuilder: (context, index) => const SizedBox(height: 12),
+        separatorBuilder: (context, index) => SizedBox(height: 12.h),
         itemBuilder: (context, index) {
           final item = controller.recentRequests[index];
           return GestureDetector(
             onTap: () =>
                 Get.toNamed(AppRoutes.REQUEST_DETAILS_READ, arguments: item),
             child: Container(
-              padding: const EdgeInsets.all(16),
+              padding: EdgeInsets.all(16.w),
               decoration: BoxDecoration(
                 color: Theme.of(context).cardColor,
-                borderRadius: BorderRadius.circular(24),
+                borderRadius: BorderRadius.circular(24.r),
                 boxShadow: [
                   BoxShadow(
                     color: Colors.black.withOpacity(0.02),
                     blurRadius: 10,
-                    offset: const Offset(0, 4),
+                    offset: Offset(0, 4.h),
                   ),
                 ],
               ),
               child: Row(
                 children: [
                   Container(
-                    width: 50,
-                    height: 50,
+                    width: 50.w,
+                    height: 50.w,
                     decoration: BoxDecoration(
                       color: item['color'] as Color, // e.g., Colors.blue[100]
                       shape: BoxShape.circle,
@@ -327,26 +318,19 @@ class RequestorDashboardView extends GetView<RequestorController> {
                       color: item['iconColor'] as Color,
                     ),
                   ),
-                  const SizedBox(width: 16),
+                  SizedBox(width: 16.w),
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
                           item['title'] as String,
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w700,
-                            color: AppTextStyles.h3.color,
-                          ),
+                          style: AppTextStyles.bodyLarge,
                         ),
-                        const SizedBox(height: 4),
+                        SizedBox(height: 4.h),
                         Text(
                           item['date'] as String,
-                          style: const TextStyle(
-                            fontSize: 13,
-                            color: Color(0xFF64748B),
-                          ),
+                          style: AppTextStyles.bodySmall,
                         ),
                       ],
                     ),
@@ -356,28 +340,23 @@ class RequestorDashboardView extends GetView<RequestorController> {
                     children: [
                       Text(
                         '₹${(item['amount'] as double).toStringAsFixed(2)}',
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w700,
-                          color: AppTextStyles.h3.color,
-                        ),
+                        style: AppTextStyles.bodyLarge,
                       ),
-                      const SizedBox(height: 4),
+                      SizedBox(height: 4.h),
                       Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 8,
-                          vertical: 4,
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 8.w,
+                          vertical: 4.h,
                         ),
                         decoration: BoxDecoration(
                           color: _getStatusColor(
                             item['status'] as String,
                           ).withOpacity(0.1),
-                          borderRadius: BorderRadius.circular(8),
+                          borderRadius: BorderRadius.circular(8.r),
                         ),
                         child: Text(
                           item['status'] as String,
-                          style: TextStyle(
-                            fontSize: 12,
+                          style: AppTextStyles.bodySmall.copyWith(
                             fontWeight: FontWeight.w600,
                             color: _getStatusColor(item['status'] as String),
                           ),

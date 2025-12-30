@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../utils/app_colors.dart';
 import '../../../../utils/app_text_styles.dart';
 
@@ -17,15 +18,15 @@ class AdminOverviewCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(20),
+      padding: EdgeInsets.all(20.r), // Responsive
       decoration: BoxDecoration(
         color: Theme.of(context).cardColor,
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(20.r), // Responsive
         boxShadow: [
           BoxShadow(
             color: Colors.black.withOpacity(0.08),
-            blurRadius: 16,
-            offset: const Offset(0, 4),
+            blurRadius: 16.r, // Responsive
+            offset: Offset(0, 4.h), // Responsive
           ),
         ],
       ),
@@ -36,12 +37,15 @@ class AdminOverviewCard extends StatelessWidget {
             title,
             style: AppTextStyles.bodyMedium.copyWith(color: AppTextStyles.bodySmall.color),
           ),
-          const SizedBox(height: 8),
-          Text(
-            count,
-            style: AppTextStyles.h1.copyWith(
-              color: isMoney ? AppColors.primaryBlue : AppTextStyles.h1.color,
-              fontSize: 28,
+          SizedBox(height: 8.h), // Responsive
+          FittedBox(
+            fit: BoxFit.scaleDown,
+            child: Text(
+              count,
+              style: AppTextStyles.h1.copyWith(
+                color: isMoney ? AppColors.primaryBlue : AppTextStyles.h1.color,
+                fontSize: 28.sp, // Responsive
+              ),
             ),
           ),
         ],

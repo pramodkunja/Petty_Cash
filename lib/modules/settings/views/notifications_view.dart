@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart'; // Added
 import '../../../../utils/app_colors.dart';
 import '../../../../utils/app_text.dart';
 import '../../../../utils/app_text_styles.dart';
@@ -18,28 +19,28 @@ class NotificationsView extends GetView<SettingsController> {
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         elevation: 0,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back_ios_new_rounded, color: AppTextStyles.h3.color, size: 20),
+          icon: Icon(Icons.arrow_back_ios_new_rounded, color: AppTextStyles.h3.color, size: 20.sp),
           onPressed: () => Get.back(),
         ),
       ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(24),
+        padding: EdgeInsets.all(24.w),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text('Manage your push notification preferences for account activity.', 
                 style: AppTextStyles.bodyMedium.copyWith(color: AppTextStyles.bodyMedium.color)),
-            const SizedBox(height: 24),
+            SizedBox(height: 24.h),
 
             Container(
               decoration: BoxDecoration(
                 color: Theme.of(context).cardColor,
-                borderRadius: BorderRadius.circular(20),
+                borderRadius: BorderRadius.circular(20.r),
                 boxShadow: [
-                  BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 10, offset: const Offset(0, 4)),
+                  BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 10.r, offset: Offset(0, 4.h)),
                 ],
               ),
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+              padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 8.h),
               child: Column(
                 children: [
                   Obx(() => SettingsToggleTile(
@@ -74,13 +75,13 @@ class NotificationsView extends GetView<SettingsController> {
               ),
             ),
             
-            const SizedBox(height: 32),
+            SizedBox(height: 32.h),
             Center(
               child: TextButton(
                 onPressed: () {},
                 child: Text('Email notifications can be managed separately in your\nAccount Settings.', 
                   textAlign: TextAlign.center,
-                  style: AppTextStyles.bodyMedium.copyWith(color: AppTextStyles.bodyMedium.color, fontSize: 12),
+                  style: AppTextStyles.bodyMedium.copyWith(color: AppTextStyles.bodyMedium.color, fontSize: 12.sp),
                 ),
               ),
             ),

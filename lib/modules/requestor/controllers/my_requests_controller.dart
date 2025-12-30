@@ -1,9 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../../routes/app_routes.dart';
+import '../../../../data/repositories/request_repository.dart';
+import '../../../../utils/app_colors.dart';
+import '../../../../utils/date_helper.dart';
 
 class MyRequestsController extends GetxController {
-  final currentTab = 0.obs; // 0: All, 1: Pending, 2: Approved, 3: Rejected
+  final RequestRepository _repository = Get.find<RequestRepository>(); // Ensure ID is injected
+  
+  final currentTab = 0.obs; // 0: All, 1: Pending, 2: Approved, 3: Rejected, 4: Unpaid
+  final isLoading = false.obs;
+  final requestList = <Map<String, dynamic>>[].obs;
+  final searchQuery = ''.obs;
 
   @override
   void onInit() {
@@ -11,93 +19,79 @@ class MyRequestsController extends GetxController {
     if (Get.arguments != null && Get.arguments['filter'] == 'Pending') {
       currentTab.value = 1;
     }
+    fetchRequests();
+    
+    // Listen to tab changes to refetch
+    ever(currentTab, (_) => fetchRequests());
   }
-  
-  // Mock Data matching the design
-  final allRequests = <Map<String, dynamic>>[
-    {
-      'id': 'REQ-2023-101',
-      'title': 'Team Lunch',
-      'date': 'Oct 25, 2023',
-      'amount': 124.00,
-      'status': 'Approved',
-      'category': 'Food & Dining',
-      'icon': Icons.restaurant,
-      'iconColor': Color(0xFF0EA5E9),
-      'iconBg': Color(0xFFE0F2FE),
-      'description': 'Monthly team lunch for the design department to celebrate project completion. Held at \'The Corner Bistro\'. All team members were present.',
-      'attachments': [
-        {'name': 'receipt_lunch.pdf', 'size': '1.2 MB', 'type': 'pdf'},
-        {'name': 'photo_team.jpg', 'size': '3.4 MB', 'type': 'image'}
-      ]
-    },
-    {
-      'id': 'REQ-2023-102',
-      'title': 'Office Supplies',
-      'date': 'Oct 26, 2023',
-      'amount': 75.50,
-      'status': 'Pending',
-      'category': 'Office',
-      'icon': Icons.shopping_cart,
-      'iconColor': Color(0xFF0EA5E9), 
-      'iconBg': Color(0xFFE0F2FE),
-      'description': 'Purchase of stationery items including notebooks, pens, and printer paper.',
-      'attachments': []
-    },
-    {
-      'id': 'REQ-2023-103',
-      'title': 'Taxi to Airport',
-      'date': 'Oct 22, 2023',
-      'amount': 45.00,
-      'status': 'Rejected',
-      'category': 'Transport',
-      'icon': Icons.directions_car,
-      'iconColor': Color(0xFF0EA5E9),
-      'iconBg': Color(0xFFE0F2FE),
-       'description': 'Taxi fare for client meeting travel.',
-      'attachments': []
-    },
-    {
-      'id': 'REQ-2023-104',
-      'title': 'Business Trip Flights',
-      'date': 'Oct 20, 2023',
-      'amount': 450.99,
-      'status': 'Approved',
-      'category': 'Travel',
-      'icon': Icons.flight,
-      'iconColor': Color(0xFF0EA5E9),
-      'iconBg': Color(0xFFE0F2FE),
-      'description': 'Round trip flights for the annual conference in NYC.',
-      'attachments': []
-    },
-  ].obs;
 
-  final searchQuery = ''.obs;
+  Future<void> fetchRequests() async {
+    isLoading.value = true;
+    try {
+      String? status;
+      String? paymentStatus;
+
+      switch (currentTab.value) {
+        case 1: // Pending
+          status = 'pending';
+          break;
+        case 2: // Approved (Includes auto_approved)
+          status = 'approved';
+          break;
+        case 3: // Rejected
+          status = 'rejected';
+          break;
+        case 4: // Unpaid
+          paymentStatus = 'pending';
+          break;
+        default: // All
+          break;
+      }
+
+      final rawRequests = await _repository.getMyRequests(
+        status: status,
+        paymentStatus: paymentStatus
+      );
+
+      // Enhance with UI helpers (Icon, Color)
+      requestList.value = rawRequests.map((req) {
+         final category = req['category'] as String? ?? 'General';
+         req['icon'] = _getCategoryIcon(category);
+         req['iconColor'] = AppColors.primaryBlue; // Unified blue for now or map
+         req['iconBg'] = AppColors.primaryBlue.withOpacity(0.1);
+         req['date'] = DateHelper.formatDate(req['created_at']);
+         req['title'] = req['purpose'] ?? req['title'] ?? 'Request';
+         
+         // Map receipt_url to attachments list for details view
+         if (req['receipt_url'] != null && req['receipt_url'].toString().isNotEmpty) {
+           req['attachments'] = [
+             {
+               'file': req['receipt_url'],
+               'name': 'Receipt',
+               'size': 'Unknown'
+             }
+           ];
+         }
+         
+         return req;
+      }).toList();
+
+    } catch (e) {
+      Get.snackbar('Error', 'Failed to fetch requests: $e', snackPosition: SnackPosition.BOTTOM);
+    } finally {
+      isLoading.value = false;
+    }
+  }
 
   List<Map<String, dynamic>> get filteredRequests {
-    List<Map<String, dynamic>> result;
-    
-    // 1. Filter by Tab
-    if (currentTab.value == 0) {
-      result = allRequests;
-    } else if (currentTab.value == 1) {
-      result = allRequests.where((r) => r['status'] == 'Pending').toList();
-    } else if (currentTab.value == 2) {
-      result = allRequests.where((r) => r['status'] == 'Approved').toList();
-    } else {
-      result = allRequests.where((r) => r['status'] == 'Rejected').toList();
+    if (searchQuery.value.isEmpty) {
+      return requestList;
     }
-
-    // 2. Filter by Search Query
-    if (searchQuery.value.isNotEmpty) {
-      final lowerQuery = searchQuery.value.toLowerCase();
-      result = result.where((r) => 
-        r['title'].toString().toLowerCase().contains(lowerQuery) || 
-        r['id'].toString().toLowerCase().contains(lowerQuery)
-      ).toList();
-    }
-    
-    return result;
+    final lowerQuery = searchQuery.value.toLowerCase();
+    return requestList.where((r) => 
+      (r['title']?.toString().toLowerCase().contains(lowerQuery) ?? false) || 
+      (r['request_id']?.toString().toLowerCase().contains(lowerQuery) ?? false)
+    ).toList();
   }
 
   void searchRequests(String query) {
@@ -105,10 +99,26 @@ class MyRequestsController extends GetxController {
   }
 
   void changeTab(int index) {
-    currentTab.value = index;
+    if (currentTab.value != index) {
+      currentTab.value = index;
+    }
   }
 
   void viewDetails(Map<String, dynamic> request) {
-    Get.toNamed(AppRoutes.REQUEST_DETAILS_READ, arguments: request);
+    if (request['status'] == 'clarification_required') {
+      Get.toNamed(AppRoutes.REQUESTOR_CLARIFICATION, arguments: request);
+    } else {
+      Get.toNamed(AppRoutes.REQUEST_DETAILS_READ, arguments: request);
+    }
+  }
+
+  IconData _getCategoryIcon(String category) {
+    final cat = category.toLowerCase();
+    if (cat.contains('food') || cat.contains('meal') || cat.contains('lunch')) return Icons.restaurant;
+    if (cat.contains('travel') || cat.contains('flight')) return Icons.flight;
+    if (cat.contains('transport') || cat.contains('taxi') || cat.contains('uber')) return Icons.directions_car;
+    if (cat.contains('office') || cat.contains('supplies')) return Icons.shopping_bag; // Changed from shopping_cart for variety
+    if (cat.contains('hotel') || cat.contains('lodging')) return Icons.hotel;
+    return Icons.category;
   }
 }

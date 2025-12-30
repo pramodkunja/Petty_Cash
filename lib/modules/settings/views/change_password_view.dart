@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart'; // Added
 import '../../../../utils/app_colors.dart';
 import '../../../../utils/app_text.dart';
 import '../../../../utils/app_text_styles.dart';
@@ -18,16 +19,16 @@ class ChangePasswordView extends GetView<SettingsController> {
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         elevation: 0,
         leading: IconButton(
-          icon: const Icon(
+          icon: Icon(
             Icons.arrow_back_ios_new_rounded,
             color: AppColors.textDark,
-            size: 20,
+            size: 20.sp,
           ),
           onPressed: () => Get.back(),
         ),
       ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(24),
+        padding: EdgeInsets.all(24.w),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -37,7 +38,7 @@ class ChangePasswordView extends GetView<SettingsController> {
                 color: AppTextStyles.bodyMedium.color,
               ),
             ),
-            const SizedBox(height: 24),
+            SizedBox(height: 24.h),
 
             _buildLabel(AppText.currentPassword),
             Obx(
@@ -50,7 +51,7 @@ class ChangePasswordView extends GetView<SettingsController> {
                 showHighlightError: controller.rxCurrentPasswordError.value,
               ),
             ),
-            const SizedBox(height: 20),
+            SizedBox(height: 20.h),
 
             _buildLabel(AppText.newPassword),
             Obx(
@@ -62,7 +63,7 @@ class ChangePasswordView extends GetView<SettingsController> {
                 onToggleVisibility: controller.toggleNewPasswordVisibility,
               ),
             ),
-            const SizedBox(height: 6),
+            SizedBox(height: 6.h),
             Obx(
               () => Row(
                 children: [
@@ -70,16 +71,16 @@ class ChangePasswordView extends GetView<SettingsController> {
                     controller.rxPasswordLength.value
                         ? Icons.check_circle
                         : Icons.info,
-                    size: 14,
+                    size: 14.sp,
                     color: controller.rxPasswordLength.value
                         ? Colors.green
                         : AppColors.textSlate,
                   ),
-                  const SizedBox(width: 6),
+                  SizedBox(width: 6.w),
                   Text(
                     AppText.mustBeAtLeast8Chars,
                     style: AppTextStyles.bodyMedium.copyWith(
-                      fontSize: 12,
+                      fontSize: 12.sp,
                       color: controller.rxPasswordLength.value
                           ? Colors.green
                           : AppColors.textSlate,
@@ -89,7 +90,7 @@ class ChangePasswordView extends GetView<SettingsController> {
               ),
             ),
 
-            const SizedBox(height: 20),
+            SizedBox(height: 20.h),
             _buildLabel(AppText.confirmNewPassword),
             Obx(
               () => _buildPasswordField(
@@ -101,7 +102,7 @@ class ChangePasswordView extends GetView<SettingsController> {
                 showHighlightError: controller.rxConfirmPasswordError.value,
               ),
             ),
-            const SizedBox(height: 6),
+            SizedBox(height: 6.h),
             Obx(
               () => Row(
                 children: [
@@ -109,16 +110,16 @@ class ChangePasswordView extends GetView<SettingsController> {
                     controller.rxPasswordMatch.value
                         ? Icons.check_circle
                         : Icons.info,
-                    size: 14,
+                    size: 14.sp,
                     color: controller.rxPasswordMatch.value
                         ? Colors.green
                         : AppColors.textSlate,
                   ),
-                  const SizedBox(width: 6),
+                  SizedBox(width: 6.w),
                   Text(
                     AppText.bothPasswordsMatch,
                     style: AppTextStyles.bodyMedium.copyWith(
-                      fontSize: 12,
+                      fontSize: 12.sp,
                       color: controller.rxPasswordMatch.value
                           ? Colors.green
                           : AppColors.textSlate,
@@ -128,12 +129,12 @@ class ChangePasswordView extends GetView<SettingsController> {
               ),
             ),
 
-            const SizedBox(height: 48),
+            SizedBox(height: 48.h),
             PrimaryButton(
               text: AppText.updatePassword,
               onPressed: controller.changePassword,
             ),
-            const SizedBox(height: 16),
+            SizedBox(height: 16.h),
             Center(
               child: TextButton(
                 onPressed: () {},
@@ -153,8 +154,8 @@ class ChangePasswordView extends GetView<SettingsController> {
 
   Widget _buildLabel(String text) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 8.0, left: 4),
-      child: Text(text, style: AppTextStyles.h3.copyWith(fontSize: 14)),
+      padding: EdgeInsets.only(bottom: 8.0.h, left: 4.w),
+      child: Text(text, style: AppTextStyles.h3.copyWith(fontSize: 14.sp)),
     );
   }
 
@@ -169,7 +170,7 @@ class ChangePasswordView extends GetView<SettingsController> {
     return Container(
       decoration: BoxDecoration(
         color: Theme.of(context).cardColor,
-        borderRadius: BorderRadius.circular(30),
+        borderRadius: BorderRadius.circular(30.r),
         border: Border.all(
           color: showHighlightError
               ? Colors.red
@@ -186,9 +187,9 @@ class ChangePasswordView extends GetView<SettingsController> {
             color: AppColors.textLight,
           ),
           border: InputBorder.none,
-          contentPadding: const EdgeInsets.symmetric(
-            horizontal: 24,
-            vertical: 16,
+          contentPadding: EdgeInsets.symmetric(
+            horizontal: 24.w,
+            vertical: 16.h,
           ),
           suffixIcon: IconButton(
             icon: Icon(
@@ -196,6 +197,7 @@ class ChangePasswordView extends GetView<SettingsController> {
                   ? Icons.visibility_outlined
                   : Icons.visibility_off_outlined,
               color: AppColors.textLight,
+              size: 24.sp,
             ),
             onPressed: onToggleVisibility,
           ),

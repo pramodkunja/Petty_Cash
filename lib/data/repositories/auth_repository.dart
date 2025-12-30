@@ -192,18 +192,9 @@ class AuthRepository {
       // return User.fromJson(response.data);
 
       await Future.delayed(const Duration(milliseconds: 500));
-      // For now, we unfortunately can't recover the exact user without an API.
-      // But we will return a generic authenticated user to allow the flow to proceed
-      // if a token exists (validation happens in AuthService).
-      return User(
-        id: '1',
-        email: 'restored@example.com',
-        name: 'Restored User',
-        role: 'requestor',
-        orgName: 'Restored Org',
-        orgCode: 'ORG-0000',
-        phoneNumber: '+919999999999',
-      );
+      // CRITICAL SECURITY FIX: Removed hardcoded mock user.
+      // If the API isn't ready or fails, we must return null.
+      return null;
     } catch (e) {
       return null;
     }

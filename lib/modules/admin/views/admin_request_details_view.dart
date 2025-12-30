@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart'; // Added
 import '../../../../utils/app_colors.dart';
 import '../../../../utils/app_text.dart';
 import '../../../../utils/app_text_styles.dart';
@@ -18,7 +19,7 @@ class AdminRequestDetailsView extends GetView<AdminRequestDetailsController> {
         backgroundColor: Colors.transparent,
         elevation: 0,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back_ios_new_rounded, color: Theme.of(context).iconTheme.color, size: 20),
+          icon: Icon(Icons.arrow_back_ios_new_rounded, color: Theme.of(context).iconTheme.color, size: 20.sp),
           onPressed: () => Get.back(),
         ),
         centerTitle: true,
@@ -42,21 +43,21 @@ class AdminRequestDetailsView extends GetView<AdminRequestDetailsController> {
   // --- APPROVED UI ---
   Widget _buildApprovedUI(BuildContext context) {
     return SingleChildScrollView(
-      padding: const EdgeInsets.all(24.0),
+      padding: EdgeInsets.all(24.w),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Container(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+            padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
             decoration: BoxDecoration(
               color: AppColors.successBg, // Light Green
-              borderRadius: BorderRadius.circular(20),
+              borderRadius: BorderRadius.circular(20.r),
             ),
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                const Icon(Icons.check_circle, color: AppColors.successGreen, size: 20),
-                const SizedBox(width: 8),
+                Icon(Icons.check_circle, color: AppColors.successGreen, size: 20.sp),
+                SizedBox(width: 8.w),
                 Text(
                   AppText.approvedSC,
                   style: AppTextStyles.bodyMedium.copyWith(color: AppColors.successGreen, fontWeight: FontWeight.bold),
@@ -64,21 +65,21 @@ class AdminRequestDetailsView extends GetView<AdminRequestDetailsController> {
               ],
             ),
           ),
-          const SizedBox(height: 16),
+          SizedBox(height: 16.h),
           Obx(() => Text(
                 '₹${controller.request['amount'] ?? '0.00'}',
-                style: AppTextStyles.h1.copyWith(fontSize: 40),
+                style: AppTextStyles.h1.copyWith(fontSize: 40.sp),
               )),
-          const SizedBox(height: 8),
+          SizedBox(height: 8.h),
           Obx(() => Text(
                 controller.request['title'] ?? 'Office Supplies',
-                style: AppTextStyles.bodyMedium.copyWith(color: AppColors.textSlate, fontSize: 16),
+                style: AppTextStyles.bodyMedium.copyWith(color: AppColors.textSlate, fontSize: 16.sp),
               )),
-          const SizedBox(height: 32),
+          SizedBox(height: 32.h),
           _buildInformationCard(context),
-          const SizedBox(height: 24),
+          SizedBox(height: 24.h),
           _buildPaymentStatusCard(context),
-          const SizedBox(height: 24),
+          SizedBox(height: 24.h),
           _buildApprovalHistory(context),
         ],
       ),
@@ -88,52 +89,52 @@ class AdminRequestDetailsView extends GetView<AdminRequestDetailsController> {
   // --- REJECTED UI ---
   Widget _buildRejectedUI(BuildContext context) {
     return SingleChildScrollView(
-      padding: const EdgeInsets.all(24.0),
+      padding: EdgeInsets.all(24.w),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Container(
-            padding: const EdgeInsets.all(16),
+            padding: EdgeInsets.all(16.w),
             decoration: BoxDecoration(
               color: AppColors.error.withOpacity(0.1), // Light Red
               shape: BoxShape.circle,
             ),
-            child: const Icon(Icons.block, color: AppColors.error, size: 32),
+            child: Icon(Icons.block, color: AppColors.error, size: 32.sp),
           ),
-          const SizedBox(height: 16),
+          SizedBox(height: 16.h),
           Obx(() => Text(
                 '₹${controller.request['amount'] ?? '0.00'}',
-                style: AppTextStyles.h1.copyWith(fontSize: 40),
+                style: AppTextStyles.h1.copyWith(fontSize: 40.sp),
               )),
-          const SizedBox(height: 12),
+          SizedBox(height: 12.h),
           Container(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+            padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 6.h),
             decoration: BoxDecoration(
               color: AppColors.error.withOpacity(0.1),
-              borderRadius: BorderRadius.circular(20),
+              borderRadius: BorderRadius.circular(20.r),
             ),
             child: Text(
               AppText.statusRejected.toUpperCase(),
               style: AppTextStyles.bodyMedium.copyWith(color: AppColors.error, fontWeight: FontWeight.bold),
             ),
           ),
-          const SizedBox(height: 32),
+          SizedBox(height: 32.h),
           _buildRejectionReasonCard(context),
-          const SizedBox(height: 24),
+          SizedBox(height: 24.h),
           _buildInformationCard(context),
-          const SizedBox(height: 24),
+          SizedBox(height: 24.h),
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text("History", style: AppTextStyles.h3.copyWith(fontSize: 18)),
+              Text("History", style: AppTextStyles.h3.copyWith(fontSize: 18.sp)),
             ],
           ),
-          const SizedBox(height: 16),
+          SizedBox(height: 16.h),
           Container(
-             padding: const EdgeInsets.all(24),
+             padding: EdgeInsets.all(24.w),
              decoration: BoxDecoration(
                color: Theme.of(context).cardColor,
-               borderRadius: BorderRadius.circular(24),
+               borderRadius: BorderRadius.circular(24.r),
              ),
              child: Column(
                children: [
@@ -166,7 +167,7 @@ class AdminRequestDetailsView extends GetView<AdminRequestDetailsController> {
   // --- PENDING UI (Existing) ---
   Widget _buildPendingUI(BuildContext context) {
     return SingleChildScrollView(
-      padding: const EdgeInsets.all(24.0),
+      padding: EdgeInsets.all(24.w),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -174,45 +175,45 @@ class AdminRequestDetailsView extends GetView<AdminRequestDetailsController> {
           Row(
             children: [
                CircleAvatar(
-                radius: 20,
+                radius: 20.r,
                 backgroundColor: _getAvatarColor(controller.request['initials'] ?? 'U'), 
                  child: Text(
                    controller.request['initials'] ?? 'U',
-                   style: TextStyle(color: _getAvatarTextColor(controller.request['initials'] ?? 'U'), fontWeight: FontWeight.bold),
+                   style: TextStyle(color: _getAvatarTextColor(controller.request['initials'] ?? 'U'), fontWeight: FontWeight.bold, fontSize: 16.sp),
                  ),
               ),
-              const SizedBox(width: 12),
+              SizedBox(width: 12.w),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Obx(() => Text(
                           controller.request['user'] ?? 'User',
-                          style: AppTextStyles.h3.copyWith(fontSize: 16),
+                          style: AppTextStyles.h3.copyWith(fontSize: 16.sp),
                         )),
                     Text(
                       'Marketing Team • 3 days ago', // Placeholder
-                      style: AppTextStyles.bodyMedium.copyWith(color: AppColors.textSlate, fontSize: 13),
+                      style: AppTextStyles.bodyMedium.copyWith(color: AppColors.textSlate, fontSize: 13.sp),
                     ),
                   ],
                 ),
               ),
             ],
           ),
-          const SizedBox(height: 24),
+          SizedBox(height: 24.h),
 
           // Detail Card
           Container(
             width: double.infinity,
-            padding: const EdgeInsets.all(24),
+            padding: EdgeInsets.all(24.w),
             decoration: BoxDecoration(
               color: Theme.of(context).cardColor,
-              borderRadius: BorderRadius.circular(24),
+              borderRadius: BorderRadius.circular(24.r),
               boxShadow: [
                 BoxShadow(
                   color: Colors.black.withOpacity(0.08),
-                  blurRadius: 16,
-                  offset: const Offset(0, 4),
+                  blurRadius: 16.r,
+                  offset: Offset(0, 4.h),
                 ),
               ],
             ),
@@ -221,35 +222,35 @@ class AdminRequestDetailsView extends GetView<AdminRequestDetailsController> {
               children: [
                 Obx(() => Text(
                       '₹${controller.request['amount'] ?? '0.00'}',
-                      style: AppTextStyles.h1.copyWith(fontSize: 36),
+                      style: AppTextStyles.h1.copyWith(fontSize: 36.sp),
                     )),
-                const SizedBox(height: 8),
+                SizedBox(height: 8.h),
                 Obx(() => Text(
                       controller.request['title'] ?? 'Title',
-                      style: AppTextStyles.h3.copyWith(fontSize: 18),
+                      style: AppTextStyles.h3.copyWith(fontSize: 18.sp),
                     )),
-                const SizedBox(height: 24),
+                SizedBox(height: 24.h),
                 _buildInfoRow(Icons.business_center_rounded, AppText.businessMeal),
-                const SizedBox(height: 16),
+                SizedBox(height: 16.h),
                 _buildInfoRow(Icons.hourglass_empty_rounded, AppText.pendingApproval),
               ],
             ),
           ),
-          const SizedBox(height: 24),
+          SizedBox(height: 24.h),
 
           // Description Card
           Container(
             width: double.infinity,
-            padding: const EdgeInsets.all(24),
+            padding: EdgeInsets.all(24.w),
             decoration: BoxDecoration(
               color: Theme.of(context).cardColor,
-              borderRadius: BorderRadius.circular(24),
+              borderRadius: BorderRadius.circular(24.r),
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(AppText.description, style: AppTextStyles.h3.copyWith(fontSize: 16)),
-                const SizedBox(height: 12),
+                Text(AppText.description, style: AppTextStyles.h3.copyWith(fontSize: 16.sp)),
+                SizedBox(height: 12.h),
                 Text(
                   'Lunch meeting with the design team from Acme Inc. to discuss the upcoming Q3 campaign.',
                   style: AppTextStyles.bodyMedium.copyWith(color: AppColors.textSlate, height: 1.5),
@@ -257,84 +258,108 @@ class AdminRequestDetailsView extends GetView<AdminRequestDetailsController> {
               ],
             ),
           ),
-          const SizedBox(height: 24),
+          SizedBox(height: 24.h),
 
           // Attachment Card
           Container(
             width: double.infinity,
-            padding: const EdgeInsets.all(24),
+            padding: EdgeInsets.all(24.w),
             decoration: BoxDecoration(
               color: Theme.of(context).cardColor,
-              borderRadius: BorderRadius.circular(24),
+              borderRadius: BorderRadius.circular(24.r),
               boxShadow: [
                 BoxShadow(
                   color: Colors.black.withOpacity(0.08),
-                  blurRadius: 16,
-                  offset: const Offset(0, 4),
+                  blurRadius: 16.r,
+                  offset: Offset(0, 4.h),
                 ),
               ],
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(AppText.attachedBill, style: AppTextStyles.h3.copyWith(fontSize: 16)),
-                const SizedBox(height: 16),
-                GestureDetector(
-                  onTap: controller.viewAttachment,
-                  child: Container(
-                    height: 200,
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      color: Theme.of(context).scaffoldBackgroundColor,
-                      borderRadius: BorderRadius.circular(16),
-                      border: Border.all(color: Theme.of(context).dividerColor, width: 1),
-                      image: const DecorationImage(
-                        image: NetworkImage('https://via.placeholder.com/400x200'), // Placeholder
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                    child: Stack(
-                      alignment: Alignment.center,
-                      children: [
-                        Container(
+                Text(AppText.attachedBill, style: AppTextStyles.h3.copyWith(fontSize: 16.sp)),
+                SizedBox(height: 16.h),
+                
+                // Dynamic Attachment Logic
+                Builder(builder: (context) {
+                  final req = controller.request;
+                  List<dynamic> files = [];
+                  
+                  // Normalize input
+                  if (req['attachments'] is List) {
+                    files = req['attachments'];
+                  } else if (req['receipt_url'] != null && req['receipt_url'].toString().isNotEmpty) {
+                    files = [req['receipt_url']]; // Treat as single item list
+                  } else if (req['file'] != null) {
+                    files = [req['file']];
+                  }
+
+                  if (files.isEmpty) {
+                    return Text("No attachments found.", style: TextStyle(color: AppColors.textSlate, fontSize: 13.sp));
+                  }
+
+                  return ListView.separated(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemCount: files.length,
+                    separatorBuilder: (_, __) => SizedBox(height: 12.h),
+                    itemBuilder: (context, index) {
+                      final file = files[index];
+                      String name = "Attachment ${index + 1}";
+                      String url = "";
+
+                      if (file is String) {
+                        url = file;
+                        name = file.split('/').last.split('?').first; 
+                      } else if (file is Map) {
+                        url = file['url'] ?? file['file'] ?? file['path'] ?? '';
+                        name = file['name'] ?? url.split('/').last;
+                      }
+
+                      if (url.isEmpty) return const SizedBox.shrink();
+
+                      return GestureDetector(
+                        onTap: () => controller.viewAttachment(url),
+                        child: Container(
+                          padding: EdgeInsets.all(12.w),
                           decoration: BoxDecoration(
-                            color: Colors.black.withOpacity(0.2), // Darker overlay for better text contrast
-                            borderRadius: BorderRadius.circular(16),
-                          ),
-                        ),
-                        Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12), // Larger touch target
-                          decoration: BoxDecoration(
-                            color: Theme.of(context).cardColor.withOpacity(0.9), // Glassy feel
-                            borderRadius: BorderRadius.circular(30),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.black.withOpacity(0.1),
-                                blurRadius: 8,
-                                offset: const Offset(0, 2),
-                              ),
-                            ],
+                            color: Theme.of(context).scaffoldBackgroundColor,
+                            borderRadius: BorderRadius.circular(12.r),
+                            border: Border.all(color: Theme.of(context).dividerColor),
                           ),
                           child: Row(
-                            mainAxisSize: MainAxisSize.min,
                             children: [
-                              const Icon(Icons.visibility_rounded, size: 18, color: AppColors.textDark),
-                              const SizedBox(width: 8),
-                              Text(
-                                AppText.tapToView,
-                                style: AppTextStyles.bodyMedium.copyWith(color: AppColors.textDark, fontWeight: FontWeight.w600),
+                              Container(
+                                padding: EdgeInsets.all(8.w),
+                                decoration: BoxDecoration(
+                                  color: AppColors.primaryBlue.withOpacity(0.1),
+                                  borderRadius: BorderRadius.circular(8.r),
+                                ),
+                                child: Icon(Icons.description, color: AppColors.primaryBlue, size: 20.sp),
                               ),
+                              SizedBox(width: 12.w),
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(name, style: AppTextStyles.bodyMedium.copyWith(fontWeight: FontWeight.w600), maxLines: 1, overflow: TextOverflow.ellipsis),
+                                    Text("Tap to view", style: TextStyle(color: AppColors.primaryBlue, fontSize: 10.sp)),
+                                  ],
+                                ),
+                              ),
+                              Icon(Icons.open_in_new, color: AppColors.textSlate, size: 18.sp),
                             ],
                           ),
                         ),
-                      ],
-                    ),
-                  ),
-                ),
+                      );
+                    },
+                  );
+                }),
               ],
             ),
           ),
-          const SizedBox(height: 24),
+          SizedBox(height: 24.h),
           
           // Action Buttons
           SecondaryButton(
@@ -345,7 +370,7 @@ class AdminRequestDetailsView extends GetView<AdminRequestDetailsController> {
             border: const BorderSide(color: AppColors.primaryBlue, width: 1.5),
             width: double.infinity,
           ),
-          const SizedBox(height: 16),
+          SizedBox(height: 16.h),
           Row(
             children: [
               Expanded(
@@ -356,7 +381,7 @@ class AdminRequestDetailsView extends GetView<AdminRequestDetailsController> {
                   textColor: AppColors.textDark,
                 ),
               ),
-              const SizedBox(width: 16),
+              SizedBox(width: 16.w),
               Expanded(
                 child: PrimaryButton(
                   text: AppText.approve,
@@ -365,7 +390,7 @@ class AdminRequestDetailsView extends GetView<AdminRequestDetailsController> {
               ),
             ],
           ),
-          const SizedBox(height: 32),
+          SizedBox(height: 32.h),
         ],
       ),
     );
@@ -376,43 +401,43 @@ class AdminRequestDetailsView extends GetView<AdminRequestDetailsController> {
   Widget _buildInformationCard(BuildContext context) {
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.all(24),
+      padding: EdgeInsets.all(24.w),
       decoration: BoxDecoration(
         color: Theme.of(context).cardColor,
-        borderRadius: BorderRadius.circular(24),
+        borderRadius: BorderRadius.circular(24.r),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text("Information", style: AppTextStyles.h3.copyWith(fontSize: 16)),
-          const SizedBox(height: 24),
+          Text("Information", style: AppTextStyles.h3.copyWith(fontSize: 16.sp)),
+          SizedBox(height: 24.h),
           _buildLabelValue("Request ID", "#REQ-2023-8492"),
-          const SizedBox(height: 16),
+          SizedBox(height: 16.h),
           Row(
             children: [
               Text("Requestor", style: AppTextStyles.bodyMedium.copyWith(color: AppColors.textSlate)),
-              const SizedBox(width: 8),
+              SizedBox(width: 8.w),
               Flexible( // Added Flexible to prevent overflow
                 child: Row(
                   mainAxisSize: MainAxisSize.min, // Ensure row shrinks
                   children: [
                     CircleAvatar(
-                      radius: 12,
+                      radius: 12.r,
                       backgroundColor: const Color(0xFFE0F2FE),
-                      child: Text("JD", style: TextStyle(fontSize: 10, color: AppColors.primaryBlue, fontWeight: FontWeight.bold)),
+                      child: Text("JD", style: TextStyle(fontSize: 10.sp, color: AppColors.primaryBlue, fontWeight: FontWeight.bold)),
                     ),
-                    const SizedBox(width: 8),
+                    SizedBox(width: 8.w),
                     Flexible( // Text also needs to be flexible
-                       child: Text("Jane Doe", style: AppTextStyles.h3.copyWith(fontSize: 14), overflow: TextOverflow.ellipsis),
+                       child: Text("Jane Doe", style: AppTextStyles.h3.copyWith(fontSize: 14.sp), overflow: TextOverflow.ellipsis),
                     ),
                   ],
                 ),
               )
             ],
           ),
-          const SizedBox(height: 16),
+          SizedBox(height: 16.h),
           _buildLabelValue("Department", "Marketing"),
-          const SizedBox(height: 16),
+          SizedBox(height: 16.h),
           _buildLabelValue("Submission Date", "Oct 28, 2023"),
         ],
       ),
@@ -422,10 +447,10 @@ class AdminRequestDetailsView extends GetView<AdminRequestDetailsController> {
   Widget _buildPaymentStatusCard(BuildContext context) {
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.all(20),
+      padding: EdgeInsets.all(20.w),
       decoration: BoxDecoration(
         color: Theme.of(context).cardColor,
-        borderRadius: BorderRadius.circular(24),
+        borderRadius: BorderRadius.circular(24.r),
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -434,34 +459,34 @@ class AdminRequestDetailsView extends GetView<AdminRequestDetailsController> {
             child: Row(
               children: [
                 Container(
-                  padding: const EdgeInsets.all(10),
+                  padding: EdgeInsets.all(10.w),
                   decoration: BoxDecoration(
                     color: AppColors.warning.withOpacity(0.1),
                     shape: BoxShape.circle,
                   ),
-                  child: const Icon(Icons.payments_outlined, color: AppColors.warning, size: 24),
+                  child: Icon(Icons.payments_outlined, color: AppColors.warning, size: 24.sp),
                 ),
-                const SizedBox(width: 16),
+                SizedBox(width: 16.w),
                 Expanded( // Expanded text parsing
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text("Payment Status", style: AppTextStyles.h3.copyWith(fontSize: 16), overflow: TextOverflow.ellipsis),
-                      Text("Pending reimbursement", style: AppTextStyles.bodyMedium.copyWith(color: AppColors.textSlate, fontSize: 13), overflow: TextOverflow.ellipsis),
+                      Text("Payment Status", style: AppTextStyles.h3.copyWith(fontSize: 16.sp), overflow: TextOverflow.ellipsis),
+                      Text("Pending reimbursement", style: AppTextStyles.bodyMedium.copyWith(color: AppColors.textSlate, fontSize: 13.sp), overflow: TextOverflow.ellipsis),
                     ],
                   ),
                 ),
               ],
             ),
           ),
-          const SizedBox(width: 8),
+          SizedBox(width: 8.w),
           Container(
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+            padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
             decoration: BoxDecoration(
               color: AppColors.warning.withOpacity(0.1),
-              borderRadius: BorderRadius.circular(8),
+              borderRadius: BorderRadius.circular(8.r),
             ),
-            child: Text("Pending", style: AppTextStyles.bodyMedium.copyWith(color: AppColors.warning, fontWeight: FontWeight.bold, fontSize: 12)),
+            child: Text("Pending", style: AppTextStyles.bodyMedium.copyWith(color: AppColors.warning, fontWeight: FontWeight.bold, fontSize: 12.sp)),
           ),
         ],
       ),
@@ -471,16 +496,16 @@ class AdminRequestDetailsView extends GetView<AdminRequestDetailsController> {
   Widget _buildApprovalHistory(BuildContext context) {
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.all(24),
+      padding: EdgeInsets.all(24.w),
       decoration: BoxDecoration(
         color: Theme.of(context).cardColor,
-        borderRadius: BorderRadius.circular(24),
+        borderRadius: BorderRadius.circular(24.r),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text("APPROVAL HISTORY", style: AppTextStyles.bodyMedium.copyWith(color: AppColors.textSlate, fontWeight: FontWeight.bold, fontSize: 12)),
-          const SizedBox(height: 24),
+          Text("APPROVAL HISTORY", style: AppTextStyles.bodyMedium.copyWith(color: AppColors.textSlate, fontWeight: FontWeight.bold, fontSize: 12.sp)),
+          SizedBox(height: 24.h),
            _buildHistoryItem(
              context,
              title: "Request Submitted",
@@ -531,38 +556,38 @@ class AdminRequestDetailsView extends GetView<AdminRequestDetailsController> {
         Column(
           children: [
             Container(
-              width: 24,
-              height: 24,
+              width: 24.w,
+              height: 24.w,
               decoration: BoxDecoration(
                 color: iconBg ?? iconColor.withOpacity(0.1),
                 shape: BoxShape.circle,
               ),
-              child: Icon(icon, color: iconBg != null ? iconColor : iconColor, size: 14),
+              child: Icon(icon, color: iconBg != null ? iconColor : iconColor, size: 14.sp),
             ),
             if (!isLast)
               Container(
-                width: 2,
-                height: 40,
+                width: 2.w,
+                height: 40.h,
                 color: Theme.of(context).dividerColor,
               ),
           ],
         ),
-        const SizedBox(width: 16),
+        SizedBox(width: 16.w),
         Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(title, style: AppTextStyles.h3.copyWith(fontSize: 15)),
-              const SizedBox(height: 2),
-              Text(date, style: AppTextStyles.bodyMedium.copyWith(color: AppColors.textSlate, fontSize: 13)),
+              Text(title, style: AppTextStyles.h3.copyWith(fontSize: 15.sp)),
+              SizedBox(height: 2.h),
+              Text(date, style: AppTextStyles.bodyMedium.copyWith(color: AppColors.textSlate, fontSize: 13.sp)),
               if (user != null)
                  Text(user, style: AppTextStyles.bodyMedium.copyWith(fontWeight: FontWeight.w500)),
               if (description != null)
                  Padding(
-                   padding: const EdgeInsets.only(top: 4.0),
-                   child: Text(description, style: AppTextStyles.bodyMedium.copyWith(color: descriptionColor ?? AppColors.textSlate, fontSize: 13)),
+                   padding: EdgeInsets.only(top: 4.h),
+                   child: Text(description, style: AppTextStyles.bodyMedium.copyWith(color: descriptionColor ?? AppColors.textSlate, fontSize: 13.sp)),
                  ),
-              const SizedBox(height: 24),
+              SizedBox(height: 24.h),
             ],
           ),
         ),
@@ -573,10 +598,10 @@ class AdminRequestDetailsView extends GetView<AdminRequestDetailsController> {
   Widget _buildRejectionReasonCard(BuildContext context) {
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.all(24),
+      padding: EdgeInsets.all(24.w),
       decoration: BoxDecoration(
         color: AppColors.error.withOpacity(0.05), // Light Red
-        borderRadius: BorderRadius.circular(24),
+        borderRadius: BorderRadius.circular(24.r),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -584,26 +609,26 @@ class AdminRequestDetailsView extends GetView<AdminRequestDetailsController> {
           Row(
             children: [
               Container(
-                padding: const EdgeInsets.all(6),
+                padding: EdgeInsets.all(6.w),
                 decoration: BoxDecoration(
                   color: AppColors.error.withOpacity(0.1),
                   shape: BoxShape.circle,
                 ),
-                child: const Icon(Icons.comment_rounded, color: AppColors.error, size: 16),
+                child: Icon(Icons.comment_rounded, color: AppColors.error, size: 16.sp),
               ),
-              const SizedBox(width: 12),
-              Text("REASON FOR REJECTION", style: AppTextStyles.h3.copyWith(fontSize: 14, color: AppColors.error.withOpacity(0.8))),
+              SizedBox(width: 12.w),
+              Text("REASON FOR REJECTION", style: AppTextStyles.h3.copyWith(fontSize: 14.sp, color: AppColors.error.withOpacity(0.8))),
             ],
           ),
-          const SizedBox(height: 12),
+          SizedBox(height: 12.h),
           Text(
             '"The receipt image provided is blurry, and the date of transaction is not visible. Please attach a clear photo of the receipt and resubmit."',
             style: AppTextStyles.bodyMedium.copyWith(color: AppColors.error, height: 1.5, fontWeight: FontWeight.w500),
           ),
-           const SizedBox(height: 12),
+           SizedBox(height: 12.h),
            Text(
              "Note from Approver • Oct 28, 2023",
-             style: AppTextStyles.bodyMedium.copyWith(color: AppColors.error, fontSize: 12),
+             style: AppTextStyles.bodyMedium.copyWith(color: AppColors.error, fontSize: 12.sp),
            ),
         ],
       ),
@@ -615,7 +640,7 @@ class AdminRequestDetailsView extends GetView<AdminRequestDetailsController> {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Text(label, style: AppTextStyles.bodyMedium.copyWith(color: AppColors.textSlate)),
-        Text(value, style: AppTextStyles.h3.copyWith(fontSize: 14)),
+        Text(value, style: AppTextStyles.h3.copyWith(fontSize: 14.sp)),
       ],
     );
   }
@@ -624,14 +649,14 @@ class AdminRequestDetailsView extends GetView<AdminRequestDetailsController> {
     return Row(
       children: [
         Container(
-          padding: const EdgeInsets.all(8),
+          padding: EdgeInsets.all(8.w),
           decoration: BoxDecoration(
             color: const Color(0xFFE0F2FE),
-            borderRadius: BorderRadius.circular(8),
+            borderRadius: BorderRadius.circular(8.r),
           ),
-          child: Icon(icon, color: AppColors.primaryBlue, size: 20),
+          child: Icon(icon, color: AppColors.primaryBlue, size: 20.sp),
         ),
-        const SizedBox(width: 12),
+        SizedBox(width: 12.w),
         Text(text, style: AppTextStyles.bodyMedium.copyWith(fontWeight: FontWeight.w500)),
       ],
     );

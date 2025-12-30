@@ -1,29 +1,57 @@
 import 'package:get/get.dart';
 import '../../../../routes/app_routes.dart';
-import '../views/accountant_dashboard_view.dart';
-import '../views/accountant_payments_view.dart';
+import '../../../../data/repositories/user_repository.dart';
+import '../../../../core/services/auth_service.dart';
 
 class AccountantProfileController extends GetxController {
-    // Mock Data
-  final rxName = 'Sarah Jenkins'.obs;
-  final rxEmail = 'sarah.jenkins@company.com'.obs;
-  final rxPhone = '+1 123-456-7890'.obs;
-  final rxRole = 'Accountant'.obs;
+  final UserRepository _userRepository = Get.find<UserRepository>(); // Ensure put in binding
+  final AuthService _authService = Get.find<AuthService>();
 
-  void editProfile() {
-    Get.toNamed(AppRoutes.EDIT_PROFILE);
+  final rxName = ''.obs;
+  final rxEmail = ''.obs;
+  final rxPhone = ''.obs;
+  final rxRole = ''.obs;
+  final isLoading = false.obs;
+
+  @override
+  void onInit() {
+    super.onInit();
+    fetchProfile();
+  }
+
+  Future<void> fetchProfile() async {
+    try {
+      isLoading.value = true;
+      final user = await _userRepository.getMe();
+      if (user != null) {
+        rxName.value = user.name;
+        rxEmail.value = user.email;
+        rxRole.value = user.role;
+        rxPhone.value = user.phoneNumber;
+      }
+    } catch (e) {
+      print('Error fetching accountant profile: $e');
+    } finally {
+      isLoading.value = false;
+    }
+  }
+
+  void editProfile() async {
+    // Navigate and wait for result to refetch
+    await Get.toNamed(AppRoutes.EDIT_PROFILE);
+    fetchProfile();
   }
 
   void navigateToSettings() {
-    Get.toNamed(AppRoutes.SETTINGS); // Resuing existing settings
+    Get.toNamed(AppRoutes.SETTINGS);
   }
 
   void logout() {
-    Get.offAllNamed(AppRoutes.LOGIN);
+    _authService.logout();
   }
 
   void navigateToChangePassword() {
-    Get.toNamed(AppRoutes.SETTINGS_CHANGE_PASSWORD); // Reusing existing
+    Get.toNamed(AppRoutes.SETTINGS_CHANGE_PASSWORD);
   }
 
   void onBottomNavTap(int index) {
@@ -35,10 +63,8 @@ class AccountantProfileController extends GetxController {
         Get.offNamed(AppRoutes.ACCOUNTANT_PAYMENTS);
         break;
       case 2:
-        // Get.toNamed(AppRoutes.ACCOUNTANT_REPORTS);
         break;
       case 3:
-        // Current
         break;
     }
   }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart'; // Added
 import '../../../../routes/app_routes.dart';
 import '../../../../utils/app_colors.dart';
 import '../../../../utils/app_text.dart';
@@ -15,7 +16,7 @@ class PaymentSuccessView extends GetView<PaymentFlowController> {
       backgroundColor: Colors.grey[50], 
       body: SafeArea(
         child: SingleChildScrollView(
-          padding: const EdgeInsets.all(24.0),
+          padding: EdgeInsets.all(24.0.w),
           child: Column(
             children: [
               Align(
@@ -25,86 +26,86 @@ class PaymentSuccessView extends GetView<PaymentFlowController> {
                   onPressed: () => controller.backToDashboard(),
                 ),
               ),
-              const SizedBox(height: 20),
+              SizedBox(height: 20.h),
               Container(
-                width: 80,
-                height: 80,
+                width: 80.w,
+                height: 80.w,
                 decoration: BoxDecoration(
                   color: const Color(0xFFE8F5E9),
                   shape: BoxShape.circle,
                   boxShadow: [
                     BoxShadow(
                       color: Colors.green.withOpacity(0.1),
-                      blurRadius: 20,
-                      offset: const Offset(0, 10),
+                      blurRadius: 20.r,
+                      offset: Offset(0, 10.h),
                     ),
                   ],
                 ),
-                child: const Icon(Icons.check, color: Colors.green, size: 40),
+                child: Icon(Icons.check, color: Colors.green, size: 40.sp),
               ),
-              const SizedBox(height: 24),
+              SizedBox(height: 24.h),
               Text(
                 AppText.success,
-                style: AppTextStyles.h1.copyWith(fontSize: 28),
+                style: AppTextStyles.h1.copyWith(fontSize: 28.sp),
               ),
-              const SizedBox(height: 12),
+              SizedBox(height: 12.h),
               Text(
                 AppText.fundsTransferred,
                 textAlign: TextAlign.center,
                 style: AppTextStyles.bodyMedium.copyWith(color: AppColors.textSlate, height: 1.5),
               ),
-              const SizedBox(height: 32),
+              SizedBox(height: 32.h),
               
               Container(
                 width: double.infinity,
                 decoration: BoxDecoration(
                   color: Colors.white,
-                  borderRadius: BorderRadius.circular(24),
+                  borderRadius: BorderRadius.circular(24.r),
                   boxShadow: [
                     BoxShadow(
                       color: Colors.black.withOpacity(0.05),
-                      blurRadius: 20,
-                      offset: const Offset(0, 10),
+                      blurRadius: 20.r,
+                      offset: Offset(0, 10.h),
                     ),
                   ],
                 ),
-                padding: const EdgeInsets.all(24),
+                padding: EdgeInsets.all(24.w),
                 child: Column(
                   children: [
                     Text(
                       AppText.totalPaid,
                       style: AppTextStyles.bodySmall.copyWith(letterSpacing: 1.0, color: AppColors.textSlate, fontWeight: FontWeight.bold),
                     ),
-                    const SizedBox(height: 8),
+                    SizedBox(height: 8.h),
                     Text(
                       '₹150.00',
-                      style: AppTextStyles.h1.copyWith(fontSize: 32, fontWeight: FontWeight.bold),
+                      style: AppTextStyles.h1.copyWith(fontSize: 32.sp, fontWeight: FontWeight.bold),
                     ),
-                    const SizedBox(height: 24),
+                    SizedBox(height: 24.h),
                     const Divider(),
-                    const SizedBox(height: 24),
+                    SizedBox(height: 24.h),
                     _buildReceiptRow(AppText.transactionId, '#TXN-883920', icon: Icons.copy),
-                    const SizedBox(height: 16),
+                    SizedBox(height: 16.h),
                     _buildReceiptRow(AppText.paymentDate, 'Oct 24, 2023\n10:45 AM'),
-                    const SizedBox(height: 16),
+                    SizedBox(height: 16.h),
                     _buildReceiptRow(AppText.paymentSource, 'Petty Cash Box A', isStatus: true, statusColor: Colors.green),
-                    const SizedBox(height: 16),
+                    SizedBox(height: 16.h),
                     _buildReceiptRow(AppText.recipient, 'Sarah Jenkins', useLocalAvatar: true),
                   ],
                 ),
               ),
-              const SizedBox(height: 48), // Replaces Spacer
+              SizedBox(height: 48.h), // Replaces Spacer
               
               SizedBox(
                 width: double.infinity,
-                height: 56,
+                height: 56.h,
                 child: ElevatedButton(
                   onPressed: () {
                     Get.toNamed(AppRoutes.ACCOUNTANT_PAYMENT_COMPLETED_DETAILS);
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xFF00C853),
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.r)),
                     elevation: 0,
                   ),
                   child: Row(
@@ -112,15 +113,15 @@ class PaymentSuccessView extends GetView<PaymentFlowController> {
                     children: [
                        Text(
                         AppText.viewRequestDetails,
-                        style: AppTextStyles.buttonText.copyWith(fontSize: 16),
+                        style: AppTextStyles.buttonText.copyWith(fontSize: 16.sp),
                       ),
-                      const SizedBox(width: 8),
+                      SizedBox(width: 8.w),
                       const Icon(Icons.arrow_forward, color: Colors.white),
                     ],
                   ),
                 ),
               ),
-              const SizedBox(height: 16),
+              SizedBox(height: 16.h),
               TextButton(
                 onPressed: () => controller.backToDashboard(),
                 child: Text(
@@ -128,7 +129,7 @@ class PaymentSuccessView extends GetView<PaymentFlowController> {
                   style: AppTextStyles.bodyLarge.copyWith(fontWeight: FontWeight.w600, color: Colors.black),
                 ),
               ),
-              const SizedBox(height: 16),
+              SizedBox(height: 16.h),
             ],
           ),
         ),
@@ -151,19 +152,19 @@ class PaymentSuccessView extends GetView<PaymentFlowController> {
             children: [
               if (isStatus) ...[
                 Container(
-                  width: 8,
-                  height: 8,
+                  width: 8.w,
+                  height: 8.w,
                   decoration: BoxDecoration(color: statusColor, shape: BoxShape.circle),
                 ),
-                const SizedBox(width: 8),
+                SizedBox(width: 8.w),
               ],
                if (useLocalAvatar) ...[
                 CircleAvatar(
-                  radius: 12,
+                  radius: 12.r,
                   backgroundColor: AppColors.primaryBlue.withOpacity(0.1),
-                  child: Text('SJ', style: AppTextStyles.bodySmall.copyWith(color: AppColors.primaryBlue, fontWeight: FontWeight.bold, fontSize: 10)),
+                  child: Text('SJ', style: AppTextStyles.bodySmall.copyWith(color: AppColors.primaryBlue, fontWeight: FontWeight.bold, fontSize: 10.sp)),
                 ),
-                const SizedBox(width: 8),
+                SizedBox(width: 8.w),
               ],
               Flexible(
                 child: Column(
@@ -172,7 +173,7 @@ class PaymentSuccessView extends GetView<PaymentFlowController> {
                     Text(
                       value.split('\n')[0],
                       textAlign: TextAlign.right,
-                      style: AppTextStyles.bodyLarge.copyWith(fontWeight: FontWeight.w600, fontSize: 14),
+                      style: AppTextStyles.bodyLarge.copyWith(fontWeight: FontWeight.w600, fontSize: 14.sp),
                       overflow: TextOverflow.ellipsis,
                     ),
                     if (value.contains('\n'))
@@ -186,8 +187,8 @@ class PaymentSuccessView extends GetView<PaymentFlowController> {
                 ),
               ),
               if (icon != null) ...[
-                const SizedBox(width: 8),
-                Icon(icon, size: 16, color: AppColors.textSlate),
+                SizedBox(width: 8.w),
+                Icon(icon, size: 16.sp, color: AppColors.textSlate),
               ]
             ],
           ),

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'dart:ui' as image_filter; // Added for BackdropFilter
 import 'package:get/get.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart'; // Added
 import '../../../../utils/app_colors.dart';
 import '../../../../utils/app_text.dart';
 import '../../../../utils/app_text_styles.dart';
@@ -23,7 +25,7 @@ class ProfileView extends GetView<ProfileController> {
         backgroundColor: Colors.transparent,
         elevation: 0,
         leading: isTab ? null : IconButton(
-          icon: const Icon(Icons.arrow_back_ios_new_rounded, color: AppColors.textDark),
+          icon: Icon(Icons.arrow_back_ios_new_rounded, color: AppColors.textDark, size: 24.sp),
           onPressed: () => Get.offNamed(AppRoutes.ADMIN_DASHBOARD),
         ),
         automaticallyImplyLeading: !isTab,
@@ -32,28 +34,28 @@ class ProfileView extends GetView<ProfileController> {
         actions: [
           TextButton(
             onPressed: controller.editProfile,
-            child: Text(AppText.edit, style: AppTextStyles.buttonText.copyWith(color: AppColors.primary)),
+            child: Text(AppText.edit, style: AppTextStyles.buttonText.copyWith(color: AppColors.primary, fontSize: 16.sp)),
           )
         ],
       ),
       bottomNavigationBar: isTab ? null : _buildBottomBar(), 
       body: SingleChildScrollView(
-        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 20),
+        padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 20.h),
         child: Column(
           children: [
             // Profile Image
             Container(
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                border: Border.all(color: Colors.lightBlue.shade100, width: 4),
+                border: Border.all(color: Colors.lightBlue.shade100, width: 4.w),
               ),
-              child: const CircleAvatar(
-                radius: 50,
+              child: CircleAvatar(
+                radius: 50.r,
                 backgroundColor: Colors.orangeAccent,
-                child: Icon(Icons.person, size: 50, color: Colors.white),
+                child: Icon(Icons.person, size: 50.sp, color: Colors.white),
               ),
             ),
-            const SizedBox(height: 16),
+            SizedBox(height: 16.h),
             Obx(() => Row(
               mainAxisAlignment: MainAxisAlignment.center,
               mainAxisSize: MainAxisSize.min, // Prevent taking full width
@@ -67,37 +69,37 @@ class ProfileView extends GetView<ProfileController> {
                     overflow: TextOverflow.ellipsis,
                   ),
                 ),
-                const SizedBox(width: 8),
+                SizedBox(width: 8.w),
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                  padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
                   decoration: BoxDecoration(
                     color: AppColors.primary.withOpacity(0.1),
-                    borderRadius: BorderRadius.circular(8),
+                    borderRadius: BorderRadius.circular(8.r),
                   ),
                   child: Text(
                     controller.rxRole.value.toUpperCase(),
                     style: AppTextStyles.bodySmall.copyWith(
                       color: AppColors.primary,
                       fontWeight: FontWeight.bold,
-                      fontSize: 10,
+                      fontSize: 10.sp,
                     ),
                   ),
                 ),
               ],
             )),
-            const SizedBox(height: 4),
+            SizedBox(height: 4.h),
             Obx(() => Text(controller.rxEmail.value, style: AppTextStyles.bodyMedium.copyWith(color: AppColors.textSlate))),
             
-            const SizedBox(height: 32),
+            SizedBox(height: 32.h),
 
             // Info Card
             Container(
               decoration: BoxDecoration(
                 color: Theme.of(context).cardColor,
-                borderRadius: BorderRadius.circular(24),
+                borderRadius: BorderRadius.circular(24.r),
               ),
-              padding: const EdgeInsets.all(20),
-              child: Column(
+              padding: EdgeInsets.all(20.w),
+              child: Obx(() => Column(
                 children: [
                    _buildInfoTile(
                     icon: Icons.business,
@@ -106,7 +108,7 @@ class ProfileView extends GetView<ProfileController> {
                     label: 'Organization Name',
                     value: controller.rxOrgName.value,
                   ),
-                  const Divider(height: 24),
+                  Divider(height: 24.h),
                    _buildInfoTile(
                     icon: Icons.qr_code,
                     iconBg: AppColors.infoBg,
@@ -114,7 +116,7 @@ class ProfileView extends GetView<ProfileController> {
                     label: 'Organization Code',
                     value: controller.rxOrgCode.value,
                   ),
-                  const Divider(height: 24),
+                  Divider(height: 24.h),
                   _buildInfoTile(
                     icon: Icons.phone,
                     iconBg: AppColors.infoBg,
@@ -122,7 +124,7 @@ class ProfileView extends GetView<ProfileController> {
                     label: AppText.phone,
                     value: controller.rxPhone.value,
                   ),
-                  const Divider(height: 24),
+                  Divider(height: 24.h),
                   _buildInfoTile(
                     icon: Icons.badge,
                     iconBg: AppColors.infoBg,
@@ -132,17 +134,17 @@ class ProfileView extends GetView<ProfileController> {
                     showArrow: false,
                   ),
                 ],
-              ),
+              )),
             ),
 
             if (['admin', 'super_admin'].contains(Get.find<AuthService>().currentUser.value?.role.toLowerCase())) ...[
-              const SizedBox(height: 24),
+              SizedBox(height: 24.h),
               Container(
                    decoration: BoxDecoration(
                   color: Theme.of(context).cardColor,
-                  borderRadius: BorderRadius.circular(24),
+                  borderRadius: BorderRadius.circular(24.r),
                 ),
-                padding: const EdgeInsets.all(20),
+                padding: EdgeInsets.all(20.w),
                 child: Column(
                   children: [
                     _buildActionTile(
@@ -152,21 +154,29 @@ class ProfileView extends GetView<ProfileController> {
                         title: AppText.manageUsers,
                         onTap: controller.navigateToManageUsers,
                       ),
+                      Divider(height: 24.h),
+                      _buildActionTile(
+                        icon: Icons.tune_rounded,
+                        iconBg: AppColors.surfacePurple,
+                        iconColor: AppColors.primary,
+                        title: 'Set Approval Limits',
+                        onTap: () => Get.toNamed(AppRoutes.ADMIN_SET_LIMITS),
+                      ),
                   ],
                 ),
                 
               ),
             ],
-            const SizedBox(height: 24),
+            SizedBox(height: 24.h),
 
             
             // Actions Card
             Container(
               decoration: BoxDecoration(
                 color: Theme.of(context).cardColor,
-                borderRadius: BorderRadius.circular(24),
+                borderRadius: BorderRadius.circular(24.r),
               ),
-              padding: const EdgeInsets.all(20),
+              padding: EdgeInsets.all(20.w),
               child: Column(
                 children: [
                    _buildActionTile(
@@ -176,7 +186,7 @@ class ProfileView extends GetView<ProfileController> {
                      title: AppText.changePassword,
                      onTap: controller.navigateToChangePassword,
                    ),
-                   const Divider(height: 24),
+                   Divider(height: 24.h),
                    _buildActionTile(
                      icon: Icons.settings,
                      iconBg: AppColors.infoBg,
@@ -190,13 +200,13 @@ class ProfileView extends GetView<ProfileController> {
               ),
             ),
             
-             const SizedBox(height: 40),
+             SizedBox(height: 40.h),
              TextButton.icon(
                onPressed: controller.logout,
-               icon: const Icon(Icons.logout, color: Colors.red),
-               label: Text(AppText.logOut, style: AppTextStyles.buttonText.copyWith(color: Colors.red)),
+               icon: Icon(Icons.logout, color: Colors.red, size: 24.sp),
+               label: Text(AppText.logOut, style: AppTextStyles.buttonText.copyWith(color: Colors.red, fontSize: 16.sp)),
              ),
-             const SizedBox(height: 20),
+             SizedBox(height: 20.h),
           ],
         ),
       ),
@@ -214,26 +224,26 @@ class ProfileView extends GetView<ProfileController> {
     return Row(
       children: [
         Container(
-          padding: const EdgeInsets.all(10),
+          padding: EdgeInsets.all(10.w),
           decoration: BoxDecoration(
             color: iconBg.withOpacity(Get.isDarkMode ? 0.2 : 1.0), // Adjust for dark mode visibility
             shape: BoxShape.circle
           ),
-          child: Icon(icon, color: iconColor, size: 20),
+          child: Icon(icon, color: iconColor, size: 20.sp),
         ),
-        const SizedBox(width: 16),
+        SizedBox(width: 16.w),
         Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(label, style: AppTextStyles.bodyMedium.copyWith(color: AppTextStyles.bodySmall.color, fontSize: 12)),
-              const SizedBox(height: 4),
-              Text(value, style: AppTextStyles.h3.copyWith(fontSize: 16)),
+              Text(label, style: AppTextStyles.bodyMedium.copyWith(color: AppTextStyles.bodySmall.color, fontSize: 12.sp)),
+              SizedBox(height: 4.h),
+              Text(value, style: AppTextStyles.h3.copyWith(fontSize: 16.sp)),
             ],
           ),
         ),
         if (showArrow)
-          Icon(Icons.arrow_forward_ios_rounded, size: 16, color: AppTextStyles.bodySmall.color),
+          Icon(Icons.arrow_forward_ios_rounded, size: 16.sp, color: AppTextStyles.bodySmall.color),
       ],
     );
   }
@@ -250,18 +260,18 @@ class ProfileView extends GetView<ProfileController> {
       child: Row(
         children: [
           Container(
-            padding: const EdgeInsets.all(10),
+            padding: EdgeInsets.all(10.w),
             decoration: BoxDecoration(
               color: iconBg.withOpacity(Get.isDarkMode ? 0.2 : 1.0),
               shape: BoxShape.circle
             ),
-            child: Icon(icon, color: iconColor, size: 20),
+            child: Icon(icon, color: iconColor, size: 20.sp),
           ),
-          const SizedBox(width: 16),
+          SizedBox(width: 16.w),
           Expanded(
-            child: Text(title, style: AppTextStyles.h3.copyWith(fontSize: 16)),
+            child: Text(title, style: AppTextStyles.h3.copyWith(fontSize: 16.sp)),
           ),
-          Icon(Icons.arrow_forward_ios_rounded, size: 16, color: AppTextStyles.bodySmall.color),
+          Icon(Icons.arrow_forward_ios_rounded, size: 16.sp, color: AppTextStyles.bodySmall.color),
         ],
       ),
     );

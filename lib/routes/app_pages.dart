@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../modules/admin/views/admin_set_limits_view.dart';
+import '../modules/admin/controllers/admin_set_limits_controller.dart';
 import '../modules/splash/views/splash_view.dart';
 import '../modules/splash/controllers/splash_controller.dart';
 import '../modules/splash/controllers/splash_controller.dart';
+import '../modules/lock/views/lock_view.dart';
+import '../core/services/storage_service.dart';
 import '../modules/admin/views/admin_dashboard_view.dart';
 import '../modules/admin/views/admin_main_view.dart';
 import '../modules/admin/views/admin_approvals_view.dart';
@@ -63,6 +67,8 @@ import '../modules/requestor/views/monthly_spent_view.dart';
 import '../modules/requestor/views/my_requests_view.dart';
 import '../modules/requestor/views/request_details_read_view.dart';
 import '../modules/requestor/controllers/my_requests_controller.dart';
+import '../modules/requestor/views/provide_clarification_view.dart';
+import '../modules/requestor/controllers/provide_clarification_controller.dart';
 import '../core/services/auth_service.dart';
 import '../modules/accountant/views/accountant_dashboard_view.dart';
 import '../modules/accountant/controllers/accountant_dashboard_controller.dart';
@@ -96,20 +102,48 @@ class AuthMiddleware extends GetMiddleware {
 class RouteGuard extends GetMiddleware {
   @override
   RouteSettings? redirect(String? route) {
-     final authService = Get.find<AuthService>();
-    if (authService.isLoggedIn) {
-       final user = authService.currentUser.value;
-       if (user != null) {
-        if (user.role.toLowerCase() == 'admin' || user.role.toLowerCase() == 'super_admin') {
-          return const RouteSettings(name: AppRoutes.ADMIN_DASHBOARD);
-        } else if (user.role.toLowerCase() == 'accountant') {
-          return const RouteSettings(name: AppRoutes.ACCOUNTANT_DASHBOARD);
-        }
-      }
-      return const RouteSettings(name: AppRoutes.REQUESTOR);
-    } else {
+    final authService = Get.find<AuthService>();
+    
+    // 1. Check Login
+    if (!authService.isLoggedIn) {
       return const RouteSettings(name: AppRoutes.LOGIN);
     }
+    
+    // 2. Check Session Verification (Strict Startup)
+    if (!authService.isSessionVerified.value) {
+      return const RouteSettings(name: AppRoutes.LOCK);
+    }
+
+    final user = authService.currentUser.value;
+    final role = user?.role.toLowerCase() ?? '';
+
+    // 3. Firewall: Block unauthorized access based on URL signatures
+    if (route != null) {
+      // Block Admin routes for non-admins
+      if (route.startsWith('/admin') && role != 'admin' && role != 'super_admin') {
+         Get.snackbar('Access Denied', 'You are not authorized to access this area.');
+         return _getDashboardRoute(role);
+      }
+      
+      // Block Accountant routes for non-accountants
+      if (route.startsWith('/accountant') && role != 'accountant') {
+         Get.snackbar('Access Denied', 'You are not authorized to access this area.');
+         return _getDashboardRoute(role);
+      }
+    }
+    
+    // 4. Force Redirect from Root
+    // if (route == AppRoutes.INITIAL || route == '/') {
+    //    return _getDashboardRoute(role);
+    // }
+
+    return null; // Allow access
+  }
+
+  RouteSettings _getDashboardRoute(String role) {
+      if (role == 'admin' || role == 'super_admin') return const RouteSettings(name: AppRoutes.ADMIN_DASHBOARD);
+      if (role == 'accountant') return const RouteSettings(name: AppRoutes.ACCOUNTANT_DASHBOARD);
+      return const RouteSettings(name: AppRoutes.REQUESTOR);
   }
 }
 
@@ -124,6 +158,11 @@ class AppPages {
       binding: BindingsBuilder(() {
         Get.put(SplashController());
       }),
+    ),
+
+    GetPage(
+      name: AppRoutes.LOCK,
+      page: () => const LockView(),
     ),
 
     GetPage(
@@ -200,6 +239,13 @@ class AppPages {
       }),
     ),
     GetPage(
+      name: AppRoutes.REQUESTOR_CLARIFICATION,
+      page: () => const ProvideClarificationView(),
+      binding: BindingsBuilder(() {
+        Get.put(ProvideClarificationController());
+      }),
+    ),
+    GetPage(
       name: AppRoutes.REQUEST_DETAILS_READ,
       page: () => const RequestDetailsReadView(),
     ),
@@ -246,6 +292,13 @@ class AppPages {
     GetPage(
       name: AppRoutes.ADMIN_CLARIFICATION_SUCCESS,
       page: () => const AdminClarificationSuccessView(),
+    ),
+    GetPage(
+      name: AppRoutes.ADMIN_SET_LIMITS,
+      page: () => const AdminSetLimitsView(),
+      binding: BindingsBuilder(() {
+        Get.put(AdminSetLimitsController());
+      }),
     ),
     GetPage(
       name: AppRoutes.ADMIN_HISTORY,

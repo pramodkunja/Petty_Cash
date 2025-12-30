@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart'; // Added
 import '../../../../utils/app_colors.dart';
 import '../../../../utils/app_text.dart';
 import '../../../../utils/app_text_styles.dart';
@@ -18,21 +19,21 @@ class AppearanceView extends GetView<SettingsController> {
         backgroundColor: Theme.of(context).scaffoldBackgroundColor, // Match scaffold
         elevation: 0,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back_ios_new_rounded, color: AppTextStyles.h3.color, size: 20),
+          icon: Icon(Icons.arrow_back_ios_new_rounded, color: AppTextStyles.h3.color, size: 20.sp),
           onPressed: () => Get.back(),
         ),
       ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(24),
+        padding: EdgeInsets.all(24.w),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(AppText.appTheme, style: AppTextStyles.h3.copyWith(fontSize: 14)),
-            const SizedBox(height: 16),
+            Text(AppText.appTheme, style: AppTextStyles.h3.copyWith(fontSize: 14.sp)),
+            SizedBox(height: 16.h),
             
             Container(
-              decoration: BoxDecoration(color: Theme.of(context).cardColor, borderRadius: BorderRadius.circular(20)),
-              padding: const EdgeInsets.all(8),
+              decoration: BoxDecoration(color: Theme.of(context).cardColor, borderRadius: BorderRadius.circular(20.r)),
+              padding: EdgeInsets.all(8.w),
               child: Column(
                 children: [
                    Obx(() => Column(
@@ -58,12 +59,12 @@ class AppearanceView extends GetView<SettingsController> {
             ),
 
             // Removed Text Size and Preview as requested
-            const SizedBox(height: 40),
+            SizedBox(height: 40.h),
             PrimaryButton(
               text: AppText.saveChanges,
               onPressed: controller.saveThemeChanges,
             ),
-             const SizedBox(height: 20),
+             SizedBox(height: 20.h),
           ],
         ),
       ),
@@ -72,28 +73,28 @@ class AppearanceView extends GetView<SettingsController> {
 
   Widget _buildThemeOption(BuildContext context, IconData icon, String label, bool selected, Color iconColor) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+      padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
       child: Row(
         children: [
            Container(
-             padding: const EdgeInsets.all(10),
+             padding: EdgeInsets.all(10.w),
              decoration: BoxDecoration(
                color: iconColor.withOpacity(0.1),
                shape: BoxShape.circle,
              ),
-             child: Icon(icon, color: iconColor, size: 20),
+             child: Icon(icon, color: iconColor, size: 20.sp),
            ),
-           const SizedBox(width: 16),
-           Expanded(child: Text(label, style: AppTextStyles.h3.copyWith(fontSize: 16))),
+           SizedBox(width: 16.w),
+           Expanded(child: Text(label, style: AppTextStyles.h3.copyWith(fontSize: 16.sp))),
            Container(
-             width: 20, height: 20,
+             width: 20.w, height: 20.w,
              decoration: BoxDecoration(
                shape: BoxShape.circle,
-               border: Border.all(color: selected ? AppColors.primaryBlue : Theme.of(context).dividerColor, width: 2),
+               border: Border.all(color: selected ? AppColors.primaryBlue : Theme.of(context).dividerColor, width: 2.w),
                color: selected ? Theme.of(context).cardColor : Colors.transparent,
              ),
              child: selected 
-              ? Center(child: Container(width: 10, height: 10, decoration: const BoxDecoration(color: AppColors.primaryBlue, shape: BoxShape.circle)))
+              ? Center(child: Container(width: 10.w, height: 10.w, decoration: const BoxDecoration(color: AppColors.primaryBlue, shape: BoxShape.circle)))
               : null,
            ),
         ],

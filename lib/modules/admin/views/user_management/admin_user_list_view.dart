@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart'; // Added
 import '../../../../utils/app_colors.dart';
 import '../../../../utils/app_text.dart';
 import '../../../../utils/app_text_styles.dart';
@@ -19,7 +20,7 @@ class AdminUserListView extends GetView<AdminUserController> {
         actions: [
           IconButton(
             onPressed: () {},
-            icon: const Icon(Icons.more_vert, color: AppColors.textDark),
+            icon: Icon(Icons.more_vert, color: AppColors.textDark, size: 24.sp),
           ),
         ],
       ),
@@ -27,18 +28,18 @@ class AdminUserListView extends GetView<AdminUserController> {
         children: [
           // Search & Filter Header
           Padding(
-            padding: const EdgeInsets.all(24),
+            padding: EdgeInsets.all(24.w),
             child: Row(
               children: [
                 Expanded(
                   child: Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 16,
-                      vertical: 4,
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 16.w,
+                      vertical: 4.h,
                     ),
                     decoration: BoxDecoration(
                       color: Theme.of(context).cardColor,
-                      borderRadius: BorderRadius.circular(30),
+                      borderRadius: BorderRadius.circular(30.r),
                       border: Border.all(color: Theme.of(context).dividerColor),
                     ),
                     child: TextField(
@@ -48,25 +49,27 @@ class AdminUserListView extends GetView<AdminUserController> {
                           color: AppColors.textSlate,
                         ),
                         border: InputBorder.none,
-                        icon: const Icon(
+                        icon: Icon(
                           Icons.search,
                           color: AppColors.textSlate,
+                          size: 20.sp,
                         ),
                       ),
                     ),
                   ),
                 ),
-                const SizedBox(width: 12),
+                SizedBox(width: 12.w),
                 Container(
-                  padding: const EdgeInsets.all(12),
+                  padding: EdgeInsets.all(12.w),
                   decoration: BoxDecoration(
                     color: Theme.of(context).cardColor,
                     shape: BoxShape.circle,
                     border: Border.all(color: Theme.of(context).dividerColor),
                   ),
-                  child: const Icon(
+                  child: Icon(
                     Icons.tune_rounded,
                     color: AppColors.textSlate,
+                    size: 24.sp,
                   ),
                 ),
               ],
@@ -75,14 +78,14 @@ class AdminUserListView extends GetView<AdminUserController> {
 
           // List Header
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 24),
+            padding: EdgeInsets.symmetric(horizontal: 24.w),
             child: Obx(
               () => Row(
                 children: [
                   Text(
                     'ALL USERS (${controller.rxUsers.length})',
                     style: AppTextStyles.bodyMedium.copyWith(
-                      fontSize: 12,
+                      fontSize: 12.sp,
                       fontWeight: FontWeight.bold,
                       color: AppColors.primaryBlue,
                     ),
@@ -100,7 +103,7 @@ class AdminUserListView extends GetView<AdminUserController> {
             ),
           ),
 
-          const SizedBox(height: 16),
+          SizedBox(height: 16.h),
 
           // User List
           Expanded(
@@ -116,24 +119,24 @@ class AdminUserListView extends GetView<AdminUserController> {
                     children: [
                       Icon(
                         Icons.people_outline,
-                        size: 64,
+                        size: 64.sp,
                         color: AppColors.textLight,
                       ),
-                      const SizedBox(height: 16),
+                      SizedBox(height: 16.h),
                       Text(
                         'No users found',
                         style: AppTextStyles.h3.copyWith(
                           color: AppColors.textLight,
                         ),
                       ),
-                      const SizedBox(height: 8),
+                      SizedBox(height: 8.h),
                       Text(
                         'Users will appear here once added',
                         style: AppTextStyles.bodyMedium.copyWith(
                           color: AppColors.textSlate,
                         ),
                       ),
-                      const SizedBox(height: 24),
+                      SizedBox(height: 24.h),
                       ElevatedButton.icon(
                         onPressed: controller.fetchUsers,
                         icon: const Icon(Icons.refresh),
@@ -151,12 +154,12 @@ class AdminUserListView extends GetView<AdminUserController> {
               return RefreshIndicator(
                 onRefresh: controller.fetchUsers,
                 child: ListView.separated(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 24,
-                    vertical: 8,
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 24.w,
+                    vertical: 8.h,
                   ),
                   itemCount: controller.rxUsers.length,
-                  separatorBuilder: (c, i) => const SizedBox(height: 16),
+                  separatorBuilder: (c, i) => SizedBox(height: 16.h),
                   itemBuilder: (context, index) {
                     final user = controller.rxUsers[index];
                     return _buildUserCard(context, user);
@@ -168,20 +171,20 @@ class AdminUserListView extends GetView<AdminUserController> {
         ],
       ),
       floatingActionButton: SizedBox(
-        height: 50,
-        width: 150,
+        height: 50.h,
+        width: 150.w,
         child: FloatingActionButton.extended(
           onPressed: controller.addUser,
           backgroundColor: AppColors.primaryBlue,
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(30),
+            borderRadius: BorderRadius.circular(30.r),
           ),
-          icon: const Icon(Icons.person_add, color: Colors.white, size: 20),
+          icon: Icon(Icons.person_add, color: Colors.white, size: 20.sp),
           label: Text(
             'Add User',
             style: AppTextStyles.buttonText.copyWith(
               color: Colors.white,
-              fontSize: 14,
+              fontSize: 14.sp,
             ),
           ),
         ),
@@ -223,27 +226,27 @@ class AdminUserListView extends GetView<AdminUserController> {
       child: Container(
         decoration: BoxDecoration(
           color: Theme.of(context).cardColor,
-          borderRadius: BorderRadius.circular(20),
+          borderRadius: BorderRadius.circular(20.r),
           boxShadow: [
             BoxShadow(
               color: Colors.black.withOpacity(0.04),
-              blurRadius: 10,
-              offset: const Offset(0, 4),
+              blurRadius: 10.r,
+              offset: Offset(0, 4.h),
             ),
           ],
         ),
-        padding: const EdgeInsets.all(16),
+        padding: EdgeInsets.all(16.w),
         child: Row(
           children: [
             CircleAvatar(
-              radius: 28,
+              radius: 28.r,
               backgroundColor: badgeBg,
               child: Text(
                 name.isNotEmpty ? name.substring(0, 2).toUpperCase() : 'U',
                 style: AppTextStyles.h3.copyWith(color: badgeText),
               ),
             ),
-            const SizedBox(width: 16),
+            SizedBox(width: 16.w),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -253,26 +256,26 @@ class AdminUserListView extends GetView<AdminUserController> {
                       Flexible(
                         child: Text(
                           name,
-                          style: AppTextStyles.h3.copyWith(fontSize: 16),
+                          style: AppTextStyles.h3.copyWith(fontSize: 16.sp),
                           overflow: TextOverflow.ellipsis,
                         ),
                       ),
-                      const SizedBox(width: 8),
+                      SizedBox(width: 8.w),
                       Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 8,
-                          vertical: 2,
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 8.w,
+                          vertical: 2.h,
                         ),
                         decoration: BoxDecoration(
                           color: badgeBg,
-                          borderRadius: BorderRadius.circular(8),
+                          borderRadius: BorderRadius.circular(8.r),
                         ),
                         child: Text(
                           !isActive
                               ? AppText.inactive.toUpperCase()
                               : role.toUpperCase(),
                           style: AppTextStyles.bodyMedium.copyWith(
-                            fontSize: 10,
+                            fontSize: 10.sp,
                             fontWeight: FontWeight.bold,
                             color: badgeText,
                           ),
@@ -280,21 +283,21 @@ class AdminUserListView extends GetView<AdminUserController> {
                       ),
                     ],
                   ),
-                  const SizedBox(height: 4),
+                  SizedBox(height: 4.h),
                   Text(
                     email,
                     style: AppTextStyles.bodyMedium.copyWith(
                       color: AppColors.textSlate,
-                      fontSize: 13,
+                      fontSize: 13.sp,
                     ),
                     overflow: TextOverflow.ellipsis,
                   ),
                 ],
               ),
             ),
-            const Icon(
+            Icon(
               Icons.arrow_forward_ios_rounded,
-              size: 16,
+              size: 16.sp,
               color: AppColors.borderLight,
             ),
           ],

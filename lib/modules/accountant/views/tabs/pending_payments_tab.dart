@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart'; // Added
 import '../../../../routes/app_routes.dart';
 import '../../../../utils/app_colors.dart';
 import '../../../../utils/app_text.dart';
@@ -11,22 +12,22 @@ class PendingPaymentsTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
-      padding: const EdgeInsets.all(20),
+      padding: EdgeInsets.all(20.w),
       child: Column(
         children: [
           // Total Outstanding Card
           Container(
-            padding: const EdgeInsets.all(24),
+            padding: EdgeInsets.all(24.w),
             decoration: BoxDecoration(
               color: Theme.of(context).cardColor,
-              borderRadius: BorderRadius.circular(24),
-               boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.05),
-                    blurRadius: 10,
-                    offset: const Offset(0, 4),
-                  ),
-                ],
+              borderRadius: BorderRadius.circular(24.r),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.05),
+                  blurRadius: 10.r,
+                  offset: Offset(0, 4.h),
+                ),
+              ],
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -36,32 +37,45 @@ class PendingPaymentsTab extends StatelessWidget {
                   children: [
                     Flexible(
                       child: Text(
-                        AppText.totalOutstanding, 
-                        style: AppTextStyles.bodyMedium.copyWith(color: AppColors.textSlate, letterSpacing: 1.0),
+                        AppText.totalOutstanding,
+                        style: AppTextStyles.bodyMedium.copyWith(
+                          color: AppColors.textSlate,
+                          letterSpacing: 1.0,
+                          fontSize: 14.sp,
+                        ),
                         overflow: TextOverflow.ellipsis,
                       ),
                     ),
                     Container(
-                      padding: const EdgeInsets.all(8),
+                      padding: EdgeInsets.all(8.w),
                       decoration: BoxDecoration(
                         color: AppColors.primaryBlue.withOpacity(0.15),
-                        borderRadius: BorderRadius.circular(12),
+                        borderRadius: BorderRadius.circular(12.r),
                       ),
-                      child: const Icon(Icons.account_balance_wallet_outlined, color: AppColors.primaryBlue, size: 20),
+                      child: Icon(
+                        Icons.account_balance_wallet_outlined,
+                        color: AppColors.primaryBlue,
+                        size: 20.sp,
+                      ),
                     ),
                   ],
                 ),
-                const SizedBox(height: 16),
+                SizedBox(height: 16.h),
                 FittedBox(
                   fit: BoxFit.scaleDown,
                   child: Text('₹4,250.00', style: AppTextStyles.h1),
                 ),
-                const SizedBox(height: 8),
-                Text(AppText.acrossPendingRequests, style: AppTextStyles.bodySmall.copyWith(color: AppColors.textSlate)),
+                SizedBox(height: 8.h),
+                Text(
+                  AppText.acrossPendingRequests,
+                  style: AppTextStyles.bodySmall.copyWith(
+                    color: AppColors.textSlate,
+                  ),
+                ),
               ],
             ),
           ),
-          const SizedBox(height: 24),
+          SizedBox(height: 24.h),
 
           // List of Pending Requests
           _buildRequestItem(
@@ -73,7 +87,7 @@ class PendingPaymentsTab extends StatelessWidget {
             category: 'Office Supplies',
             amount: '₹125.50',
           ),
-          const SizedBox(height: 16),
+          SizedBox(height: 16.h),
           _buildRequestItem(
             context,
             id: '#REQ-8820',
@@ -83,7 +97,7 @@ class PendingPaymentsTab extends StatelessWidget {
             category: 'Client Dinner',
             amount: '₹340.00',
           ),
-           const SizedBox(height: 16),
+          SizedBox(height: 16.h),
           _buildRequestItem(
             context,
             id: '#REQ-8819',
@@ -93,7 +107,7 @@ class PendingPaymentsTab extends StatelessWidget {
             category: 'Hardware Repair',
             amount: '₹850.00',
           ),
-           const SizedBox(height: 16),
+          SizedBox(height: 16.h),
           _buildRequestItem(
             context,
             id: '#REQ-8815',
@@ -122,73 +136,118 @@ class PendingPaymentsTab extends StatelessWidget {
         Get.toNamed(AppRoutes.ACCOUNTANT_PAYMENT_REQUEST_DETAILS);
       },
       child: Container(
-        padding: const EdgeInsets.all(20),
+        padding: EdgeInsets.all(20.w),
         decoration: BoxDecoration(
           color: Theme.of(context).cardColor,
-          borderRadius: BorderRadius.circular(24),
-           boxShadow: [
-              BoxShadow(
-                color: Colors.black.withOpacity(0.02),
-                blurRadius: 10,
-                offset: const Offset(0, 2),
-              ),
-            ],
+          borderRadius: BorderRadius.circular(24.r),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.02),
+              blurRadius: 10.r,
+              offset: Offset(0, 2.h),
+            ),
+          ],
         ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-               Expanded( // Make ID/Date flexible
-                 child: Text(
-                   '$id • $date', 
-                   style: AppTextStyles.bodySmall.copyWith(fontWeight: FontWeight.w600, color: AppColors.textSlate),
-                   overflow: TextOverflow.ellipsis,
-                 ),
-               ),
-               const SizedBox(width: 8),
-               Text(amount, style: AppTextStyles.bodyLarge.copyWith(color: AppColors.primaryBlue)),
-            ],
-          ),
-          const SizedBox(height: 8),
-          Text(name, style: AppTextStyles.bodyLarge),
-          const SizedBox(height: 4),
-          Text('$department • $category', style: AppTextStyles.bodyMedium.copyWith(color: AppColors.textSlate)),
-          const SizedBox(height: 20),
-          Divider(color: Theme.of(context).dividerColor),
-          const SizedBox(height: 16),
-          Row(
-            children: [
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                decoration: BoxDecoration(
-                  color: AppColors.successGreen.withOpacity(0.15),
-                  borderRadius: BorderRadius.circular(8),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Expanded(
+                  // Make ID/Date flexible
+                  child: Text(
+                    '$id • $date',
+                    style: AppTextStyles.bodySmall.copyWith(
+                      fontWeight: FontWeight.w600,
+                      color: AppColors.textSlate,
+                      fontSize: 12.sp,
+                    ),
+                    overflow: TextOverflow.ellipsis,
+                  ),
                 ),
-                child: Text(AppText.approved, style: AppTextStyles.bodySmall.copyWith(color: AppColors.successGreen, fontWeight: FontWeight.w600)),
-              ),
-              const SizedBox(width: 8),
-               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                decoration: BoxDecoration(
-                  color: AppColors.warningOrange.withOpacity(0.15),
-                  borderRadius: BorderRadius.circular(8),
+                SizedBox(width: 8.w),
+                Text(
+                  amount,
+                  style: AppTextStyles.bodyLarge.copyWith(
+                    color: AppColors.primaryBlue,
+                  ),
                 ),
-                child: Text(AppText.notPaid, style: AppTextStyles.bodySmall.copyWith(color: AppColors.warningOrange, fontWeight: FontWeight.w600)),
+              ],
+            ),
+            SizedBox(height: 8.h),
+            Text(name, style: AppTextStyles.bodyLarge),
+            SizedBox(height: 4.h),
+            Text(
+              '$department • $category',
+              style: AppTextStyles.bodyMedium.copyWith(
+                color: AppColors.textSlate,
               ),
-              const Spacer(),
-              Row(
-                children: [
-                  Text(AppText.view, style: AppTextStyles.buttonText.copyWith(color: Theme.of(context).textTheme.bodyLarge?.color, fontSize: 14)),
-                  const SizedBox(width: 4),
-                  Icon(Icons.chevron_right_rounded, size: 20, color: Theme.of(context).iconTheme.color),
-                ],
-              ),
-            ],
-          ),
-        ],
-      ),
+            ),
+            SizedBox(height: 20.h),
+            Divider(color: Theme.of(context).dividerColor),
+            SizedBox(height: 16.h),
+            Row(
+              children: [
+                Container(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 12.w,
+                    vertical: 6.h,
+                  ),
+                  decoration: BoxDecoration(
+                    color: AppColors.successGreen.withOpacity(0.15),
+                    borderRadius: BorderRadius.circular(8.r),
+                  ),
+                  child: Text(
+                    AppText.approved,
+                    style: AppTextStyles.bodySmall.copyWith(
+                      color: AppColors.successGreen,
+                      fontWeight: FontWeight.w600,
+                      fontSize: 10.sp,
+                    ),
+                  ),
+                ),
+                SizedBox(width: 8.w),
+                Container(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 12.w,
+                    vertical: 6.h,
+                  ),
+                  decoration: BoxDecoration(
+                    color: AppColors.warningOrange.withOpacity(0.15),
+                    borderRadius: BorderRadius.circular(8.r),
+                  ),
+                  child: Text(
+                    AppText.notPaid,
+                    style: AppTextStyles.bodySmall.copyWith(
+                      color: AppColors.warningOrange,
+                      fontWeight: FontWeight.w600,
+                      fontSize: 10.sp,
+                    ),
+                  ),
+                ),
+                const Spacer(),
+                Row(
+                  children: [
+                    Text(
+                      AppText.view,
+                      style: AppTextStyles.buttonText.copyWith(
+                        color: Theme.of(context).textTheme.bodyLarge?.color,
+                        fontSize: 14.sp,
+                      ),
+                    ),
+                    SizedBox(width: 4.w),
+                    Icon(
+                      Icons.chevron_right_rounded,
+                      size: 20.sp,
+                      color: Theme.of(context).iconTheme.color,
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }

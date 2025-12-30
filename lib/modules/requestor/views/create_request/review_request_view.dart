@@ -1,4 +1,6 @@
 import 'dart:io';
+import 'dart:typed_data';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
@@ -115,13 +117,10 @@ class ReviewRequestView extends GetView<CreateRequestController> {
                ),
                const SizedBox(height: 32),
                SizedBox(
-                width: double.infinity,
-                child: PrimaryButton(
-                  text: AppText.submitRequest,
-                  onPressed: () {
-                     Get.toNamed(AppRoutes.CREATE_REQUEST_SUCCESS);
-                  },
-                ),
+                child: Obx(() => PrimaryButton(
+                  text: controller.isLoading.value ? 'Submitting...' : AppText.submitRequest,
+                  onPressed: controller.isLoading.value ? null : controller.submitRequest,
+                )),
               ),
             ],
           ),
@@ -144,9 +143,29 @@ class ReviewRequestView extends GetView<CreateRequestController> {
                 color: Theme.of(context).cardColor,
               ),
               clipBehavior: Clip.hardEdge,
-              child: Image.file(
-                File(file.path),
-                fit: BoxFit.contain,
+              child: FutureBuilder<Uint8List>(
+                future: file.readAsBytes(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const SizedBox(
+                      height: 200,
+                      child: Center(child: CircularProgressIndicator()),
+                    );
+                  }
+                  if (snapshot.hasError) {
+                    return const SizedBox(
+                      height: 200,
+                      child: Center(child: Text("Error loading preview")),
+                    );
+                  }
+                  if (snapshot.hasData) {
+                    return Image.memory(
+                      snapshot.data!,
+                      fit: BoxFit.contain,
+                    );
+                  }
+                  return const SizedBox.shrink();
+                },
               ),
             ),
              Padding(

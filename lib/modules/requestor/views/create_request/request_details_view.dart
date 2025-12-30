@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart'; // Added
 import '../../controllers/create_request_controller.dart';
 import '../../../../routes/app_routes.dart';
 import '../../../../utils/app_colors.dart';
@@ -23,101 +24,103 @@ class RequestDetailsView extends GetView<CreateRequestController> {
         backgroundColor: Colors.transparent,
         elevation: 0,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: AppColors.textDark),
+          icon: Icon(Icons.arrow_back, color: AppColors.textDark, size: 24.sp),
           onPressed: () => Get.back(),
         ),
       ),
       body: SafeArea(
         child: SingleChildScrollView(
-          padding: const EdgeInsets.all(24.0),
+          padding: EdgeInsets.all(24.w),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(AppText.amount, style: AppTextStyles.h2.copyWith(color: AppTextStyles.h2.color)),
-              const SizedBox(height: 12),
+              SizedBox(height: 12.h),
               TextField(
                 controller: controller.amountController,
                 keyboardType: const TextInputType.numberWithOptions(decimal: true),
-                style: AppTextStyles.amountDisplay.copyWith(color: AppColors.textDark),
+                style: AppTextStyles.amountDisplay.copyWith(color: AppColors.textDark, fontSize: 32.sp),
                 decoration: InputDecoration(
                   prefixIcon: Padding(
-                    padding: const EdgeInsets.only(left: 20, right: 8), 
+                    padding: EdgeInsets.only(left: 20.w, right: 8.w),
                     child: Text(
                       '₹',
-                      style: AppTextStyles.amountDisplay.copyWith(color: AppColors.textDark),
+                      style: AppTextStyles.amountDisplay.copyWith(color: AppColors.textDark, fontSize: 32.sp),
                     ),
                   ),
                   prefixIconConstraints: const BoxConstraints(minWidth: 0, minHeight: 0),
                   filled: true,
                   fillColor: Theme.of(context).cardColor,
-                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(16), borderSide: BorderSide.none),
-                  contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(16.r), borderSide: BorderSide.none),
+                  contentPadding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 20.h),
                 ),
               ),
-              const SizedBox(height: 24),
+              SizedBox(height: 24.h),
 
-              Text(AppText.requestType, style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: AppTextStyles.h3.color)),
-              const SizedBox(height: 8),
+              Text(AppText.requestType, style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w600, color: AppTextStyles.h3.color)),
+              SizedBox(height: 8.h),
               Obx(() => Container(
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
-                decoration: BoxDecoration(color: const Color(0xFFF1F5F9), borderRadius: BorderRadius.circular(30)),
+                padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 4.h),
+                decoration: BoxDecoration(color: const Color(0xFFF1F5F9), borderRadius: BorderRadius.circular(30.r)),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(controller.category.value, style: const TextStyle(color: Color(0xFF64748B), fontSize: 16)),
-                     const IconButton(icon: Icon(Icons.keyboard_arrow_down, color: Color(0xFF64748B)), onPressed: null),
+                    Text(controller.category.value, style: TextStyle(color: const Color(0xFF64748B), fontSize: 16.sp)),
+                     IconButton(
+                       icon: Icon(Icons.keyboard_arrow_down, color: const Color(0xFF64748B), size: 24.sp), 
+                       onPressed: null
+                     ),
                   ],
                 ),
               )),
               
-              const SizedBox(height: 16),
+              SizedBox(height: 16.h),
               // Warning Banner
               Obx(() {
                 if (controller.category.value == AppText.approvalRequired) {
                   return Container(
-                    padding: const EdgeInsets.all(16),
+                    padding: EdgeInsets.all(16.w),
                     decoration: BoxDecoration(
                       color: const Color(0xFFFFFBEB), // Yellow 50
-                      borderRadius: BorderRadius.circular(16),
+                      borderRadius: BorderRadius.circular(16.r),
                       border: Border.all(color: const Color(0xFFFEF3C7)),
                     ),
                     child: Row(
                       children: [
                         Container(
-                          padding: const EdgeInsets.all(8),
+                          padding: EdgeInsets.all(8.w),
                           decoration: const BoxDecoration(color: Color(0xFFFDE68A), shape: BoxShape.circle),
-                          child: const Icon(Icons.warning_amber_rounded, color: Color(0xFFB45309), size: 20),
+                          child: Icon(Icons.warning_amber_rounded, color: const Color(0xFFB45309), size: 20.sp),
                         ),
-                        const SizedBox(width: 12),
-                        Column(
+                        SizedBox(width: 12.w),
+                        Expanded(child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
-                          children: const [
-                            Text(AppText.approvalRequired, style: const TextStyle(color: Color(0xFF78350F), fontWeight: FontWeight.w700)),
-                            Text(AppText.approvalRequiredDesc, style: const TextStyle(color: Color(0xFF92400E), fontSize: 13)),
+                          children: [
+                            Text(AppText.approvalRequired, style: TextStyle(color: const Color(0xFF78350F), fontWeight: FontWeight.w700, fontSize: 14.sp)),
+                            Text(AppText.approvalRequiredDesc, style: TextStyle(color: const Color(0xFF92400E), fontSize: 13.sp)),
                           ],
-                        ),
+                        )),
                       ],
                     ),
                   );
                 }
                 return const SizedBox.shrink();
               }),
-              const SizedBox(height: 24),
+              SizedBox(height: 24.h),
 
-              
               Text(AppText.category, style: AppTextStyles.bodyMedium.copyWith(fontWeight: FontWeight.w600, color: AppColors.textDark)),
-              const SizedBox(height: 8),
+              SizedBox(height: 8.h),
               Obx(() => Container(
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+                padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 4.h),
                 decoration: BoxDecoration(
                   color: Theme.of(context).cardColor,
-                  borderRadius: BorderRadius.circular(16),
+                  borderRadius: BorderRadius.circular(16.r),
                   border: Border.all(color: Theme.of(context).dividerColor),
                   boxShadow: [
                     BoxShadow(
                       color: Colors.black.withOpacity(0.02),
                       blurRadius: 8,
-                      offset: const Offset(0, 4),
+                      offset: Offset(0, 4.h),
                     ),
                   ],
                 ),
@@ -126,8 +129,8 @@ class RequestDetailsView extends GetView<CreateRequestController> {
                     value: controller.selectedExpenseCategory.value,
                     hint: Text(AppText.selectCategory, style: AppTextStyles.hintText),
                     isExpanded: true,
-                    icon: const Icon(Icons.keyboard_arrow_down, color: AppColors.textSlate),
-                    borderRadius: BorderRadius.circular(16),
+                    icon: Icon(Icons.keyboard_arrow_down, color: AppColors.textSlate, size: 24.sp),
+                    borderRadius: BorderRadius.circular(16.r),
                     dropdownColor: Theme.of(context).cardColor,
                     items: controller.expenseCategories.map((cat) {
                       return DropdownMenuItem<Map<String, dynamic>>(
@@ -135,14 +138,14 @@ class RequestDetailsView extends GetView<CreateRequestController> {
                         child: Row(
                           children: [
                             Container(
-                              padding: const EdgeInsets.all(8),
+                              padding: EdgeInsets.all(8.w),
                               decoration: BoxDecoration(
                                 color: AppColors.infoBg,
-                                borderRadius: BorderRadius.circular(8),
+                                borderRadius: BorderRadius.circular(8.r),
                               ),
-                              child: Icon(cat['icon'], color: AppColors.primaryBlue, size: 18),
+                              child: Icon(cat['icon'], color: AppColors.primaryBlue, size: 18.sp),
                             ),
-                            const SizedBox(width: 12),
+                            SizedBox(width: 12.w),
                             Text(cat['name'], style: AppTextStyles.bodyMedium.copyWith(color: AppTextStyles.h3.color)),
                           ],
                         ),
@@ -152,24 +155,24 @@ class RequestDetailsView extends GetView<CreateRequestController> {
                   ),
                 ),
               )),
-              const SizedBox(height: 24),
+              SizedBox(height: 24.h),
 
               Text(AppText.purpose, style: AppTextStyles.bodyMedium.copyWith(fontWeight: FontWeight.w600, color: AppColors.textDark)),
-              const SizedBox(height: 8),
+              SizedBox(height: 8.h),
               TextField(
                 controller: controller.purposeController,
                 decoration: InputDecoration(
                   hintText: AppText.purposeHint,
                   filled: true,
                   fillColor: Theme.of(context).cardColor,
-                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(16), borderSide: BorderSide.none),
-                  contentPadding: const EdgeInsets.all(16),
+                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(16.r), borderSide: BorderSide.none),
+                  contentPadding: EdgeInsets.all(16.w),
                 ),
               ),
-              const SizedBox(height: 24),
+              SizedBox(height: 24.h),
 
               Text(AppText.descriptionOptional, style: AppTextStyles.bodyMedium.copyWith(fontWeight: FontWeight.w600, color: AppColors.textDark)),
-              const SizedBox(height: 8),
+              SizedBox(height: 8.h),
               TextField(
                 controller: controller.descriptionController,
                 maxLines: 4,
@@ -177,11 +180,11 @@ class RequestDetailsView extends GetView<CreateRequestController> {
                   hintText: AppText.descriptionPlaceholder,
                   filled: true,
                   fillColor: Theme.of(context).cardColor,
-                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(16), borderSide: BorderSide.none),
-                  contentPadding: const EdgeInsets.all(16),
+                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(16.r), borderSide: BorderSide.none),
+                  contentPadding: EdgeInsets.all(16.w),
                 ),
               ),
-              const SizedBox(height: 24),
+              SizedBox(height: 24.h),
 
               Row(
                 children: [
@@ -189,36 +192,36 @@ class RequestDetailsView extends GetView<CreateRequestController> {
                     child: SecondaryButton(
                       text: AppText.takePhoto,
                       onPressed: () => controller.pickImage(ImageSource.camera),
-                      icon: const Icon(Icons.camera_alt, color: AppColors.primaryBlue),
+                      icon: Icon(Icons.camera_alt, color: AppColors.primaryBlue, size: 20.sp),
                     ),
                   ),
-                  const SizedBox(width: 16),
+                  SizedBox(width: 16.w),
                   Expanded(
                     child: SecondaryButton(
                       text: AppText.uploadBill,
                       onPressed: () => controller.pickImage(ImageSource.gallery),
-                      icon: const Icon(Icons.upload_file, color: AppColors.primaryBlue),
+                      icon: Icon(Icons.upload_file, color: AppColors.primaryBlue, size: 20.sp),
                     ),
                   ),
                 ],
               ),
-              const SizedBox(height: 16),
+              SizedBox(height: 16.h),
               Obx(() => controller.attachedFiles.isNotEmpty 
                 ? Column(
                     children: controller.attachedFiles.asMap().entries.map((entry) {
                       int idx = entry.key;
                       XFile file = entry.value;
                       return Container(
-                        margin: const EdgeInsets.only(bottom: 8),
-                        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                        decoration: BoxDecoration(color: Theme.of(context).cardColor, borderRadius: BorderRadius.circular(12), border: Border.all(color: Theme.of(context).dividerColor)),
+                        margin: EdgeInsets.only(bottom: 8.h),
+                        padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
+                        decoration: BoxDecoration(color: Theme.of(context).cardColor, borderRadius: BorderRadius.circular(12.r), border: Border.all(color: Theme.of(context).dividerColor)),
                         child: Row(
                           children: [
-                            const Icon(Icons.description, color: Color(0xFF64748B), size: 20),
-                            const SizedBox(width: 8),
-                            Expanded(child: Text(file.name, style: TextStyle(fontSize: 13, color: AppTextStyles.bodyMedium.color), overflow: TextOverflow.ellipsis)),
+                            Icon(Icons.description, color: const Color(0xFF64748B), size: 20.sp),
+                            SizedBox(width: 8.w),
+                            Expanded(child: Text(file.name, style: TextStyle(fontSize: 13.sp, color: AppTextStyles.bodyMedium.color), overflow: TextOverflow.ellipsis)),
                             IconButton(
-                              icon: const Icon(Icons.close, color: Colors.red, size: 20),
+                              icon: Icon(Icons.close, color: Colors.red, size: 20.sp),
                               onPressed: () => controller.removeFile(idx),
                               padding: EdgeInsets.zero,
                               constraints: const BoxConstraints(),
@@ -239,7 +242,7 @@ class RequestDetailsView extends GetView<CreateRequestController> {
                       Get.toNamed(AppRoutes.CREATE_REQUEST_REVIEW);
                     }
                   },
-                  icon: const Icon(Icons.check, color: Colors.white, size: 16),
+                  icon: Icon(Icons.check, color: Colors.white, size: 16.sp),
                 ),
               ),
             ],

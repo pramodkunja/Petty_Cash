@@ -30,9 +30,10 @@ class AppText {
   static const String signUp = 'Sign Up';
 
   // Requestor Dashboard
-  static const String helloUser = 'Hello, Alex'; // TODO: Dynamic name
+  static const String helloUser = 'Hello,'; 
   static const String newRequest = 'New Request';
   static const String monthlyExpense = 'Monthly Expense';
+  static const String thisMonthsSpending = 'This Month\'s Spending';
   static const String viewDetails = 'View Details';
   static const String spent = 'Spent';
   static const String limit = 'Limit';
@@ -219,6 +220,17 @@ class AppText {
   static const String approvedSuccessDesc =
       'The petty cash request has been successfully approved. The requester will be notified.';
   static const String backToApprovals = 'Back to Approvals List';
+
+  // Admin Set Limits
+  static const String adminSetLimits = 'Set Approval Limits';
+  static const String deemedLimitLabel = 'Deemed Amount Limit';
+  static const String deemedLimitDesc = 'Expenses up to this amount are automatically approved.';
+  static const String approvalLimitLabel = 'Approval Required Amount Limit';
+  static const String approvalLimitDesc = 'Expenses exceeding this amount require manual approval.';
+  static const String limitConfigDesc = 'Configure the monetary thresholds for automatic and manual expense approvals.';
+  static const String saveLimits = 'Save Limits';
+  static const String saving = 'Saving...';
+  static const String inrSuffix = 'INR';
 
   // Admin Tabs
   static const String tabPending = 'Pending';

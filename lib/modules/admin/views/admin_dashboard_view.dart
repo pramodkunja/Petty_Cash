@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'widgets/welcome_message.dart';
 import '../../../../utils/date_helper.dart';
 import 'package:get/get.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart'; // Added
 import '../../../../utils/app_colors.dart';
 import '../../../../routes/app_routes.dart';
 import '../../../../utils/app_text.dart';
@@ -31,7 +32,7 @@ class AdminDashboardView extends GetView<AdminDashboardController> {
                   Row(
                     children: [
                       Flexible(child: Text('Hello,', style: AppTextStyles.h3)),
-                      const SizedBox(width: 4),
+                      SizedBox(width: 4.w),
                       // Dynamic user greeting
                       Flexible(
                         child: Obx(
@@ -43,7 +44,7 @@ class AdminDashboardView extends GetView<AdminDashboardController> {
                       ),
                     ],
                   ),
-                  const SizedBox(height: 4),
+                  SizedBox(height: 4.h),
                   Text(
                     DateHelper.getFormattedDate(),
                     style: AppTextStyles.bodySmall,
@@ -54,21 +55,22 @@ class AdminDashboardView extends GetView<AdminDashboardController> {
             GestureDetector(
               onTap: () => Get.toNamed(AppRoutes.ADMIN_NOTIFICATIONS),
               child: Container(
-                padding: const EdgeInsets.all(8),
+                padding: EdgeInsets.all(8.w),
                 decoration: BoxDecoration(
                   color: Theme.of(context).cardColor,
                   shape: BoxShape.circle,
                   boxShadow: [
                     BoxShadow(
                       color: Colors.black.withOpacity(0.05),
-                      blurRadius: 10,
-                      offset: const Offset(0, 4),
+                      blurRadius: 10.r,
+                      offset: Offset(0, 4.h),
                     ),
                   ],
                 ),
                 child: Icon(
                   Icons.notifications_outlined,
                   color: Theme.of(context).iconTheme.color,
+                  size: 24.sp,
                 ),
               ),
             ),
@@ -77,7 +79,7 @@ class AdminDashboardView extends GetView<AdminDashboardController> {
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 8.0),
+          padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 8.h),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -85,10 +87,10 @@ class AdminDashboardView extends GetView<AdminDashboardController> {
                 name: controller.shortName,
                 showWelcome: controller.showWelcome,
               ),
-              const SizedBox(height: 24),
+              SizedBox(height: 24.h),
 
               Text(AppText.overview, style: AppTextStyles.h3),
-              const SizedBox(height: 16),
+              SizedBox(height: 16.h),
 
               Row(
                 children: [
@@ -99,7 +101,7 @@ class AdminDashboardView extends GetView<AdminDashboardController> {
                       isMoney: false,
                     ),
                   ),
-                  const SizedBox(width: 16),
+                  SizedBox(width: 16.w),
                   Expanded(
                     child: AdminOverviewCard(
                       title: AppText.approved,
@@ -109,10 +111,10 @@ class AdminDashboardView extends GetView<AdminDashboardController> {
                   ),
                 ],
               ),
-              const SizedBox(height: 32),
+              SizedBox(height: 32.h),
 
               Text(AppText.actions, style: AppTextStyles.h3),
-              const SizedBox(height: 16),
+              SizedBox(height: 16.h),
 
               AdminActionCard(
                 icon: Icons.hourglass_empty_rounded,
@@ -123,7 +125,7 @@ class AdminDashboardView extends GetView<AdminDashboardController> {
                 subtitle: AppText.viewAllRequests,
                 onTap: controller.navigateToApprovals,
               ),
-              const SizedBox(height: 16),
+              SizedBox(height: 16.h),
               AdminActionCard(
                 icon: Icons.history_rounded,
                 iconBg: AppColors.primaryBlue, // Pass opaque
@@ -134,7 +136,7 @@ class AdminDashboardView extends GetView<AdminDashboardController> {
                   controller.changeTab(2); // History Tab
                 },
               ),
-              const SizedBox(height: 16),
+              SizedBox(height: 16.h),
               // Add New User (Placed 3rd as requested "under view history")
               AdminActionCard(
                 icon: Icons.person_add_alt_1_rounded,
@@ -146,7 +148,7 @@ class AdminDashboardView extends GetView<AdminDashboardController> {
                   Get.toNamed(AppRoutes.ADMIN_ADD_USER);
                 },
               ),
-              const SizedBox(height: 32),
+              SizedBox(height: 32.h),
             ],
           ),
         ),

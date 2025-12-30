@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart'; // Added
 import '../../../../utils/app_text.dart';
 import '../../../../utils/app_colors.dart';
 
@@ -20,8 +21,8 @@ class RequestorBottomBar extends StatelessWidget {
         boxShadow: [
           BoxShadow(
             color: Colors.black.withOpacity(0.05),
-            blurRadius: 10,
-            offset: const Offset(0, -5),
+            blurRadius: 10.r,
+            offset: Offset(0, -5.h),
           ),
         ],
       ),
@@ -34,17 +35,19 @@ class RequestorBottomBar extends StatelessWidget {
         showUnselectedLabels: true,
         type: BottomNavigationBarType.fixed,
         elevation: 0,
-        items: const [
+        selectedLabelStyle: TextStyle(fontSize: 12.sp), // Responsive label
+        unselectedLabelStyle: TextStyle(fontSize: 12.sp), // Responsive label
+        items: [
           BottomNavigationBarItem(
-            icon: Icon(Icons.grid_view_rounded),
+            icon: Icon(Icons.grid_view_rounded, size: 24.sp),
             label: AppText.dashboard,
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.receipt_long_rounded),
+            icon: Icon(Icons.receipt_long_rounded, size: 24.sp),
             label: AppText.requests,
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.person_rounded),
+            icon: Icon(Icons.person_rounded, size: 24.sp),
             label: AppText.profile,
           ),
         ],

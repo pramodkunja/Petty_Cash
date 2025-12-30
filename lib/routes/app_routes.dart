@@ -1,5 +1,6 @@
 abstract class AppRoutes {
   static const SPLASH = '/splash';
+  static const LOCK = '/lock';
   // static const SPLASH = '/splash';
   static const INITIAL = '/'; // Kept for reference but likely unused if middleware redirects or overridden
   static const LOGIN = '/login';
@@ -37,6 +38,7 @@ abstract class AppRoutes {
   static const ADMIN_CLARIFICATION = '/admin/clarification';
   static const ADMIN_CLARIFICATION_SUCCESS = '/admin/clarification-success';
   static const ADMIN_CLARIFICATION_STATUS = '/admin/clarification-status';
+  static const ADMIN_SET_LIMITS = '/admin/set-limits';
   static const ADMIN_HISTORY = '/admin/history';
 
   static const ADMIN_USER_LIST = '/admin/users';
@@ -60,6 +62,7 @@ abstract class AppRoutes {
   static const MY_REQUESTS = '/my-requests';
   static const REQUEST_DETAILS_READ = '/request-details-read';
   static const MONTHLY_SPENT = '/monthly-spent';
+  static const REQUESTOR_CLARIFICATION = '/requestor/clarification';
 
   // Notifications
   static const REQUESTOR_NOTIFICATIONS = '/requestor/notifications';
